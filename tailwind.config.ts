@@ -11,6 +11,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      textColor: {
+        default: "#000000",
+      },
       backgroundColor: {
         "landing-page": "#EAF0FF",
         background: "#EAF0FF",

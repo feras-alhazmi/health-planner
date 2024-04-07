@@ -23,7 +23,7 @@ export default function SideMenuButton({
     <div
       className={`${checkActive()} flex flex-row text-black rounded-md h-11 items-center justify-between transition-all p-2`}
     >
-      <div className="size-5 hover:size-12">
+      <div className="size-5">
         <Link href={linkPath}>{icon}</Link>
       </div>
       <Link className="hidden sm:block  transition-all text-sm" href={linkPath}>

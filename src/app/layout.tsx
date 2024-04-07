@@ -16,18 +16,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0"
-        ></meta>
-      </head>
-      <body className="w-svw h-svh flex-col bg-background">
+      <body className="w-svw h-svh flex flex-col bg-background">
         <header>
           <TopNavbar></TopNavbar>
           <div className="flex flex-row">
             {!route.includes("landing") ? <SideMenu></SideMenu> : null}
-            <main className="">{children}</main>
+            <main className="p-10">{children}</main>
           </div>
         </header>
       </body>
