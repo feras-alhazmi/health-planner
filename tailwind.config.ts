@@ -10,15 +10,21 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+  
+
     extend: {
+      
       textColor: {
         default: "#000000",
+        blue: "#0155A5",
       },
       backgroundColor: {
         "landing-page": "#EAF0FF",
-        background: "#EAF0FF",
+        background: "#FFFFFF",
         blue: "#0155A5",
+        lightblue:"#D3E9F8"
       },
+    
       // backgroundImage: {
       //   "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       //   "gradient-conic":
