@@ -6,6 +6,10 @@ import TopNavbar from "@/core/navbar/TopNavbar-Component";
 import SideMenu from "@/core/navbar/side_menu/side_menu_component";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import ResetPasswordModal from "@/core/modal/Reset-Password-Modal";
+import { useModalStore } from "@/core/modal/store/Modal-Store";
+import { use, useEffect } from "react";
+import { useDisclosure } from "@nextui-org/modal";
 
 export default function RootLayout({
   children,
@@ -13,15 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const route = usePathname();
+  const modalStore = useModalStore();
 
   return (
     <html lang="en">
-      <body className="w-svw h-svh flex flex-col bg-background">
+      <body className="w-svw flex flex-col bg-background">
+        {...modalStore.getAllModals()}
         <header>
           <TopNavbar></TopNavbar>
           <div className="flex flex-row">
-            {!route.includes("landing") ? <SideMenu></SideMenu> : null}
-            <main className="p-10">{children}</main>
+            {!route.includes("landing") && !route.includes("sign") ? (
+              <SideMenu></SideMenu>
+            ) : null}
+            <main className=" w-full">{children}</main>
           </div>
         </header>
       </body>
