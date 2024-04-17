@@ -17,7 +17,7 @@ const Navbar = (): JSX.Element => {
             <NotificationBadge count={3} />
           </button>
           <button className='btn btn-secondary'>
-            <Avatar path='/assets/participant.png' size={50} alt='User' />
+            <Avatar path='/assets/images/participant.png' size={50} alt='User' />
           </button>
         </div>
       </nav>
@@ -26,7 +26,7 @@ const Navbar = (): JSX.Element => {
           <div className='flex items-center'>
             <RxHamburgerMenu className='text-2xl text-black' />
             <div className='flex items-center bg-white px-3 py-2 ml-3 rounded-md'>
-              <Avatar path='/assets/participant.png' size={30} alt='User' />
+              <Avatar path='/assets/images/participant.png' size={30} alt='User' />
               <p className='text-md text-black mx-2'>Dr. Waleed Alhazmi</p>
               <AiOutlineDown className='inline-block ml-4 font-bold' size={15} />
             </div>
@@ -36,7 +36,7 @@ const Navbar = (): JSX.Element => {
               <NotificationBadge count={3} />
             </button>
             <button className='btn btn-secondary'>
-              <Avatar path='/assets/participant.png' size={50} alt='User' />
+              <Avatar path='/assets/images/participant.png' size={50} alt='User' />
             </button>
           </div>
         </div>
