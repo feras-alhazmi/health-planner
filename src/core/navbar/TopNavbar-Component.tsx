@@ -22,7 +22,7 @@ export default function TopMenu() {
 
   return (
     <Navbar
-      className="text-black bg-landing-page border-divider"
+      className="text-white bg-blue border-divider"
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarContent>
@@ -37,19 +37,30 @@ export default function TopMenu() {
       </NavbarContent>
       <NavbarContent justify="center" className="hidden lg:flex">
         <NavbarItem>
-          <Link href="/">Home</Link>
+          <Link href="/" className="text-white">
+            Home
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/landing">Landing</Link>
+          <Link href="/landing" className="text-white">
+            Landing
+          </Link>
         </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link href="/sign_in" className="text-white">
+            Login
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="success" href="#" variant="faded">
+          <Button
+            as={Link}
+            className="text-blue"
+            href="/sign_up"
+            variant="faded"
+          >
             Sign Up
           </Button>
         </NavbarItem>
