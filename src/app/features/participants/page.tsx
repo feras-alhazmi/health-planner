@@ -8,7 +8,7 @@ const Page = () => {
             <div className='h-full hidden md:block'>
                 <Sidebar />
             </div>
-            <div className='flex flex-col flex-1 h-full bg-gray-200 p-10'>
+            <div className='flex flex-col flex-1 h-full bg-gray-100 p-10'>
                 <Navbar />
                 <section className='flex mt-10 flex-grow flex-1'>
                     <ParticipantsCatalog />
