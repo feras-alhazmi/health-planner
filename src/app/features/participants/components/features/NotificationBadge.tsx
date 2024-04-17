@@ -9,7 +9,7 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
     count
 }) => {
     return (
-        <div className='border-[1px] relative border-black-500 rounded-full p-2'>
+        <div className='border-[1px] relative border-black rounded-full p-2'>
             <IoIosNotificationsOutline size={20} />
             <div className='absolute top-[-5px] right-[-2px] w-5 h-5 bg-red-500 rounded-full flex justify-center items-center dashboard_bg'>
                 <p className='text-white text-xs font-light'>{count}</p>
