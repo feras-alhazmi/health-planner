@@ -1,13 +1,21 @@
+"use client";
+import { useModalStore } from "@/core/modal/store/Modal-Store";
 import { Button, Divider, Input } from "@nextui-org/react";
 import Link from "next/link";
 
 export default function SignInForm() {
+  const openModal = useModalStore((state) => state.openModal);
   return (
     <div className="flex flex-col gap-3">
       <h1 className="text-lg font-bold">Login</h1>
       <Input label="Email" />
       <div className="flex flex-col gap-1 justify-start">
-        <a href="" className="text-blue-600">
+        <a
+          onClick={() => {
+            openModal("resetPassword");
+          }}
+          className="text-blue-600"
+        >
           Forget Password?
         </a>
         <Input label="Password" />

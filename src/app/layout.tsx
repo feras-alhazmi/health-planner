@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="w-svw flex flex-col bg-background">
-        {...modalStore.getAllModals()}
+        {...modalStore.getAllModals().map((modal) => modal())}
         <header>
           <TopNavbar></TopNavbar>
           <div className="flex flex-row">
