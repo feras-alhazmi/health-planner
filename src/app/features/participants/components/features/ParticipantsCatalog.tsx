@@ -1,7 +1,9 @@
+"use client";
 import React from 'react'
 import ParticipantsFilteration from './ParticipantsFilteration'
 import ParticipantCard from './ParticipantCard'
 import { User } from '@/app/features/types'
+import { useParticipantsStore } from '@/store/useParticipantsStore'
 
 
 const ParticipantsCatalog = () => {
@@ -103,12 +105,15 @@ const ParticipantsCatalog = () => {
       gender: 'Male'
     }
   ]
+  const searchQuery = useParticipantsStore(state => state.searchQuery)
+  const filteredUsers = usersData.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()))
   return (
     <div className='w-full flex flex-col h-full'>
       <ParticipantsFilteration />
-      <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 flex-grow h-1 overflow-y-auto'>
+      <div className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 overflow-y-auto ${filteredUsers?.length > 6 ? 'flex-grow h-1' : ''}`}>
         {
-          usersData?.splice(0)?.map((user, index) => <ParticipantCard participant={user} key={index} />)
+          filteredUsers
+            ?.map((user, index) => <ParticipantCard participant={user} key={index} />)
         }
       </div>
     </div>

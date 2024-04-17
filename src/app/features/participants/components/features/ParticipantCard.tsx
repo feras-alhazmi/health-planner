@@ -9,8 +9,7 @@ interface ParticipantCardProps {
 
 const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant }) => {
   return (
-    <div className='bg-white rounded-lg p-5'>
-      <div>
+    <div className='bg-white rounded-lg p-5 max-h-[250px]'>
         <div className='flex items-center'>
           <Avatar path={participant.image} size={70} alt={participant.name} />
           <div className='ml-3'>
@@ -30,7 +29,6 @@ const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant }) => {
             <FaTelegramPlane className='inline-block ml-5 text-[#0056B3]' color='#0056B3' size={18} />
           </button>
         </div>
-      </div>
     </div>
   )
 }
