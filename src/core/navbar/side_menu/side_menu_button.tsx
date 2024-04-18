@@ -24,9 +24,14 @@ export default function SideMenuButton({
       className={`${checkActive()} flex flex-row text-black rounded-md h-11 items-center justify-between transition-all p-2`}
     >
       <div className="size-5">
-        <Link href={linkPath}>{icon}</Link>
+        <Link href={linkPath} className="text-white">
+          {icon}
+        </Link>
       </div>
-      <Link className="hidden sm:block  transition-all text-sm" href={linkPath}>
+      <Link
+        className="hidden sm:block text-white transition-all text-sm"
+        href={linkPath}
+      >
         {text}
       </Link>
       <div className="w-2 max-sm:hidden transition-all"></div>
