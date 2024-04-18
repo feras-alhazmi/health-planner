@@ -25,7 +25,9 @@
     )
     rgb(var(--background-start-rgb));
 } */
-
+.dashboard_bg {
+  background-color: #0056B3;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

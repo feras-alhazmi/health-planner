@@ -29,6 +29,11 @@ export default function SideMenu() {
         text="Orders"
         linkPath="/orders"
       ></SideMenuButton>
+      <SideMenuButton
+        icon={<CiBoxes />}
+        text="Features"
+        linkPath="/features/participants"
+      ></SideMenuButton>
     </nav>
   );
 }
