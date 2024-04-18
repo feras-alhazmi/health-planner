@@ -13,7 +13,7 @@ export default function SideMenu() {
   }
 
   return (
-    <nav className="h-svh bg-landing-page border-r-1 border-divider flex-col flex text-center text-base text-pretty p-2 transition-all">
+    <nav className="h-svh bg-blue border-r-1 border-divider flex-col flex text-center text-base text-pretty p-2 transition-all">
       <SideMenuButton
         icon={<MdDashboard />}
         text="Home"

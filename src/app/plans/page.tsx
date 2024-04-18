@@ -6,7 +6,7 @@ import PlansSidebar from "./components/PlanSidebar";
 import TaskCard from "./components/TaskCard";
 import { useState } from "react";
 import { Task } from "./task";
-import Header from "./components/heasder";
+
 
 export default function Plans() {
   const [showForm, setShowForm] = useState(false);
@@ -22,8 +22,7 @@ export default function Plans() {
   ]);
   return (
     <div>
-      <Header />
-      <Card className="flex-row">
+      <Card className="flex-row m-10 ">
         <PlansSidebar />
         <div className="">
           <TaskCard tasks={tasks} ShowForm={() => setShowForm(!showForm)} />
