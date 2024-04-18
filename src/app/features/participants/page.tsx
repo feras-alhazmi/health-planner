@@ -5,7 +5,7 @@ import Sidebar from "./components/features/Sidebar"
 const Page = () => {
     return (
         <main className='flex w-full h-[100vh]'>
-            <div className='h-full hidden md:block'>
+            <div className='h-full hidden lg:block'>
                 <Sidebar />
             </div>
             <div className='flex flex-col flex-1 h-full bg-gray-100 p-10'>

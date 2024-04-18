@@ -3,7 +3,7 @@ import { AiOutlineDown } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
 const ParticipantsFilteration = () => {
     return (
-        <div className='flex w-full justify-between md:justify-end'>
+        <div className='flex w-full justify-between lg:justify-end'>
             <button className='dashboard_bg text-white px-3 py-2 rounded-full flex items-center'>
                 <GrAdd className='inline-block mr-2' />
                 <p className='text-white font-light'>Add Participant</p>

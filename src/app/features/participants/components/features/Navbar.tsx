@@ -8,7 +8,7 @@ import NotificationBadge from './NotificationBadge';
 const Navbar = (): JSX.Element => {
   return (
     <Fragment>
-      <nav className='w-full bg-transparent md:grid grid-cols-12 hidden'>
+      <nav className='w-full bg-transparent lg:grid grid-cols-12 hidden'>
         <div className='col-span-8'>
           <SearchInput />
         </div>
@@ -21,7 +21,7 @@ const Navbar = (): JSX.Element => {
           </button>
         </div>
       </nav>
-      <nav className='w-full bg-transparent md:hidden'>
+      <nav className='w-full bg-transparent lg:hidden'>
         <div className='flex w-full justify-between items-center'>
           <div className='flex items-center'>
             <RxHamburgerMenu className='text-2xl text-black' />
