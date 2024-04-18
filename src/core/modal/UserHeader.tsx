@@ -1,5 +1,7 @@
 import React from "react";
 import { Button } from "@nextui-org/react";
+import { HiArrowSmallLeft } from "react-icons/hi2";
+import Link from "next/link";
 
 interface Props {
   activePage: String;
@@ -15,7 +17,11 @@ const UserHeader = ({ activePage, onNavigate }: Props) => {
 
   return (
     <header className="text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
+      <Link key="" href={"/participants"}>
+        <HiArrowSmallLeft color="black" size={30} />
+      </Link>
+
+      <div className="container mx-auto flex justify-between items-center mt-8">
         <div className="flex flex-col">
           <span className="font-bold text-xl text-black">
             Hello, Dr. Waleed Alhazmi!
