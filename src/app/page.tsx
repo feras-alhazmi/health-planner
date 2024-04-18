@@ -14,10 +14,7 @@ export default function Page() {
 
   return (
     <div className="bg-background">
-      <UserHeader
-        activePage={currentPage}
-        onNavigate={handleNavigate} // Simplifying the function passing
-      />
+      <UserHeader activePage={currentPage} onNavigate={handleNavigate} />
       {currentPage === "profile" ? <ProfilePage /> : <Plans />}
     </div>
   );

@@ -10,6 +10,7 @@ import ResetPasswordModal from "@/core/modal/Reset-Password-Modal";
 import { useModalStore } from "@/core/modal/store/Modal-Store";
 import { use, useEffect } from "react";
 import { useDisclosure } from "@nextui-org/modal";
+import Sidebar from "./participants/components/features/Sidebar";
 
 export default function RootLayout({
   children,
@@ -28,7 +29,10 @@ export default function RootLayout({
           <div className="flex flex-row">
             {!route.includes("landing") && !route.includes("sign") ? (
               <SideMenu></SideMenu>
-            ) : null}
+            ) : // <div className="h-screen ">
+            //   <Sidebar />
+            // </div>
+            null}
             <main className=" w-full">{children}</main>
           </div>
         </header>
