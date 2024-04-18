@@ -30,7 +30,7 @@ export default function SideMenu() {
         linkPath="/orders"
       ></SideMenuButton>
       <SideMenuButton
-        icon={<CiReceipt />}
+        icon={<CiBoxes />}
         text="Features"
         linkPath="/features/participants"
       ></SideMenuButton>
