@@ -1,7 +1,8 @@
-import React from 'react'
+import React from 'react';
 import { AiOutlineDown } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
-const ParticipantsFilteration = () => {
+
+const ParticipantsFilteration: React.FC = () => {
     return (
         <div className='flex w-full justify-between lg:justify-end'>
             <button className='dashboard_bg text-white px-3 py-2 rounded-full flex items-center'>
@@ -16,7 +17,7 @@ const ParticipantsFilteration = () => {
                 </button>
             </div>
         </div>
-    )
+    );
 }
 
-export default ParticipantsFilteration
+export default ParticipantsFilteration;

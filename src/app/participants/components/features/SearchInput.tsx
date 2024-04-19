@@ -3,7 +3,7 @@ import { useParticipantsStore } from '@/store/useParticipantsStore';
 import React, { useState } from 'react'
 import { GrSearch } from "react-icons/gr";
 
-const SearchInput = () => {
+const SearchInput: React.FC = () => {
   const searchQuery = useParticipantsStore(state => state.searchQuery);
   const setSearchQuery = useParticipantsStore(state => state.setSearchQuery);
 

@@ -6,7 +6,7 @@ import { User } from "@/app/features/types";
 import { useParticipantsStore } from "@/store/useParticipantsStore";
 import Link from "next/dist/client/link";
 
-const ParticipantsCatalog = () => {
+const ParticipantsCatalog: React.FC = () => {
   const usersData: User[] = [
     {
       name: "Ahmad Ali Hussain",
