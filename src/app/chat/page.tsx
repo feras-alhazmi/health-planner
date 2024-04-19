@@ -1,11 +1,10 @@
-import React from "react";
+import { FC } from "react";
+import Button from "./components/ui/Button";
 
-const page = () => {
-  return (
-    <div className="text-7xl text-center">
-      Waiting for hussein to develop it{" "}
-    </div>
-  );
+interface pageProps {}
+
+const page: FC<pageProps> = ({}) => {
+  return <Button />;
 };
 
 export default page;
