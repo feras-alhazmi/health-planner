@@ -17,8 +17,8 @@ const ParticipantsFilteration: React.FC = () => {
                     <p>Filter</p>
                     <AiOutlineDown className='inline-block ml-2' />
                 </button>
-                {open && <div className='absolute top-10 right-0 shadow-md'>
-                    <FilterationModal />
+                {open && <div className='absolute top-10 right-0 shadow-md z-10'>
+                    <FilterationModal handleClose={() => setOpen(false)} />
                 </div>}
             </div>
         </div>

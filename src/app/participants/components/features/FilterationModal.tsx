@@ -1,43 +1,104 @@
+import { Filteration } from '@/app/features/types'
+import { useParticipantsStore } from '@/store/useParticipantsStore'
+import { Select, SelectItem } from '@nextui-org/react'
 import React from 'react'
 
-type filteration = {
-    attribute: string,
-    value: string
+interface FilterationModalProps {
+    handleClose: () => void
 }
-const FilterationModal: React.FC = () => {
-    const [filteration, setFilteration] = React.useState<filteration>({
-        attribute: '',
-        value: ''
-    })
+const FilterationModal: React.FC<FilterationModalProps> = ({
+    handleClose
+}) => {
+    const { setFilteration: setFilters, filteration: filters } = useParticipantsStore(state => state)
+
+    const [filteration, setFilteration] = React.useState<Filteration[]>([
+        {
+            attribute: 'age',
+            value: 'asc'
+        },
+        {
+            attribute: 'gender',
+            value: 'male'
+        },
+        {
+            attribute: 'dateJoined',
+            value: 'asc'
+        },
+        {
+            attribute: 'lastActivity',
+            value: 'asc'
+        }
+    ])
+    // age, gender, date joined, last activity
+    const filtersData = [
+        {
+            label: 'Age',
+            value: 'age',
+            options: ['asc', 'des']
+        },
+        {
+            label: 'Gender',
+            value: 'gender',
+            options: ['male', 'female']
+        },
+        {
+            label: 'Date Joined',
+            value: 'dateJoined',
+            options: ['asc', 'des']
+        },
+        {
+            label: 'Last Activity',
+            value: 'lastActivity',
+            options: ['asc', 'des']
+        }
+    ]
+
+    const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>, label: string) => {
+        console.log(e.target.value, label);
+
+        const newFilteration = filteration.map(f => {
+            if (f.attribute === label) {
+                return {
+                    attribute: label,
+                    value: e.target.value
+                }
+            }
+            return f
+        })
+
+        setFilteration(newFilteration)
+    }
+
+    const handleApplyFilter = () => {
+        setFilters(filteration)
+        handleClose()
+    }
     return (
-        <div className='bg-white p-5 rounded-lg w-[300px] z-[47823684728]'>
-            <h1 className='text-lg font-bold'>Filter Participants</h1>
-            <div className='my-5'>
-                <label htmlFor='attribute' className='block text-sm font-medium text-gray-700'>Attribute</label>
-                <select
-                    id='attribute'
-                    name='attribute'
-                    className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
-                    onChange={(e) => setFilteration({ ...filteration, attribute: e.target.value })}
-                >
-                    <option value=''>Select Attribute</option>
-                    <option value='name'>Name</option>
-                    <option value='age'>Age</option>
-                </select>
-
-                <label htmlFor='value' className='block text-sm font-medium text-gray-700'>Value</label>
-                <input
-                    type='text'
-                    id='value'
-                    name='value'
-                    className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md'
-                    onChange={(e) => setFilteration({ ...filteration, value: e.target.value })}
-                />
-
-                <button className='bg-[#0056B3] text-white px-5 py-2 rounded-lg mt-5'>Apply Filter</button>
+        <div className='bg-gray-200 p-5 shadow-lg rounded-lg w-[300px]'>
+            <div className=''>
+                <div className='flex flex-col'>
+                    {
+                        filtersData.map(filter => (
+                            <div key={filter.value} className='flex flex-col mt-5'>
+                                <p className='text-black text-md font-semibold mb-1'>{filter.label}</p>
+                                <Select label={filter.label} className="max-w-xs py-0" selectedKeys={[filteration.find(f => f.attribute === filter.value)?.value || '']} onChange={(e) => handleChanges(e, filter.value)}>
+                                    {
+                                        filter.options.map(option => (
+                                            <SelectItem key={option} value={option}>
+                                                {option}
+                                            </SelectItem>
+                                        ))
+                                    }
+                                </Select>
+                            </div>
+                        ))
+                    }
+                </div>
+                <button className='bg-[#0056B3] text-white px-5 py-2 rounded-lg mt-5' onClick={handleApplyFilter}>Apply Filter</button>
             </div>
         </div>
     )
 }
+
 
 export default FilterationModal

@@ -113,14 +113,14 @@ const ParticipantsCatalog: React.FC = () => {
     <div className="w-full flex flex-col h-full">
       <ParticipantsFilteration />
       <div
-        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 overflow-y-auto ${
+        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 overflow-y-auto z-1 ${
           filteredUsers?.length > 6 ? "flex-grow h-1" : ""
         }`}
       >
         {filteredUsers?.map((user, index) => (
-          <Link key="" href={"/client"}>
-            <ParticipantCard participant={user} key={index} />
-          </Link>
+          // <Link key="" href={"/client"}>
+            <ParticipantCard participant={user} key={user.email + "_" + user.phone} />
+          // </Link>
         ))}
       </div>
     </div>

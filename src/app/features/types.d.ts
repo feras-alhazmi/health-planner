@@ -6,3 +6,8 @@ export interface User {
     phone: string,
     gender: string,
 }
+
+export interface Filteration {
+    attribute: string,
+    value: string
+}
