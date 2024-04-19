@@ -105,23 +105,49 @@ const ParticipantsCatalog: React.FC = () => {
       gender: "Male",
     },
   ];
-  const searchQuery = useParticipantsStore((state) => state.searchQuery);
-  const filteredUsers = usersData.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const { searchQuery, filteration } = useParticipantsStore((state) => state);
+  const filteredUsers = usersData.filter((user) => {
+    let isValid = false;
+    isValid = user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      || user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      || user.phone.toLowerCase().includes(searchQuery.toLowerCase())
+
+    filteration.forEach((filter) => {
+      if (filter.attribute === "gender" && (filter.value !== "select" && filter.value !== "")) {
+        isValid = isValid &&
+          user.gender.toLocaleLowerCase() === filter.value?.toLocaleLowerCase();
+      }
+    });
+    return isValid;
+  });
+
   return (
     <div className="w-full flex flex-col h-full">
       <ParticipantsFilteration />
       <div
-        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 overflow-y-auto z-1 ${
-          filteredUsers?.length > 6 ? "flex-grow h-1" : ""
-        }`}
+        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 overflow-y-auto z-1 ${filteredUsers?.length > 6 ? "flex-grow h-1" : ""
+          }`}
       >
-        {filteredUsers?.map((user, index) => (
-          // <Link key="" href={"/client"}>
-            <ParticipantCard participant={user} key={user.email + "_" + user.phone} />
-          // </Link>
-        ))}
+        {filteredUsers?.
+          sort((a, b) => {
+            if (filteration.length === 0) return 0;
+            let result = 0;
+            filteration.forEach((filter) => {
+              if (filter.attribute === "age") {
+                if (filter.value === "asc") {
+                  result = a.age - b.age;
+                } else if (filter.value === "des") {
+                  result = b.age - a.age;
+                }
+              }
+            });
+            return result;
+          })
+          .map((user, index) => (
+            <Link key={index} href={"/client"}>
+              <ParticipantCard participant={user} key={user.email + "_" + user.phone} />
+            </Link>
+          ))}
       </div>
     </div>
   );

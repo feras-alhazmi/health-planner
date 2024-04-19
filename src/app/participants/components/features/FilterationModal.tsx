@@ -14,19 +14,19 @@ const FilterationModal: React.FC<FilterationModalProps> = ({
     const [filteration, setFilteration] = React.useState<Filteration[]>([
         {
             attribute: 'age',
-            value: 'asc'
+            value: 'select'
         },
         {
             attribute: 'gender',
-            value: 'male'
+            value: 'select'
         },
         {
             attribute: 'dateJoined',
-            value: 'asc'
+            value: 'select'
         },
         {
             attribute: 'lastActivity',
-            value: 'asc'
+            value: 'select'
         }
     ])
     // age, gender, date joined, last activity
@@ -34,28 +34,26 @@ const FilterationModal: React.FC<FilterationModalProps> = ({
         {
             label: 'Age',
             value: 'age',
-            options: ['asc', 'des']
+            options: ['select', 'asc', 'des']
         },
         {
             label: 'Gender',
             value: 'gender',
-            options: ['male', 'female']
+            options: ['select', 'male', 'female']
         },
         {
             label: 'Date Joined',
             value: 'dateJoined',
-            options: ['asc', 'des']
+            options: ['select', 'asc', 'des']
         },
         {
             label: 'Last Activity',
             value: 'lastActivity',
-            options: ['asc', 'des']
+            options: ['select', 'asc', 'des']
         }
     ]
 
     const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>, label: string) => {
-        console.log(e.target.value, label);
-
         const newFilteration = filteration.map(f => {
             if (f.attribute === label) {
                 return {
