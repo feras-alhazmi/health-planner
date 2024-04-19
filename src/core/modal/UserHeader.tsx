@@ -2,6 +2,8 @@ import React from "react";
 import { Button } from "@nextui-org/react";
 import { HiArrowSmallLeft } from "react-icons/hi2";
 import Link from "next/link";
+import NotificationBadge from "@/app/participants/components/features/NotificationBadge";
+import Avatar from "@/app/features/participants/components/features/Avatar";
 
 interface Props {
   activePage: String;
@@ -16,12 +18,27 @@ const UserHeader = ({ activePage, onNavigate }: Props) => {
     }`;
 
   return (
-    <header className="text-white p-4">
-      <Link key="" href={"/participants"}>
-        <HiArrowSmallLeft color="black" size={30} />
-      </Link>
+    <header className="text-white p-4 mt-4">
+      <div className="flex justify-between">
+        <Link key="" href={"/participants"}>
+          <HiArrowSmallLeft color="black" size={30} />
+        </Link>
 
-      <div className="container mx-auto flex justify-between items-center mt-8">
+        <div className=" flex space-x-4 ">
+          <button className="btn btn-primary">
+            <NotificationBadge count={3} />
+          </button>
+          <button className="btn btn-secondary">
+            <Avatar
+              path="/assets/images/participant.png"
+              size={40}
+              alt="User"
+            />
+          </button>
+        </div>
+      </div>
+
+      <div className="container mx-auto flex justify-between items-center">
         <div className="flex flex-col">
           <span className="font-bold text-xl text-black">
             Hello, Dr. Waleed Alhazmi!
@@ -41,11 +58,6 @@ const UserHeader = ({ activePage, onNavigate }: Props) => {
               Plans
             </Button>
           </div>
-        </div>
-        <div className="rounded-full bg-blue text-blue-900 p-2">
-          <span role="img" aria-label="avatar">
-            👤
-          </span>
         </div>
       </div>
     </header>

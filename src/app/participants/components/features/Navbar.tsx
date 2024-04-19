@@ -19,7 +19,7 @@ const Navbar = (): JSX.Element => {
           <button className="btn btn-secondary">
             <Avatar
               path="/assets/images/participant.png"
-              size={50}
+              size={40}
               alt="User"
             />
           </button>
