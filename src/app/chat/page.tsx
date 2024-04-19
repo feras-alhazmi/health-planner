@@ -1,10 +1,14 @@
 import { FC } from "react";
-import Button from "./components/ui/Button";
+import EmptyState from "./components/EmptyState";
 
 interface pageProps {}
 
 const page: FC<pageProps> = ({}) => {
-  return <Button />;
+  return (
+    <div className="hidden lg:block lg:pl-80 h-full">
+      <EmptyState />
+    </div>
+  );
 };
 
 export default page;
