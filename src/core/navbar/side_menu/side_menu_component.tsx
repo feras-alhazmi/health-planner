@@ -41,7 +41,7 @@ export default function SideMenu() {
         ></SideMenuButton>
       </div>
 
-      <SideMenuButton
+      {/* <SideMenuButton
         icon={<CiBoxes />}
         text="Landing"
         linkPath="/landing"
@@ -55,7 +55,7 @@ export default function SideMenu() {
         icon={<CiBoxes />}
         text="Features"
         linkPath="/features/participants"
-      ></SideMenuButton>
+      ></SideMenuButton> */}
     </nav>
   );
 }
