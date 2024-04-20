@@ -21,6 +21,10 @@ const Sidebar: React.FC = () => {
           <FaTelegramPlane className='inline-block mr-5 font-extrabold' size={30} />
           <p className='text-white font-bold text-lg'>Chats</p>
         </li>
+        <li className='flex items-center w-full px-10 py-3 mt-2'>
+          <FaTelegramPlane className='inline-block mr-5 font-extrabold' size={30} />
+          <p className='text-white font-bold text-lg'>Chats</p>
+        </li>
       </ul>
     </div>
   );

@@ -1,9 +1,12 @@
-import React from "react";
+import { FC } from "react";
+import EmptyState from "./components/EmptyState";
 
-const page = () => {
+interface pageProps {}
+
+const page: FC<pageProps> = ({}) => {
   return (
-    <div className="text-7xl text-center">
-      Waiting for hussein to develop it{" "}
+    <div className="hidden lg:block lg:pl-80 h-full">
+      <EmptyState />
     </div>
   );
 };
