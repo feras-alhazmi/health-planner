@@ -2,6 +2,8 @@
 import React from 'react';
 import { FaPhone, FaEnvelope, FaUserMd } from 'react-icons/fa';
 import { BiChat } from 'react-icons/bi';
+import Image from 'next/image'
+
 
 type ContactInformationProps = {
   name: string;
