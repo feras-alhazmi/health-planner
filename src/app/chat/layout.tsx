@@ -1,3 +1,4 @@
+import UserList from "./components/UserList";
 import Sidebar from "./components/sidebar/Sidebar";
 
 export default function UsersLayout({
@@ -7,7 +8,9 @@ export default function UsersLayout({
 }) {
   return (
     <Sidebar>
-      <div className="h-full">{children}</div>
+      <div className="h-full">
+        <UserList />
+        {children}</div>
     </Sidebar>
   );
 }
