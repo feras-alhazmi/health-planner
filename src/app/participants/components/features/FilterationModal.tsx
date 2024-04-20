@@ -11,25 +11,8 @@ const FilterationModal: React.FC<FilterationModalProps> = ({
 }) => {
     const { setFilteration: setFilters, filteration: filters } = useParticipantsStore(state => state)
 
-    const [filteration, setFilteration] = React.useState<Filteration[]>([
-        {
-            attribute: 'age',
-            value: 'select'
-        },
-        {
-            attribute: 'gender',
-            value: 'select'
-        },
-        {
-            attribute: 'dateJoined',
-            value: 'select'
-        },
-        {
-            attribute: 'lastActivity',
-            value: 'select'
-        }
-    ])
-    // age, gender, date joined, last activity
+    const [filteration, setFilteration] = React.useState<Filteration[]>(filters)
+    
     const filtersData = [
         {
             label: 'Age',
@@ -79,7 +62,10 @@ const FilterationModal: React.FC<FilterationModalProps> = ({
                         filtersData.map(filter => (
                             <div key={filter.value} className='flex flex-col mt-5'>
                                 <p className='text-black text-md font-semibold mb-1'>{filter.label}</p>
-                                <Select label={filter.label} className="max-w-xs py-0" selectedKeys={[filteration.find(f => f.attribute === filter.value)?.value || '']} onChange={(e) => handleChanges(e, filter.value)}>
+                                <Select label={filter.label} className="max-w-xs py-0" selectedKeys={[
+                                    filteration.find(f => f.attribute === filter.value)?.value ||
+                                    filters.find(f => f.attribute === filter.value)?.value ||
+                                    '']} onChange={(e) => handleChanges(e, filter.value)}>
                                     {
                                         filter.options.map(option => (
                                             <SelectItem key={option} value={option}>

@@ -18,7 +18,24 @@ interface Actions {
 // Initialize a default state
 const INITIAL_STATE: State = {
     searchQuery: '',
-    filteration: []
+    filteration: [
+        {
+            attribute: 'age',
+            value: 'select'
+        },
+        {
+            attribute: 'gender',
+            value: 'select'
+        },
+        {
+            attribute: 'dateJoined',
+            value: 'select'
+        },
+        {
+            attribute: 'lastActivity',
+            value: 'select'
+        }
+    ]
 }
 
 export const useParticipantsStore = create<State & Actions>((set, get) => ({
