@@ -7,6 +7,8 @@ import Timeline from "../Profile/componentsProfile/Timeline";
 import MedicalHistory from "../Profile/componentsProfile/MedicalHistory";
 import ContactInfo from "../Profile/componentsProfile/ContactInfo";
 import CalendarComponent from "./componentsProfile/CalendarComponent";
+import styles from './Profile.module.css'; // Assume this is where you keep your CSS
+
 import MedicationTable, {
   StatusKey,
 } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
@@ -90,43 +92,50 @@ const ProfilePage: React.FC = () => {
     diagnosis: "Condition details...",
     healthBarriers: ["Fear of insulin", "Fear of needles"],
   };
-
+  
   return (
     <>
       <Head>
-        <title>Profile</title>
+        <title>Profile Page</title>
       </Head>
-
-      <div className="container mx-auto p-4 grid grid-cols-4 grid-rows-4 gap-2">
-        {" "}
-        {/* Adjusted the gap here */}
-        {/* Stat Cards */}
-        {statCardsData.map((card, index) => (
-          <div className={`row-span-1 col-span-1`} key={index}>
-            <StatCard {...card} />
+      <Layout>
+        <div className={styles.gridContainer}>
+          {/* Stat Cards */}
+          <div className={styles.statCardsContainer}>
+            {statCardsData.map((card, index) => (
+              <div key={index} className={styles.statCard}>
+                <StatCard {...card} />
+              </div>
+            ))}
           </div>
-        ))}
-        {/* Timeline */}
-        <div className="row-span-2 col-span-1">
-          <Timeline entries={timelineData} />
+
+          {/* Timeline */}
+          <div className={styles.timelineContainer}>
+            <Timeline entries={timelineData} />
+          </div>
+
+          {/* Calendar */}
+          <div className={styles.calendarContainer}>
+            <CalendarComponent />
+          </div>
+          
+
+          {/* Medical History */}
+          <div className={styles.medicalHistoryContainer}>
+            <MedicalHistory entries={medicalHistoryEntries} />
+          </div>
+
+          {/* Contact Info */}
+          <div className={styles.contactInfoContainer}>
+            <ContactInfo {...contactInfoData} />
+          </div>
+
+          {/* Medication Table */}
+          <div className={styles.medicationTableContainer}>
+            <MedicationTable medications={medicationsData} />
+          </div>
         </div>
-        {/* Calendar */}
-        <div className="row-span-1 col-span-2">
-          <CalendarComponent />
-        </div>
-        {/* Medical History */}
-        <div className="row-span-1 col-span-2">
-          <MedicalHistory entries={medicalHistoryEntries} />
-        </div>
-        {/* Contact Info */}
-        <div className="row-span-2 col-span-1">
-          <ContactInfo {...contactInfoData} />
-        </div>
-        {/* Medication Table */}
-        <div className="row-span-1 col-span-4">
-          <MedicationTable medications={medicationsData} />
-        </div>
-      </div>
+      </Layout>
     </>
   );
 };

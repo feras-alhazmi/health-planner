@@ -14,7 +14,7 @@ const CalendarComponent: React.FC = () => {
   };
 
   return (
-    <div className="border rounded shadow bg-white p-4">
+    <div className="border rounded shadow bg-white p-1">
       {/* Apply the `any` type to bypass the type checking */}
       <Calendar onChange={onChange as any} value={date as any} />
     </div>

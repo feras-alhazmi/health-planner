@@ -16,22 +16,26 @@ export default function SideMenuButton({
   icon,
 }: SideMenuButtonProps) {
   const pathName = usePathname();
-  function checkActive() {
-    return `link ${pathName === linkPath ? "active" : "unactive"}`;
-  }
+  var isActive = pathName === linkPath;
   return (
     <div
-      className={`${checkActive()} flex flex-row text-black rounded-md h-11 items-center justify-between transition-all p-2`}
+      className={` flex items-center w-full px-10 py-3 ${
+        isActive ? " border-r-white border-l-[4px]" : null
+      }`}
+      style={{
+        background: ` ${
+          isActive
+            ? "linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.027) 100%)"
+            : ""
+        }`,
+      }}
     >
-      <div className="size-5">
+      <div className="size-10">
         <Link href={linkPath} className="text-white">
           {icon}
         </Link>
       </div>
-      <Link
-        className="hidden sm:block text-white transition-all text-sm"
-        href={linkPath}
-      >
+      <Link className="text-white font-bold text-medium" href={linkPath}>
         {text}
       </Link>
       <div className="w-2 max-sm:hidden transition-all"></div>
