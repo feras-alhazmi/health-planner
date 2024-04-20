@@ -2,7 +2,6 @@ const EmptyState = () => {
   return (
     <div
       className="
-                bg-green-600
                 px-4 
                 py-10
                 sm:px-6
