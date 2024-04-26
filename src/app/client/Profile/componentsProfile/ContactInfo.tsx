@@ -33,7 +33,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
       <div className="flex items-center space-x-4">
         <img
           className="w-16 h-16 rounded-full"
-          src="person.png" // Replace with the path to the profile image
+          src="/assets/images/participant.png" // Replace with the path to the profile image
           alt={`${name}'s profile`}
         />
         <div>
