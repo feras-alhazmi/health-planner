@@ -12,3 +12,107 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  Id               String            @id @default(uuid())
+  firstname        String
+  lastname         String?
+  phone            String
+  dateOfBirth      DateTime
+  bio              String?
+  gender           Gender
+  avatarUrl        String?
+  timezone         String?
+  language         Language          @default(EN)
+  year             Int?
+  roles            Role              @default(PATIENT)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  lastActiveAt     DateTime?
+  email            String            @unique
+  medicalHistory   MedicalHistory?
+  userMedications  UserMedications?
+  userMeasurements UserMeasurements?
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Language {
+  EN
+  Arabic
+  // Add other languages as needed
+}
+
+enum Role {
+  PATIENT
+  DOCTOR
+}
+
+model MedicalHistory {
+  Id          String    @id @default(uuid())
+  historyName String
+  description String?
+  diseases    Disease[]
+  user        User      @relation(fields: [userId], references: [Id])
+  userId      String    @unique
+}
+
+model Disease {
+  Id          String           @id @default(uuid())
+  diseaseName String
+  histories   MedicalHistory[]
+}
+
+model Medications {
+  Id                   String            @id @default(uuid())
+  medicationName       String
+  status               Status
+  dosage               String
+  frequency            String
+  prescribingPhysician String // Foreign key for user; need to define a user model
+  startDate            DateTime
+  endDate              DateTime?
+  userMedications      UserMedications[]
+}
+
+model UserMedications {
+  Id          String        @id @default(uuid())
+  user        User          @relation(fields: [userId], references: [Id])
+  userId      String        @unique
+  medications Medications[]
+}
+
+model Measurements {
+  Id                 String           @id @default(uuid())
+  name               String
+  measurementType    MeasurementType
+  measurementValue   Int
+  measurementUnit    String
+  measuredOn         DateTime
+  createdAt          DateTime         @default(now())
+  UserMeasurements   UserMeasurements @relation(fields: [userMeasurementsID], references: [Id])
+  userMeasurementsID String           @unique
+}
+
+model UserMeasurements {
+  Id           String         @id @default(uuid())
+  user         User           @relation(fields: [userId], references: [Id])
+  userId       String         @unique
+  measurements Measurements[]
+}
+
+enum MeasurementType {
+  weight
+  blood_pressure_systolic
+  blood_pressure_diastolic
+  BMI
+}
+
+enum Status {
+  Active
+  Discontuned
+  On_Hold
+}

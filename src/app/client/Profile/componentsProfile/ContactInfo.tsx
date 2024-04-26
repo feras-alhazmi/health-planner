@@ -18,18 +18,18 @@ type ContactInformationProps = {
 };
 
 const ContactInformation: React.FC<ContactInformationProps> = ({
-    name,
-    age,
-    gender,
-    address,
-    job,
-    phone,
-    email,
-    diagnosis,
-    healthBarriers,
-  }) => {
-    return (
-    <div className="bg-white p-4 rounded-lg shadow space-y-4">
+  name,
+  age,
+  gender,
+  address,
+  job,
+  phone,
+  email,
+  diagnosis,
+  healthBarriers,
+}) => {
+  return (
+    <div className="contactInfoContainer bg-white p-4 rounded-lg shadow space-y-4">
       <div className="flex items-center space-x-4">
         <img
           className="w-16 h-16 rounded-full"

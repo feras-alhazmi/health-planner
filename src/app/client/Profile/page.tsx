@@ -23,12 +23,17 @@ const ProfilePage: React.FC = () => {
   ];
 
   const timelineData = [
-    { date: "10w4d 2024", event: "Pre diabetic A1c: 10.4" },
-    { date: "11w0d 2024", event: "Follow-up A1c: 9.7" },
-    { date: "11w0d 2024", event: "Follow-up A1c: 9.7" },
-    { date: "11w0d 2024", event: "Follow-up A1c: 9.7" },
-    { date: "11w0d 2024", event: "Follow-up A1c: 9.7" },
-    { date: "11w0d 2024", event: "Follow-up A1c: 9.7" },
+    { date: "20/02/2024", event: "Pre diabetic" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
+    { date: "20/02/2024", event: "Follow-up" },
     // ... (other events)
   ];
   const medicationsData: Array<{
@@ -40,26 +45,26 @@ const ProfilePage: React.FC = () => {
     startDate: string;
     endDate: string;
   }> = [
-    {
-      name: "Medication A",
-      status: "Active",
-      dosage: "25mg",
-      frequency: "once daily",
-      prescribingPhysician: "Dr. Johnson",
-      startDate: "03/10/2023",
-      endDate: "",
-    },
-    {
-      name: "Medication B",
-      status: "Discontinued",
-      dosage: "10mg",
-      frequency: "twice daily",
-      prescribingPhysician: "Dr. Smith",
-      startDate: "01/05/2023",
-      endDate: "02/15/2023",
-    },
-    // ... additional medication objects
-  ];
+      {
+        name: "Medication A",
+        status: "Active",
+        dosage: "25mg",
+        frequency: "once daily",
+        prescribingPhysician: "Dr. Johnson",
+        startDate: "03/10/2023",
+        endDate: "",
+      },
+      {
+        name: "Medication B",
+        status: "Discontinued",
+        dosage: "10mg",
+        frequency: "twice daily",
+        prescribingPhysician: "Dr. Smith",
+        startDate: "01/05/2023",
+        endDate: "02/15/2023",
+      },
+      // ... additional medication objects
+    ];
 
   const medicalHistoryEntries = [
     {
@@ -92,50 +97,48 @@ const ProfilePage: React.FC = () => {
     diagnosis: "Condition details...",
     healthBarriers: ["Fear of insulin", "Fear of needles"],
   };
-  
+
   return (
     <>
       <Head>
         <title>Profile Page</title>
       </Head>
-      <Layout>
-        <div className={styles.gridContainer}>
-          {/* Stat Cards */}
-          <div className={styles.statCardsContainer}>
-            {statCardsData.map((card, index) => (
-              <div key={index} className={styles.statCard}>
-                <StatCard {...card} />
-              </div>
-            ))}
-          </div>
-
-          {/* Timeline */}
-          <div className={styles.timelineContainer}>
-            <Timeline entries={timelineData} />
-          </div>
-
-          {/* Calendar */}
-          <div className={styles.calendarContainer}>
-            <CalendarComponent />
-          </div>
-          
-
-          {/* Medical History */}
-          <div className={styles.medicalHistoryContainer}>
-            <MedicalHistory entries={medicalHistoryEntries} />
-          </div>
-
-          {/* Contact Info */}
-          <div className={styles.contactInfoContainer}>
-            <ContactInfo {...contactInfoData} />
-          </div>
-
-          {/* Medication Table */}
-          <div className={styles.medicationTableContainer}>
-            <MedicationTable medications={medicationsData} />
-          </div>
+      <div className={styles.gridContainer}>
+        {/* Stat Cards */}
+        <div className={styles.statCardsContainer}>
+          {statCardsData.map((card, index) => (
+            <div key={index} className={styles.statCard}>
+              <StatCard {...card} />
+            </div>
+          ))}
         </div>
-      </Layout>
+
+        {/* Timeline */}
+        <div className={styles.timelineContainer}>
+          <Timeline entries={timelineData} />
+        </div>
+
+        {/* Calendar */}
+        <div className={styles.calendarContainer}>
+          <CalendarComponent />
+        </div>
+
+
+        {/* Medical History */}
+        <div className={styles.medicalHistoryContainer}>
+          <MedicalHistory entries={medicalHistoryEntries} />
+        </div>
+
+        {/* Contact Info */}
+        <div className={styles.contactInfoContainer}>
+          <ContactInfo {...contactInfoData} />
+        </div>
+
+        {/* Medication Table */}
+        <div className={styles.medicationTableContainer}>
+          <MedicationTable medications={medicationsData} />
+        </div>
+      </div>
     </>
   );
 };

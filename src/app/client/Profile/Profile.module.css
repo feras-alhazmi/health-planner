@@ -1,14 +1,16 @@
 /* Profile.module.css */
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, auto);
   gap: 0.5rem;
 }
 
 .statCardsContainer {
-  grid-column: 1 / -1; /* all 4 columns */
-  grid-row: 1; /* second row */
+  grid-column: 1 /5;
+  /* all 4 columns */
+  grid-row: 1;
+  /* second row */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
@@ -21,28 +23,45 @@
 
 /* Adjust the position of the Calendar and Medical History */
 .calendarContainer {
-  grid-column: 2 / 3; /* first two columns */
-  grid-row: 2; /* second row */
+  grid-column: 3 / 5;
+  /* first two columns */
+  grid-row: 2;
+  /* second row */
 }
 
 .medicalHistoryContainer {
-  grid-column: 2 / 3; /* first two columns */
-  grid-row: 3; /* third row */
+  grid-column: 3 / 5;
+  /* first two columns */
+  grid-row: 3;
+  /* third row */
 }
 
 /* Extend the Contact Info to take more vertical space */
 .contactInfoContainer {
-  grid-column: 3 / 5; /* last two columns */
-  grid-row: 2 / 4; /* from second to fourth row */
+  grid-column: 5;
+  /* last two columns */
+  grid-row: 1 / 5;
+  /* from second to fourth row */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  /* This will make the component take full available height */
+
 }
 
 .medicationTableContainer {
-  grid-column: 1 / -1; /* all 4 columns */
-  grid-row: 4; /* fourth row */
+  grid-column: 1 / -1;
+  /* all 4 columns */
+  grid-row: 4;
+  /* fourth row */
 }
-.timelineContainer{
-  grid-column: 1 / 2; /* all 4 columns */
-  grid-row: 2/4; /* fourth row */
+
+.timelineContainer {
+  grid-column: 1 / 3;
+  /* all 4 columns */
+  grid-row: 2/4;
+  /* fourth row */
 }
 
 /* Responsive adjustments */
@@ -57,6 +76,7 @@
   .medicalHistoryContainer,
   .contactInfoContainer,
   .medicationTableContainer {
-    grid-column: 1 / -1; /* full width */
+    grid-column: 1 / -1;
+    /* full width */
   }
 }

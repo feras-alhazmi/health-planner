@@ -1,4 +1,7 @@
 // MedicationTable.tsx
+import { Avatar, IconButton, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+
 import React from 'react';
 
 // Define the status types to ensure correct indexing
@@ -29,7 +32,17 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div style={{ padding: '20px' }}> {/* Add padding to move away from the sidebar */}
+      {/* Add a header with the title, avatar and edit icon */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar alt="Profile Picture" src="/path-to-your-image.jpg" sx={{ width: 56, height: 56, marginRight: '10px' }} />
+          <Typography variant="h5" component="h1">Medication Table</Typography>
+        </div>
+        <IconButton aria-label="edit">
+          <EditIcon />
+        </IconButton>
+      </div>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
