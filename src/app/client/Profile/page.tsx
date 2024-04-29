@@ -8,12 +8,86 @@ import MedicalHistory from "../Profile/componentsProfile/MedicalHistory";
 import ContactInfo from "../Profile/componentsProfile/ContactInfo";
 import CalendarComponent from "./componentsProfile/CalendarComponent";
 import styles from './Profile.module.css'; // Assume this is where you keep your CSS
+import { TempUser } from './tempUser'; // adjust the import path as needed
+import prisma from "@/app/prismaGenerate";
+
 
 import MedicationTable, {
   StatusKey,
 } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
 
 const ProfilePage: React.FC = () => {
+  const tempUserData: TempUser = {
+    name: "Feras Ali Alhazmi",
+    age: 38,
+    gender: "Male",
+    address: "Riyadh",
+    job: "Accountant",
+    phone: "(235) 555-0123",
+    email: "walid.alhazmi@example.com",
+    diagnosis: "Condition details...",
+    healthBarriers: ["Fear of insulin", "Fear of needles"],
+    statCardsData: [
+      { title: "Patients", value: "92", icon: "👥" },
+      { title: "Weight", value: "92 kg", icon: "⚖️" },
+      { title: "Height", value: "182 cm", icon: "📏" },
+      { title: "Blood Type", value: "O+", icon: "💉" },
+    ],
+    timelineData: [
+      { date: "20/02/2024", event: "Pre diabetic" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      { date: "20/02/2024", event: "Follow-up" },
+      // ...additional events
+    ],
+    medicationsData: [
+      {
+        name: "Medication A",
+        status: "Active",
+        dosage: "25mg",
+        frequency: "once daily",
+        prescribingPhysician: "Dr. Johnson",
+        startDate: "03/10/2023",
+        endDate: "",
+      },
+      {
+        name: "Medication B",
+        status: "Discontinued",
+        dosage: "10mg",
+        frequency: "twice daily",
+        prescribingPhysician: "Dr. Smith",
+        startDate: "01/05/2023",
+        endDate: "02/15/2023",
+      },
+      // ...additional medications
+    ],
+    medicalHistoryEntries: [
+      {
+        condition: "Chronic disease",
+        details: "Diabetes, Hypertension, Asthma, Neurological Disorders",
+      },
+      {
+        condition: "Chronic disease",
+        details: "Diabetes, Hypertension, Asthma, Neurological Disorders",
+      },
+      {
+        condition: "Chronic disease",
+        details: "Diabetes, Hypertension, Asthma, Neurological Disorders",
+      },
+      {
+        condition: "Chronic disease",
+        details: "Diabetes, Hypertension, Asthma, Neurological Disorders",
+      },
+      // ...more entries
+    ],
+  };
   // Placeholder data for the components
   const statCardsData = [
     { title: "Patients", value: "92", icon: "👥" },

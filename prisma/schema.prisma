@@ -21,6 +21,8 @@ model User {
   dateOfBirth      DateTime
   bio              String?
   gender           Gender
+  diagnosis        String?
+  healthBarriers   String[]          @default([""]) //leave epmty for doctor. used for patients only
   avatarUrl        String?
   timezone         String?
   language         Language          @default(EN)
@@ -88,6 +90,7 @@ model UserMedications {
 model Measurements {
   Id                 String           @id @default(uuid())
   name               String
+  icon               String
   measurementType    MeasurementType
   measurementValue   Int
   measurementUnit    String
