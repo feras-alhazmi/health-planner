@@ -13,7 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AuthUser{
+  Id               String            @id @default(uuid())
+  email            String            @unique
+  password         String       @unique   
+  salt             String   
+  user           User?            
+
+}
 model User {
+
   Id               String            @id @default(uuid())
   firstname        String
   lastname         String?
@@ -31,10 +40,15 @@ model User {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   lastActiveAt     DateTime?
+  authUser             AuthUser?              @relation(fields: [authUserId], references: [Id])
+  authUserId           String?               @unique
+
   email            String            @unique
   medicalHistory   MedicalHistory?
   userMedications  UserMedications?
   userMeasurements UserMeasurements?
+  password        String  @unique
+  salt           String   
 }
 
 enum Gender {
