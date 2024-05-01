@@ -12,14 +12,17 @@ import {
   NavbarMenuToggle,
   useDisclosure,
 } from "@nextui-org/react";
+import { useAuthStore } from "../auth/store/Auth-Store";
 
 export default function TopMenu() {
   // const useLoadStore = useLoadingStore((state) => state);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const authStore = useAuthStore((state) => state);
   const createProductModal = useDisclosure();
   const createCategoryModal = useDisclosure();
   const menuItems = ["Home", "Products", "Orders", "Log Out"];
-
+  console.log(authStore.authUser);
   return (
     <Navbar
       className="text-white bg-blue border-divider"
@@ -49,21 +52,33 @@ export default function TopMenu() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/sign_in" className="text-white">
-            Login
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button
-            as={Link}
-            className="text-blue"
-            href="/sign_up"
-            variant="faded"
-          >
-            Sign Up
-          </Button>
-        </NavbarItem>
+        {!authStore.authUser ? (
+          <>
+            <NavbarItem className="hidden lg:flex">
+              <Link href="/sign_in" className="text-white">
+                Login
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button
+                as={Link}
+                className="text-blue"
+                href="/sign_up"
+                variant="faded"
+              >
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        ) : (
+          <>
+            <NavbarItem className="hidden lg:flex">
+              <Button className="text-red-500" variant="faded">
+                Logout
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
 
       <NavbarMenu>

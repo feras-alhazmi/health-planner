@@ -17,6 +17,8 @@ model AuthUser{
   Id               String            @id @default(uuid())
   email            String            @unique
   password         String       @unique   
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   salt             String   
   user           User?            
 
@@ -47,8 +49,7 @@ model User {
   medicalHistory   MedicalHistory?
   userMedications  UserMedications?
   userMeasurements UserMeasurements?
-  password        String  @unique
-  salt           String   
+ 
 }
 
 enum Gender {
