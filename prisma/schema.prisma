@@ -13,42 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AuthUser{
-  Id               String            @id @default(uuid())
-  email            String            @unique
-  password         String       @unique   
-  salt             String   
-  user           User?            
-
+model AuthUser {
+  Id       String @id @default(uuid())
+  email    String @unique
+  password String @unique
+  salt     String
+  user     User?
 }
-model User {
 
-  Id               String            @id @default(uuid())
-  firstname        String
-  lastname         String?
-  phone            String
-  dateOfBirth      DateTime
-  bio              String?
-  gender           Gender
-  diagnosis        String?
-  healthBarriers   String[]          @default([""]) //leave epmty for doctor. used for patients only
-  avatarUrl        String?
-  timezone         String?
-  language         Language          @default(EN)
-  year             Int?
-  roles            Role              @default(PATIENT)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  lastActiveAt     DateTime?
-  authUser             AuthUser?              @relation(fields: [authUserId], references: [Id])
-  authUserId           String?               @unique
+model User {
+  Id             String    @id @default(uuid())
+  firstname      String
+  lastname       String?
+  phone          String
+  dateOfBirth    DateTime
+  bio            String?
+  gender         Gender
+  diagnosis      String?
+  healthBarriers String[]  @default([""]) //leave epmty for doctor. used for patients only
+  avatarUrl      String?
+  timezone       String?
+  language       Language  @default(EN)
+  year           Int?
+  roles          Role      @default(PATIENT)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastActiveAt   DateTime?
+  authUser       AuthUser? @relation(fields: [authUserId], references: [Id])
+  authUserId     String?   @unique
 
   email            String            @unique
   medicalHistory   MedicalHistory?
   userMedications  UserMedications?
   userMeasurements UserMeasurements?
-  password        String  @unique
-  salt           String   
+  events           Event[]
+  password         String            @unique
+  salt             String
 }
 
 enum Gender {
@@ -119,6 +119,14 @@ model UserMeasurements {
   user         User           @relation(fields: [userId], references: [Id])
   userId       String         @unique
   measurements Measurements[]
+}
+
+model Event {
+  Id     String   @id @default(uuid())
+  user   User     @relation(fields: [userId], references: [Id])
+  userId String   @unique
+  date   DateTime
+  name   String
 }
 
 enum MeasurementType {

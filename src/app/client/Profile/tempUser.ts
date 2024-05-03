@@ -4,6 +4,14 @@ import MedicationTable, {
 
 
 export interface TempUser {
+    contactInfoData: ContactInfoData;
+    statCardsData: StatCardsData[];
+    timelineData: TimelineData[];
+    medicationsData: MedicationsData[];
+    medicalHistoryEntries: MedicalHistoryEntries[]
+}
+
+interface ContactInfoData {
     name: string;
     age: number;
     gender: string;
@@ -13,10 +21,6 @@ export interface TempUser {
     email: string;
     diagnosis: string;
     healthBarriers: string[];
-    statCardsData: StatCardsData[];
-    timelineData: TimelineData[];
-    medicationsData: MedicationsData[];
-    medicalHistoryEntries: MedicalHistoryEntries[]
 }
 
 interface StatCardsData {
@@ -34,8 +38,8 @@ interface MedicationsData {
     dosage: string;
     frequency: string;
     prescribingPhysician: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
 }
 interface MedicalHistoryEntries {
     condition: string;
