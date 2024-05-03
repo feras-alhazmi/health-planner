@@ -14,11 +14,13 @@ datasource db {
 }
 
 model AuthUser {
-  Id       String @id @default(uuid())
-  email    String @unique
-  password String @unique
-  salt     String
-  user     User?
+  Id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  salt      String
+  user      User?
 }
 
 model User {
@@ -46,9 +48,8 @@ model User {
   medicalHistory   MedicalHistory?
   userMedications  UserMedications?
   userMeasurements UserMeasurements?
-  events           Event[]
-  password         String            @unique
-  salt             String
+
+  Event Event?
 }
 
 enum Gender {
