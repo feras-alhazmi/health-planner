@@ -1,6 +1,6 @@
-import MedicationTable, {
-    StatusKey,
-} from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
+// import MedicationTable, {
+//     StatusKey,
+// } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
 
 
 export interface TempUser {
@@ -34,7 +34,7 @@ interface TimelineData {
 }
 interface MedicationsData {
     name: string;
-    status: StatusKey;
+    status: string;
     dosage: string;
     frequency: string;
     prescribingPhysician: string;

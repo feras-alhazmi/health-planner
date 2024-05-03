@@ -32,6 +32,7 @@ model User {
   bio            String?
   gender         Gender
   diagnosis      String?
+  address        String
   healthBarriers String[]  @default([""]) //leave epmty for doctor. used for patients only
   avatarUrl      String?
   timezone       String?
@@ -71,7 +72,6 @@ enum Role {
 model MedicalHistory {
   Id          String    @id @default(uuid())
   historyName String
-  description String?
   diseases    Disease[]
   user        User      @relation(fields: [userId], references: [Id])
   userId      String    @unique
@@ -81,6 +81,7 @@ model Disease {
   Id          String           @id @default(uuid())
   diseaseName String
   histories   MedicalHistory[]
+  description String?
 }
 
 model Medications {

@@ -18,19 +18,33 @@ import { promise } from "zod";
 
 
 async function getUser(_id: string) {
-  return await prisma.user.findUnique({
-    where: { Id: _id },
-    include: {
-      //events: true,
-      medicalHistory: true,  // Assuming one-to-many and storing as an array
-      userMedications: {
-        include: {
-          medications: true  // Assuming medications is under userMedications
-        }
-      },
-      userMeasurements: true, // Example, not used directly in previous placeholders
-    }
+  // return await prisma.user.findUnique({
+  //   where: { Id: _id }
+  // });
+  return await prisma.user.findFirst();
+}
+async function getUserMedication(_id: string) {
+  return await prisma.userMedications.findUnique({
+    where: { userId: _id }
   });
+}
+async function getMedicalHistory(_id: string) {
+  return await prisma.medicalHistory.findUnique({
+    where: { userId: _id }
+  });
+}
+async function getMedications(_id: string) {
+  return await prisma.medications.findMany({
+    where: { userMedications: { some: { userId: _id } } }
+  });
+}
+async function getdisease(_id: string) {
+  return await prisma.disease.findMany({
+    where: { histories: { some: { userId: _id } } }
+  });
+}
+function AgeCalc(dateOfBirth: Date) {
+  return 10;
 }
 
 
@@ -40,18 +54,23 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const user = await getUser("111"); // Use the actual user ID needed
-      if (user) {
+      //const userMedication = await getUserMedication("111");
+      let id = user?.Id ?? "";
+      const userMedication = await getMedications(id);
+      const userMedicalHistory = await getdisease(id);
+      const now = new Date();
+      if (user && userMedication && userMedicalHistory) {
         // Decompose user data into separate variables
         const contactInfo = {
           name: `${user.firstname} ${user.lastname ?? ""}`,
-          age: user.dateOfBirth, // Convert to age if necessary
-          gender: user.gender,
-          address: user.address,
-          job: user.job,
+          age: AgeCalc(user.dateOfBirth), // Convert to age if necessary
+          gender: user.gender.toString(),
+          address: "user.address",
+          job: user.roles.toString(),
           phone: user.phone,
           email: user.email,
-          diagnosis: user.diagnosis ?? "N/A",
-          healthBarriers: user.healthBarriers,
+          diagnosis: "user.diagnosis" ?? 'N/A',
+          healthBarriers: ["user.healthBarriers"],
         };
 
         const statCards = [
@@ -61,26 +80,25 @@ const ProfilePage: React.FC = () => {
           { title: "Blood Type", value: "O+", icon: "💉" },
         ];
 
-        const timelineEvents = user.medicalHistory.map(mh => ({
-          date: mh.createdAt.toISOString(), // Assuming createdAt for event timing
-          event: mh.description,
+        const timelineEvents = userMedicalHistory.map(mh => ({
+          date: "mh.createdAt.toISOString()", // Assuming createdAt for event timing
+          event: "mh.description",
         }));
-        const medications = user.userMedications ? user.userMedications.flatMap(um =>
-          um.medications.map(med => ({
-            name: med.medicationName,
-            status: med.status,
-            dosage: med.dosage,
-            frequency: med.frequency,
-            prescribingPhysician: med.prescribingPhysician,
-            startDate: med.startDate.toISOString(), // Assuming startDate is not nullable
-            endDate: med.endDate?.toISOString() // Handle nullable endDate
-          })
-          )) : [];  // Provide a default empty array if userMedications is null
+        const medications = userMedication.map(med => ({
+          name: med.medicationName,
+          status: med.status.toString(),
+          dosage: med.dosage,
+          frequency: med.frequency,
+          prescribingPhysician: med.prescribingPhysician,
+          startDate: med.startDate, // Assuming startDate is not nullable
+          endDate: med.endDate ?? now // Handle nullable endDate
+        })
+        );  // Provide a default empty array if userMedications is null
 
-        const medicalHistory = user.medicalHistory ? user.medicalHistory.map(mh => ({
-          condition: mh.historyName,
-          details: mh.description ?? 'No details provided', // Handle nullable description
-        })) : [];  // Provide a default empty array if medicalHistory is null
+        const medicalHistory = userMedicalHistory.map((mh) => ({
+          condition: mh.diseaseName,
+          details: "mh.description" ?? 'No details provided', // Handle nullable description
+        }));  // Provide a default empty array if medicalHistory is null
         // Combine all variables into TempUser structure
         setUserData({
           contactInfoData: contactInfo,
@@ -107,7 +125,7 @@ const ProfilePage: React.FC = () => {
       <div className={styles.gridContainer}>
         {/* Stat Cards */}
         <div className={styles.statCardsContainer}>
-          {tempUserData.statCardsData.map((card, index) => (
+          {userData.statCardsData.map((card, index) => (
             <div key={index} className={styles.statCard}>
               <StatCard {...card} />
             </div>
@@ -116,7 +134,7 @@ const ProfilePage: React.FC = () => {
 
         {/* Timeline */}
         <div className={styles.timelineContainer}>
-          <Timeline entries={tempUserData.timelineData} />
+          <Timeline entries={userData.timelineData} />
         </div>
 
         {/* Calendar */}
@@ -127,17 +145,17 @@ const ProfilePage: React.FC = () => {
 
         {/* Medical History */}
         <div className={styles.medicalHistoryContainer}>
-          <MedicalHistory entries={tempUserData.medicalHistoryEntries} />
+          <MedicalHistory entries={userData.medicalHistoryEntries} />
         </div>
 
         {/* Contact Info */}
         <div className={styles.contactInfoContainer}>
-          <ContactInfo {...tempUserData.contactInfoData} />
+          <ContactInfo {...userData.contactInfoData} />
         </div>
 
         {/* Medication Table */}
         <div className={styles.medicationTableContainer}>
-          <MedicationTable medications={tempUserData.medicationsData} />
+          <MedicationTable medications={userData.medicationsData} />
         </div>
       </div>
     </>
@@ -145,3 +163,5 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
+
+
