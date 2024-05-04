@@ -10,7 +10,7 @@ import ResetPasswordModal from "@/core/modal/Reset-Password-Modal";
 import { useModalStore } from "@/core/modal/store/Modal-Store";
 import { use, useEffect } from "react";
 import { useDisclosure } from "@nextui-org/modal";
-import Sidebar from "./participants/components/features/Sidebar";
+import Sidebar from "./components/usersSearch/Sidebar";
 
 export default function RootLayout({
   children,
