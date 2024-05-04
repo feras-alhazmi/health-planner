@@ -20,4 +20,21 @@ const medicalHistorySchema = z.object({
     description: z.string().optional(),
 });
 
+
+export const measurementSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  measurementType: z.enum(['weight', 'blood_pressure_systolic', 'blood_pressure_diastolic', 'BMI'], { message: 'Invalid measurement type' }),
+  measurementValue: z.number().min(0, { message: 'Measurement value must be a positive number' }),
+  measurementUnit: z.string().min(1, { message: 'Measurement unit is required' }),
+  measuredOn: z.string().refine(value => {
+    // Attempt to parse the string into a Date object
+    const parsedDate = new Date(value);
+    // Check if parsing was successful and the result is a valid date
+    return !isNaN(parsedDate.getTime());
+  }, {
+    message: 'Measured on must be a valid date string',
+  }),
+});
+
+
 export { diseaseSchema, medicationSchema, medicalHistorySchema };
