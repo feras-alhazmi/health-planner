@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import SearchInput from "./SearchInput";
-import Avatar from "../../../../core/navbar/side_menu/Avatar";
+import Avatar from "../../../core/navbar/side_menu/Avatar";
 import { AiOutlineDown } from "react-icons/ai";
 import { RxHamburgerMenu } from "react-icons/rx";
 import NotificationBadge from "./NotificationBadge";

@@ -1,5 +1,5 @@
 import React from "react";
-import Avatar from "../../../../core/navbar/side_menu/Avatar";
+import Avatar from "../../../core/navbar/side_menu/Avatar";
 import { HiUserGroup } from "react-icons/hi";
 import { FaTelegramPlane } from "react-icons/fa";
 

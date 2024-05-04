@@ -22,6 +22,7 @@ const config: Config = {
         "landing-page": "#EAF0FF",
         background: "#FFFFFF",
         blue: "#0155A5",
+        graybg:"#F3F4F6",
         lightblue:"#D3E9F8"
       },
     

@@ -1,5 +1,5 @@
 import React from "react";
-import Avatar from "../../../../core/navbar/side_menu/Avatar";
+import Avatar from "../../core/navbar/side_menu/Avatar";
 import { FaTelegramPlane } from "react-icons/fa";
 import { User } from "@/app/features/types";
 
@@ -9,7 +9,7 @@ interface ParticipantCardProps {
 
 const ParticipantCard: React.FC<ParticipantCardProps> = ({ participant }) => {
   return (
-    <div className="bg-white rounded-lg p-5 max-h-[250px]">
+    <div className="bg-white rounded-lg p-5 max-h-[250px] w-full">
       <div className="flex items-center">
         <Avatar path={participant.image} size={70} alt={participant.name} />
         <div className="ml-3">

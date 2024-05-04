@@ -10,13 +10,14 @@ export type StatusKey = 'Active' | 'Discontinued' | 'On Hold';
 // Define the shape of medication data
 type Medication = {
   name: string;
-  status: StatusKey;
+  status: string;
   dosage: string;
   frequency: string;
   prescribingPhysician: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 };
+let statusColor: StatusKey;
 
 // Define the shape of the component's props
 type MedicationTableProps = {
@@ -75,7 +76,18 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
               <td className="px-6 py-4 whitespace-nowrap">
                 {medication.name}
               </td>
-              <td className={`px-6 py-4 whitespace-nowrap ${statusStyles[medication.status]}`}>
+              {(() => {
+                if (medication.status === 'Active') {
+                  statusColor = "Active";
+                } else if (medication.status === 'Discontinued') {
+                  statusColor = "Discontinued";;
+                } else if (medication.status === 'On Hold') {
+                  statusColor = "On Hold";;
+                } else {
+                  return <span ></span>;
+                }
+              })()}
+              <td className={`px-6 py-4 whitespace-nowrap ${statusStyles[statusColor]}`}>
                 {medication.status}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -88,10 +100,10 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
                 {medication.prescribingPhysician}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.startDate}
+                {medication.startDate.toISOString()}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.endDate || '-'}
+                {medication.endDate.toISOString() || '-'}
               </td>
             </tr>
           ))}
