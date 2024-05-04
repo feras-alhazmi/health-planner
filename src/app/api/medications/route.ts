@@ -1,7 +1,8 @@
-import prisma from '@/lib/prisma';
+import PrismaServices from '@/lib/prisma';
 import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
+const prisma = PrismaServices.instance
 export async function GET(req: NextApiRequest) {
   try {
     const medications = await prisma.medications.findMany();

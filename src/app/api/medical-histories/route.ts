@@ -1,9 +1,10 @@
 // pages/api/medical-histories.ts
-import prisma from '@/lib/prisma';
+import PrismaServices from '@/lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
+const prisma = PrismaServices.instance
 // Define zod schema for validating request body
 const medicalHistorySchema = z.object({
   history_name: z.string(),

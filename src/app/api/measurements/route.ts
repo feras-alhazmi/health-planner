@@ -1,7 +1,8 @@
-import prisma from '@/lib/prisma';
+import PrismaServices from '@/lib/prisma';
 import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
+const prisma = PrismaServices.instance
 export async function GET(req: NextApiRequest) {
   try {
     const measurements = await prisma.measurements.findMany();
@@ -23,6 +24,7 @@ export async function POST(req: NextApiRequest) {
         measurementValue,
         measurementUnit,
         measuredOn: new Date(measuredOn),
+        userMeasurementsID: "32423423423"
       },
     });
 

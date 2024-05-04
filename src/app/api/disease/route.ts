@@ -1,7 +1,16 @@
-import prisma from '@/lib/prisma';
+import { diseaseSchema } from '@/lib/joi/schema/schema';
+import PrismaServices from '@/lib/prisma';
 import { NextApiRequest } from 'next';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+}
+
+const prisma = PrismaServices.instance
 export async function GET(req: NextApiRequest) {
   try {
     const diseases = await prisma.disease.findMany();
@@ -12,56 +21,30 @@ export async function GET(req: NextApiRequest) {
   }
 }
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const { diseaseName } = req.body;
+    let body = await req.json()
+
+    diseaseSchema.parse(body);
+
+    const { name } = body;
 
     const newDisease = await prisma.disease.create({
       data: {
-        diseaseName,
+        diseaseName: name,
       },
     });
 
     return NextResponse.json(newDisease);
   } catch (error) {
     console.error('Error creating disease:', error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({
+        error: 'Validation error',
+        details: error.errors.map((error) => error.path.join('.') + ': ' + error.message),
+      }, { status: 400 });
+    }
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function PUT(req: NextApiRequest) {
-  const { id } = req.query;
-  try {
-    const { diseaseName } = req.body;
-
-    const updatedDisease = await prisma.disease.update({
-      where: {
-        Id: id as string,
-      },
-      data: {
-        diseaseName,
-      },
-    });
-
-    return NextResponse.json(updatedDisease);
-  } catch (error) {
-    console.error('Error updating disease:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
-export async function DELETE(req: NextApiRequest) {
-  const { id } = req.query;
-  try {
-    await prisma.disease.delete({
-      where: {
-        Id: id as string,
-      },
-    });
-
-    return NextResponse.json({ message: 'Disease deleted' });
-  } catch (error) {
-    console.error('Error deleting disease:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
