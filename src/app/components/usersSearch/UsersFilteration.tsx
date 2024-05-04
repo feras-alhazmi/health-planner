@@ -3,7 +3,7 @@ import { AiOutlineDown } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
 import FilterationModal from './FilterationModal';
 
-const ParticipantsFilteration: React.FC = () => {
+const UsersFilteration: React.FC = () => {
     const [open, setOpen] = React.useState<boolean>(false);
     return (
         <div className='flex w-full justify-between lg:justify-end'>
@@ -25,4 +25,4 @@ const ParticipantsFilteration: React.FC = () => {
     );
 }
 
-export default ParticipantsFilteration;
+export default UsersFilteration;

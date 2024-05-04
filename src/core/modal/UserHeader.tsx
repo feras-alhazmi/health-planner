@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@nextui-org/react";
 import { HiArrowSmallLeft } from "react-icons/hi2";
 import Link from "next/link";
-import NotificationBadge from "@/app/participants/components/features/NotificationBadge";
+import NotificationBadge from "@/app/components/usersSearch/NotificationBadge";
 import Avatar from "@/app/features/participants/components/features/Avatar";
 
 interface Props {

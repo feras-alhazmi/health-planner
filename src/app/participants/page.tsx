@@ -1,6 +1,6 @@
-import Navbar from "./components/features/Navbar";
-import ParticipantsCatalog from "./components/features/ParticipantsCatalog";
-import Sidebar from "./components/features/Sidebar";
+import Navbar from "../components/usersSearch/Navbar";
+
+import ParticipantsCatalog from "./ParticipantsCatalog";
 
 const ParticipantsPage = () => {
   return (

@@ -1,12 +1,12 @@
-"use client";
 import React from "react";
-import ParticipantsFilteration from "./ParticipantsFilteration";
-import ParticipantCard from "./ParticipantCard";
-import { User } from "@/app/features/types";
+import UsersCatalog from "../components/usersSearch/UsersCatalog";
+import ProviderCard from "../providers/page";
 import { useParticipantsStore } from "@/store/useParticipantsStore";
-import Link from "next/dist/client/link";
+import { Link } from "@nextui-org/react";
+import { User } from "./types";
+import ParticipantCard from "./ParticipantCard";
 
-const ParticipantsCatalog: React.FC = () => {
+const ParticipantsCatalog = () => {
   const usersData: User[] = [
     {
       name: "Ahmad Ali Hussain",
@@ -108,13 +108,19 @@ const ParticipantsCatalog: React.FC = () => {
   const { searchQuery, filteration } = useParticipantsStore((state) => state);
   const filteredUsers = usersData.filter((user) => {
     let isValid = false;
-    isValid = user.name.toLowerCase().includes(searchQuery.toLowerCase())
-      || user.email.toLowerCase().includes(searchQuery.toLowerCase())
-      || user.phone.toLowerCase().includes(searchQuery.toLowerCase())
+    isValid =
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.phone.toLowerCase().includes(searchQuery.toLowerCase());
 
     filteration.forEach((filter) => {
-      if (filter.attribute === "gender" && (filter.value !== "select" && filter.value !== "")) {
-        isValid = isValid &&
+      if (
+        filter.attribute === "gender" &&
+        filter.value !== "select" &&
+        filter.value !== ""
+      ) {
+        isValid =
+          isValid &&
           user.gender.toLocaleLowerCase() === filter.value?.toLocaleLowerCase();
       }
     });
@@ -122,34 +128,31 @@ const ParticipantsCatalog: React.FC = () => {
   });
 
   return (
-    <div className="w-full flex flex-col h-full">
-      <ParticipantsFilteration />
-      <div
-        className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 overflow-y-auto z-1 ${filteredUsers?.length > 6 ? "flex-grow h-1" : ""
-          }`}
-      >
-        {filteredUsers?.
-          sort((a, b) => {
-            if (filteration.length === 0) return 0;
-            let result = 0;
-            filteration.forEach((filter) => {
-              if (filter.attribute === "age") {
-                if (filter.value === "asc") {
-                  result = a.age - b.age;
-                } else if (filter.value === "des") {
-                  result = b.age - a.age;
-                }
+    <UsersCatalog>
+      {filteredUsers
+        ?.sort((a, b) => {
+          if (filteration.length === 0) return 0;
+          let result = 0;
+          filteration.forEach((filter) => {
+            if (filter.attribute === "age") {
+              if (filter.value === "asc") {
+                result = a.age - b.age;
+              } else if (filter.value === "des") {
+                result = b.age - a.age;
               }
-            });
-            return result;
-          })
-          .map((user, index) => (
-            <Link key={index} href={"/client"}>
-              <ParticipantCard participant={user} key={user.email + "_" + user.phone} />
-            </Link>
-          ))}
-      </div>
-    </div>
+            }
+          });
+          return result;
+        })
+        .map((user, index) => (
+          <Link key={index} href={"/client"}>
+            <ParticipantCard
+              participant={user}
+              key={user.email + "_" + user.phone}
+            />
+          </Link>
+        ))}
+    </UsersCatalog>
   );
 };
 

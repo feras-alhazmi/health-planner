@@ -31,6 +31,16 @@ export default function SideMenu() {
         ></SideMenuButton>
         <SideMenuButton
           icon={
+            <HiUserGroup
+              className="inline-block mr-5 font-extrabold"
+              size={30}
+            />
+          }
+          text="Health Providers"
+          linkPath="/providers"
+        ></SideMenuButton>
+        <SideMenuButton
+          icon={
             <FaTelegramPlane
               className="inline-block mr-5 font-extrabold"
               size={30}
