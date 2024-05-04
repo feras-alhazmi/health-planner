@@ -1,116 +1,55 @@
-// pages/api/medical-histories.ts
+// Import necessary modules
+import { medicalHistorySchema } from '@/lib/joi/schema/schema';
 import PrismaServices from '@/lib/prisma';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { NextResponse } from 'next/server';
+import { NextApiRequest } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-const prisma = PrismaServices.instance
-// Define zod schema for validating request body
-const medicalHistorySchema = z.object({
-  history_name: z.string(),
-  description: z.string().optional()
-});
+let prisma = PrismaServices.instance;
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+}
 
-// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-//   console.log('Medical histories API');
-  
-//   if (req.method === 'GET') {
-//     return GET(req, res);
-//   } else if (req.method === 'POST') {
-//     return POST(req);
-//   } else if (req.method === 'PUT') {
-//     return PUT(req);
-//   } else if (req.method === 'DELETE') {
-//     return DELETE(req);
-//   } else {
-//     return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
-//   }
-// }
-
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+// Route handler for fetching all medical histories
+export async function GET(req: NextApiRequest) {
   try {
-    console.log('Fetching medical histories');
-
     const medicalHistories = await prisma.medicalHistory.findMany();
     return NextResponse.json(medicalHistories);
   } catch (error) {
-    return NextResponse.json({ error: 'Internal server error' });
+    console.error('Error fetching medical histories:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function POST(req: NextApiRequest) {
-  // Validate request body against zod schema
+// Route handler for creating a new medical history
+export async function POST(req: NextRequest) {
   try {
-    const validatedData = medicalHistorySchema.parse(req.body);
-    const { history_name, description } = validatedData;
+    const body = await req.json();
 
-    // Create a new medical history
+    // Validate request body against zod schema
+    const validatedData = medicalHistorySchema.parse(body);
+    const { historyName } = body;
+
+    // Create a new medical history in the database
     const newMedicalHistory = await prisma.medicalHistory.create({
       data: {
-        historyName: history_name,
-        description: description || '',
-        userId: '1' // Hardcoded for now, should be fetched from the session
-      }
+        historyName,
+        userId: "1312312"
+      },
     });
 
+    // Send success response with the newly created medical history
     return NextResponse.json(newMedicalHistory);
   } catch (error) {
     console.error('Error creating medical history:', error);
     if (error instanceof z.ZodError) {
-      // Zod validation failed
-      return NextResponse.json({ error: 'Validation error', details: error.errors }, { status: 400 });
-    } else {
-      // Other error
-      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+      return NextResponse.json({
+        error: 'Validation error',
+        details: error.errors.map((error) => error.path.join('.') + ': ' + error.message),
+      }, { status: 400 });
     }
-  }
-}
-
-export async function PUT(req: NextApiRequest) {
-  const { id } = req.query;
-  // Validate request body against zod schema
-  try {
-    const validatedData = medicalHistorySchema.parse(req.body);
-    const { history_name, description } = validatedData;
-
-    // Update the medical history
-    const updatedMedicalHistory = await prisma.medicalHistory.update({
-      where: {
-        Id: id as string,
-      },
-      data: {
-        historyName: history_name,
-        description: description || '',
-      }
-    });
-
-    return NextResponse.json(updatedMedicalHistory);
-  } catch (error) {
-    console.error('Error updating medical history:', error);
-    if (error instanceof z.ZodError) {
-      // Zod validation failed
-      return NextResponse.json({ error: 'Validation error', details: error.errors }, { status: 400 });
-    } else {
-      // Other error
-      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-    }
-  }
-}
-
-
-export async function DELETE(req: NextApiRequest) {
-  const { id } = req.query;
-  try {
-    // Delete the medical history
-    await prisma.medicalHistory.delete({
-      where: {
-        Id: id as string,
-      }
-    })
-
-    return NextResponse.json({ message: 'Medical history deleted' });
-  } catch (error) {
-    console.error('Error deleting medical history:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
