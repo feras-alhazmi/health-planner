@@ -1,6 +1,8 @@
+import { medicationSchema } from "@/lib/joi/schema/schema";
 import PrismaServices from "../Prisma-Services";
 import { NextApiRequest } from 'next';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from "zod";
 
 const prisma = PrismaServices.instance
 export async function GET(req: NextApiRequest) {
@@ -13,10 +15,11 @@ export async function GET(req: NextApiRequest) {
   }
 }
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const { medicationName, status, dosage, frequency, prescribingPhysician, startDate, endDate } = req.body;
-
+    let body = await req.json()
+    medicationSchema.parse(body)
+    const { medicationName, status, dosage, frequency, prescribingPhysician, startDate, endDate } = body;
     const newMedication = await prisma.medications.create({
       data: {
         medicationName,
