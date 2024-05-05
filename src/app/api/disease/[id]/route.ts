@@ -1,5 +1,5 @@
 import { diseaseSchema } from '@/lib/joi/schema/schema';
-import PrismaServices from '@/lib/prisma';
+import PrismaServices from "../../Prisma-Services";
 import { NextApiRequest } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';

@@ -1,4 +1,4 @@
-import PrismaServices from '@/lib/prisma';
+import PrismaServices from "../Prisma-Services";
 import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 

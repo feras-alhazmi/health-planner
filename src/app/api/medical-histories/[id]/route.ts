@@ -1,6 +1,6 @@
 // Import necessary modules
 import { diseaseSchema, medicalHistorySchema } from '@/lib/joi/schema/schema';
-import PrismaServices from '@/lib/prisma';
+import PrismaServices from "../../Prisma-Services";
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
