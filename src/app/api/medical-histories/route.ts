@@ -30,13 +30,13 @@ export async function POST(req: NextRequest) {
 
     // Validate request body against zod schema
     const validatedData = medicalHistorySchema.parse(body);
-    const { historyName } = body;
+    const { historyName, userId } = body;
 
     // Create a new medical history in the database
     const newMedicalHistory = await prisma.medicalHistory.create({
       data: {
         historyName,
-        userId: "1312312"
+        userId,
       },
     });
 

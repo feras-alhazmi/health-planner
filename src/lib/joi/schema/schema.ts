@@ -16,8 +16,9 @@ const medicationSchema = z.object({
 });
 
 const medicalHistorySchema = z.object({
-    history_name: z.string(),
+    historyName: z.string(),
     description: z.string().optional(),
+    userId: z.string().min(1, "Enter the user id"),
 });
 
 
