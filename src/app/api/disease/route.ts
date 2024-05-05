@@ -27,13 +27,28 @@ export async function POST(req: NextRequest) {
 
     diseaseSchema.parse(body);
 
-    const { name } = body;
+    const {
+      name,
+      medicalHistoryId,
+    } = body;
 
     const newDisease = await prisma.disease.create({
       data: {
         diseaseName: name,
       },
     });
+
+    if (medicalHistoryId) {
+      let history = await prisma.medicalHistoryDisease.create({
+        data: {
+          medicalHistoryId,
+          diseaseId: newDisease.Id,
+        },
+      });
+
+      console.log('history', history);
+      
+    }
 
     return NextResponse.json(newDisease);
   } catch (error) {

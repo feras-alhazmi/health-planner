@@ -15,7 +15,19 @@ export async function GET(req: NextRequest) {
     const medicalHistory = await prisma.medicalHistory.findUnique({
       where: {
         Id: id
-      }
+      },
+      include: {
+        medicalHistoryDiseases: {
+          select: {
+            disease: {
+              select: {
+                diseaseName: true
+              }
+            }
+          }
+        }
+
+      },
     });
 
     // Send success response with the fetched medical history
