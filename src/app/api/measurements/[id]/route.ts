@@ -1,25 +1,23 @@
 import { measurementSchema } from '@/lib/joi/schema/schema';
-import PrismaServices from "../Prisma-Services";
+import PrismaServices from "../../Prisma-Services";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const prisma = PrismaServices.instance;
 
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-}
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
+  const id = req.url?.split('/').slice(-1).pop();
+
   try {
-    const { id } = req.query;
-
-    const measurement = await prisma.measurements.findUnique({
+    const measurement = await prisma.userMeasurements.findUnique({
       where: {
         Id: id as string,
       },
+      include: {
+        measurements: {}
+      }
     });
 
     if (!measurement) {
