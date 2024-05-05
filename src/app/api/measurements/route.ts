@@ -15,7 +15,11 @@ export const config = {
 export async function GET(req: NextApiRequest) {
   try {
     // Fetch measurements from the database
-    const measurements = await prisma.measurements.findMany();
+    const measurements = await prisma.userMeasurements.findMany({
+      include: {
+        measurements: {}
+      }
+    });
 
     return NextResponse.json(measurements);
   } catch (error) {
@@ -24,7 +28,7 @@ export async function GET(req: NextApiRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     let body = await req.json();
 
@@ -32,9 +36,25 @@ export async function POST(req: NextRequest) {
     measurementSchema.parse(body);
 
     // Extract necessary fields from the request body
-    const { name, measurementType, measurementValue, measurementUnit, measuredOn, userMeasurementsID } = body;
+    const { name, measurementType, measurementValue, measurementUnit, measuredOn, userMeasurementsID, userId } = body;
 
-    let newUserMeasurementsID = userMeasurementsID;
+    if (!userId) return NextResponse.json({
+      error: 'missing user id',
+    }, { status: 400 })
+    let userMeasurement = await prisma.userMeasurements.findFirst({
+      where: {
+        userId: userId
+      }
+    })
+
+    if (!userMeasurement) {
+      userMeasurement = await prisma.userMeasurements.create({
+        data: {
+          userId,
+        }
+      })
+    }
+    let newUserMeasurementsID = userMeasurement.Id;
     // Create new measurement in the database
     const newMeasurement = await prisma.measurements.create({
       data: {
