@@ -1,67 +1,70 @@
-import { diseaseSchema } from '@/lib/joi/schema/schema';
+// Import necessary libraries
+import { NextApiRequest, NextApiResponse } from 'next';
 import PrismaServices from "../Prisma-Services";
-import { NextApiRequest } from 'next';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { diseaseSchema } from '@/lib/joi/schema/schema'; // Assuming Joi is used correctly
 
-export default {
-    config: {
-        api: {
-            bodyParser: true,
-        },
-    },
-};
+// Initialize Prisma service instance
+const prisma = PrismaServices.instance;
 
-const prisma = PrismaServices.instance
-export async function GET(req: NextApiRequest) {
-  try {
-    const diseases = await prisma.disease.findMany();
-    return NextResponse.json(diseases);
-  } catch (error) {
-    console.error('Error fetching diseases:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
+// API route handling both GET and POST requests
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+    switch (req.method) {
+        case 'GET':
+            return handleGet(req, res);
+        case 'POST':
+            return handlePost(req, res);
+        default:
+            res.setHeader('Allow', ['GET', 'POST']);
+            return res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    let body = await req.json()
-
-    diseaseSchema.parse(body);
-
-    const {
-      name,
-      medicalHistoryId,
-    } = body;
-
-    const newDisease = await prisma.disease.create({
-      data: {
-        diseaseName: name,
-      },
-    });
-
-    if (medicalHistoryId) {
-      let history = await prisma.medicalHistoryDisease.create({
-        data: {
-          medicalHistoryId,
-          diseaseId: newDisease.Id,
-        },
-      });
-
-      console.log('history', history);
-      
+// Handle GET requests
+async function handleGet(req: NextApiRequest, res: NextApiResponse) {
+    try {
+        const diseases = await prisma.disease.findMany();
+        res.json(diseases);
+    } catch (error) {
+        console.error('Error fetching diseases:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-
-    return NextResponse.json(newDisease);
-  } catch (error) {
-    console.error('Error creating disease:', error);
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: 'Validation error',
-        details: error.errors.map((error) => error.path.join('.') + ': ' + error.message),
-      }, { status: 400 });
-    }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
 }
 
+// Handle POST requests
+async function handlePost(req: NextApiRequest, res: NextApiResponse) {
+    try {
+        const body = await req.json();
+        diseaseSchema.parse(body);
+
+        const { name, medicalHistoryId } = body;
+        const newDisease = await prisma.disease.create({
+            data: {
+                diseaseName: name,
+            },
+        });
+
+        if (medicalHistoryId) {
+            const history = await prisma.medicalHistoryDisease.create({
+                data: {
+                    medicalHistoryId,
+                    diseaseId: newDisease.id,
+                },
+            });
+
+            console.log('History created:', history);
+        }
+
+        res.json(newDisease);
+    } catch (error) {
+        console.error('Error creating disease:', error);
+        if (error instanceof z.ZodError) {
+            res.status(400).json({
+                error: 'Validation error',
+                details: error.errors.map(e => e.path.join('.') + ': ' + e.message),
+            });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+}
