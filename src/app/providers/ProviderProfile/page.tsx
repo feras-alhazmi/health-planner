@@ -1,4 +1,5 @@
 // components/ProviderProfile.js
+import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,7 +17,8 @@ const ProviderProfile = () => {
         <div>
           <h1 className="text-xl font-bold">Rachel Davis, RD</h1>
           <div className="flex items-center text-sm space-x-2">
-            <span>📞 Book Now</span>
+            <Button> Book Now</Button>
+
             <span>💬 Get your price</span>
           </div>
         </div>

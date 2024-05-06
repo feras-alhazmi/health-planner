@@ -3,16 +3,19 @@
 import { Image } from "@nextui-org/react";
 import SymptomsIcon from "../../../public/assets/svg/Symptions-Icon";
 import LandingCard from "./components/Landing-Card-Component";
-import MedicalManagementIcon from "../../../public/assets/svg/Medical-Managment-Icon";
-import HeathRecordsIcon from "../../../public/assets/svg/Health-Records-Icon";
 import CustomizableTemplateIcon from "../../../public/assets/svg/Customizable-Template-Icon";
 import {
   MdAccountBox,
   MdComputer,
-  MdCorporateFare,
+  MdOutlineManageSearch,
   MdGroup,
   MdPrivacyTip,
 } from "react-icons/md";
+import { FaTasks } from "react-icons/fa";
+import { LuHeartHandshake } from "react-icons/lu";
+
+import ProviderCard from "../providers/ProviderCard";
+import ProviderType from "./components/ProviderType";
 
 export default function LandingPage() {
   return (
@@ -24,23 +27,32 @@ export default function LandingPage() {
             src="assets/images/Medical.png"
             className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
           />
-          <div className="flex flex-col gap-3 self-center max-w-lg">
-            <h1 className="text-3xl font-bold text-cyan-950">
-              Your Medical Planner
+          <div className="flex flex-col self-center max-w-lg">
+            <h1 className="text-5xl font-bold text-cyan-950 mb-5">
+              Health providers who accept your insurance
             </h1>
-            <p className="text-sm text-cyan-950">
-              Stay on top of your health journey with our comprehensive Medical
-              Planner. Designed to streamline and organize your healthcare
-              needs, our planner offers a user-friendly interface to manage
-              appointments, medications, vital information, and more. Manage
-              your medical records with ease
+            <p className=" text-cyan-950 mb-5">
+              Find a board-certified, Registered Health Provider who will design
+              a custom plan for you and work through insurance to get it
+              covered.
             </p>
+
+            <div className="">
+              <h1 className="text-2xl font-bold text-cyan-950 mb-5">
+                Our Health providers
+              </h1>
+              <div className="flex flex-col gap-3 md:flex-row md:flex-nowrap">
+                <ProviderType>Personal trainers</ProviderType>
+                <ProviderType>Dietitians</ProviderType>
+                <ProviderType>Physical Therapists</ProviderType>
+              </div>
+            </div>
           </div>
         </div>
         <article className="flex flex-row justify-around max-w-screen-2xl w-full self-center flex-wrap gap-5">
           <div className="flex flex-col gap-5 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl">
-            <h1 className="text-4xl font-bold text-cyan-950">Our Services</h1>
-            <p>What make us stand out</p>
+            <h1 className="text-4xl font-bold text-cyan-950">How it Works</h1>
+
             <Image
               alt="Medical Image"
               src="assets/images/illi.png"
@@ -50,26 +62,26 @@ export default function LandingPage() {
 
           <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl self-center">
             <LandingCard
-              title="Medication Management"
-              description="Never miss a dose with our medication tracker. Set reminders, refill alerts, and keep a detailed record of your prescriptions"
-              icon={<MedicalManagementIcon></MedicalManagementIcon>}
+              title="Find a Provider"
+              description="Never miss a task with our Task Management. Set reminders, refill alerts, and keep a detailed record of your prescriptions"
+              icon={<MdOutlineManageSearch color="#0056B3" size={70} />}
             />
             <LandingCard
-              title="Health Records"
+              title="Connect & Meet"
               description="Safely store and access medical records, test results, and important documents for quick reference during appointments or emergencies"
-              icon={<HeathRecordsIcon></HeathRecordsIcon>}
+              icon={<MdComputer color="#0056B3" size={70} />}
             />
             <LandingCard
-              title="Symptoms Tracker"
+              title="Get a Plan"
               description="  Keep track of your symptoms and health conditions with our
                 Symptoms Tracker. Monitor your health progress and share your
                 symptoms with your healthcare provider."
-              icon={<SymptomsIcon></SymptomsIcon>}
+              icon={<FaTasks color="#0056B3" size={70} />}
             />
             <LandingCard
-              title="Customizable Templates"
+              title="Pay with insurance"
               description="Tailor the planner to your specific needs with customizable templates for different health concerns or conditions"
-              icon={<CustomizableTemplateIcon></CustomizableTemplateIcon>}
+              icon={<LuHeartHandshake color="#0056B3" size={70} />}
             />
           </div>
         </article>
@@ -79,20 +91,25 @@ export default function LandingPage() {
         >
           <h2 className="text-5xl text-center font-bold">About Us</h2>
           <h3>
-            Welcome to [Your Company Name], Your Trusted Partner in Health
-            Management! At [Your Company Name], we are dedicated to
-            revolutionizing the way individuals engage with their healthcare
-            journey. Founded on the belief that proactive health management
-            leads to better outcomes, we have developed innovative tools and
-            resources to empower users in taking control of their well-being.
+            At BrightCare, we are transforming preventive healthcare by
+            connecting individuals with top-tier health professionals, including
+            personal trainers, nutritionists, and physical therapists. Our
+            platform leverages advanced, user-friendly tools to provide
+            personalized health plans, promoting proactive health management
+            tailored to each client{"'"}s unique needs. Our commitment to
+            prevention helps clients avoid serious health issues and enhance
+            their quality of life. At BrightCare, preventive healthcare is not
+            just a service—it is a partnership for a healthier future.
           </h3>
-          <h3 className="text-green-700">
-            Our Mission: Driven by a commitment to enhancing health literacy and
-            promoting proactive health behaviors, our mission is to provide
-            individuals with the tools and support they need to make informed
-            decisions about their health. We strive to simplify the complexities
-            of healthcare management, making it accessible, intuitive, and
-            personalized for every user.
+          <h2 className="text-5xl text-center font-bold">Our Vision</h2>
+
+          <h3>
+            At BrightCare, our vision is to revolutionize preventive healthcare
+            by connecting individuals with top health professionals and
+            equipping them with customized, easy-to-use monitoring tools. We aim
+            to make preventive care personal, proactive, and powerful, ensuring
+            that every client can avoid serious diseases and lead a healthier
+            life.
           </h3>
           <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl self-center">
             <LandingCard
