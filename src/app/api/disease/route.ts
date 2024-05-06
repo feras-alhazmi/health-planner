@@ -4,11 +4,13 @@ import { NextApiRequest } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-}
+export default {
+    config: {
+        api: {
+            bodyParser: true,
+        },
+    },
+};
 
 const prisma = PrismaServices.instance
 export async function GET(req: NextApiRequest) {
