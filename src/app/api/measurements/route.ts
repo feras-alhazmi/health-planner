@@ -7,7 +7,7 @@ import { measurementSchema } from '@/lib/joi/schema/schema';
 const prisma = PrismaServices.instance;
 
 // Unified API handler function
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export  async function GetAndPost(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'GET':
       return handleGetMeasurements(req, res);

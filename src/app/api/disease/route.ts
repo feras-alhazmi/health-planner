@@ -8,7 +8,7 @@ import { diseaseSchema } from '@/lib/joi/schema/schema'; // Assuming Joi is used
 const prisma = PrismaServices.instance;
 
 // API route handling both GET and POST requests
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export  async function GetAndPost(req: NextApiRequest, res: NextApiResponse) {
     switch (req.method) {
         case 'GET':
             return handleGet(req, res);
@@ -23,6 +23,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 // Handle GET requests
 async function handleGet(req: NextApiRequest, res: NextApiResponse) {
     try {
+        
         const diseases = await prisma.disease.findMany();
         res.json(diseases);
     } catch (error) {

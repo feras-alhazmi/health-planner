@@ -7,7 +7,7 @@ import { medicationSchema } from "@/lib/joi/schema/schema";
 const prisma = PrismaServices.instance;
 
 // Unified handler for all medication-related requests
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export  async function GetAndPost(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'GET':
       return handleGet(req, res);
