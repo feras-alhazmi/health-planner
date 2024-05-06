@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+  engineType = "binary"
 }
 
 datasource db {
@@ -72,7 +73,8 @@ enum Role {
 model MedicalHistory {
   Id          String    @id @default(uuid())
   historyName String
-  diseases    Disease[]
+  diseases    Disease[] @relation("MedicalHistoryDisease")
+  medicalHistoryDiseases MedicalHistoryDisease[]
   user        User      @relation(fields: [userId], references: [Id])
   userId      String    @unique
 }
@@ -80,7 +82,8 @@ model MedicalHistory {
 model Disease {
   Id          String           @id @default(uuid())
   diseaseName String
-  histories   MedicalHistory[]
+   medicalHistoryDiseases MedicalHistoryDisease[] 
+  histories   MedicalHistory[] @relation("MedicalHistoryDisease")
   description String?
 }
 
@@ -142,4 +145,12 @@ enum Status {
   Active
   Discontuned
   On_Hold
+}
+
+model MedicalHistoryDisease {
+  medicalHistoryId String
+  diseaseId        String
+  medicalHistory   MedicalHistory @relation(fields: [medicalHistoryId], references: [Id])
+  disease          Disease        @relation(fields: [diseaseId], references: [Id])
+  @@id([medicalHistoryId, diseaseId])
 }
