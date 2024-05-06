@@ -1,84 +1,79 @@
-import { measurementSchema } from '@/lib/joi/schema/schema';
+// Import necessary modules and schema
+import { NextApiRequest, NextApiResponse } from 'next';
 import PrismaServices from "../Prisma-Services";
-import { NextApiRequest } from 'next';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { measurementSchema } from '@/lib/joi/schema/schema';
 
 const prisma = PrismaServices.instance;
 
-export default {
-    config: {
-        api: {
-            bodyParser: true,
-        },
-    },
-};
-
-export async function GET(req: NextApiRequest) {
-  try {
-    // Fetch measurements from the database
-    const measurements = await prisma.userMeasurements.findMany({
-      include: {
-        measurements: {}
-      }
-    });
-
-    return NextResponse.json(measurements);
-  } catch (error) {
-    console.error('Error fetching measurements:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+// Unified API handler function
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  switch (req.method) {
+    case 'GET':
+      return handleGetMeasurements(req, res);
+    case 'POST':
+      return handlePostMeasurements(req, res);
+    default:
+      res.setHeader('Allow', ['GET', 'POST']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+// Handle GET requests
+async function handleGetMeasurements(req: NextApiRequest, res: NextApiResponse) {
   try {
-    let body = await req.json();
+    const measurements = await prisma.userMeasurements.findMany({
+      include: {
+        measurements: true, // Assuming this is correct according to your Prisma schema
+      }
+    });
+    res.json(measurements);
+  } catch (error) {
+    console.error('Error fetching measurements:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 
-    // Validate request body against schema
+// Handle POST requests
+async function handlePostMeasurements(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const body = JSON.parse(req.body); 
+
+   
     measurementSchema.parse(body);
 
-    // Extract necessary fields from the request body
-    const { name, measurementType, measurementValue, measurementUnit, measuredOn, userMeasurementsID, userId } = body;
+    const { userId, ...measurementData } = body;
 
-    if (!userId) return NextResponse.json({
-      error: 'missing user id',
-    }, { status: 400 })
-    let userMeasurement = await prisma.userMeasurements.findFirst({
-      where: {
-        userId: userId
-      }
-    })
-
-    if (!userMeasurement) {
-      userMeasurement = await prisma.userMeasurements.create({
-        data: {
-          userId,
-        }
-      })
+    if (!userId) {
+      return res.status(400).json({ error: 'Missing user ID' });
     }
-    let newUserMeasurementsID = userMeasurement.Id;
-    // Create new measurement in the database
+
+    // Find or create user measurements
+    const userMeasurement = await prisma.userMeasurements.upsert({
+      where: { userId: userId },
+      update: {},
+      create: { userId: userId },
+    });
+
+    // Create new measurement
     const newMeasurement = await prisma.measurements.create({
       data: {
-        name,
-        measurementType,
-        measurementValue,
-        measurementUnit,
-        measuredOn: new Date(measuredOn),
-        icon: '', // Add the missing 'icon' property
-        userMeasurementsID: newUserMeasurementsID,
+        ...measurementData,
+        userMeasurementsId: userMeasurement.Id, 
+        measuredOn: new Date(measurementData.measuredOn)
       },
     });
 
-    return NextResponse.json(newMeasurement);
+    res.status(201).json(newMeasurement);
   } catch (error) {
     console.error('Error creating measurement:', error);
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
+      res.status(400).json({
         error: 'Validation error',
-        details: error.errors.map((error) => error.path.join('.') + ': ' + error.message),
-      }, { status: 400 });
+        details: error.errors.map(e => `${e.path.join('.')} : ${e.message}`),
+      });
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
     }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

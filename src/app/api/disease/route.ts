@@ -34,7 +34,7 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
 // Handle POST requests
 async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const body = await req.json();
+        const body = await req.body;
         diseaseSchema.parse(body);
 
         const { name, medicalHistoryId } = body;
@@ -48,7 +48,7 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
             const history = await prisma.medicalHistoryDisease.create({
                 data: {
                     medicalHistoryId,
-                    diseaseId: newDisease.id,
+                    diseaseId: newDisease.Id,
                 },
             });
 

@@ -1,83 +1,72 @@
-import { medicationSchema } from "@/lib/joi/schema/schema";
+// Import necessary modules and utilities
+import { NextApiRequest, NextApiResponse } from 'next';
 import PrismaServices from "../Prisma-Services";
-import { NextApiRequest } from 'next';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from "zod";
+import { medicationSchema } from "@/lib/joi/schema/schema";
 
-const prisma = PrismaServices.instance
-export async function GET(req: NextApiRequest) {
+const prisma = PrismaServices.instance;
+
+// Unified handler for all medication-related requests
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  switch (req.method) {
+    case 'GET':
+      return handleGet(req, res);
+    case 'POST':
+      return handlePost(req, res);
+    case 'PUT':
+      return handlePut(req, res);
+    case 'DELETE':
+      return handleDelete(req, res);
+    default:
+      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+}
+
+async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   try {
     const medications = await prisma.medications.findMany();
-    return NextResponse.json(medications);
+    res.json(medications);
   } catch (error) {
     console.error('Error fetching medications:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 
-export async function POST(req: NextRequest) {
+async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   try {
-    let body = await req.json()
-    medicationSchema.parse(body)
-    const { medicationName, status, dosage, frequency, prescribingPhysician, startDate, endDate } = body;
-    const newMedication = await prisma.medications.create({
-      data: {
-        medicationName,
-        status,
-        dosage,
-        frequency,
-        prescribingPhysician,
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
-      },
-    });
-
-    return NextResponse.json(newMedication);
+    const body = JSON.parse(req.body); // Make sure to parse the JSON body
+    medicationSchema.parse(body);
+    const newMedication = await prisma.medications.create({ data: body });
+    res.status(201).json(newMedication);
   } catch (error) {
     console.error('Error creating medication:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 
-export async function PUT(req: NextApiRequest) {
-  const { id } = req.query;
+async function handlePut(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { medicationName, status, dosage, frequency, prescribingPhysician, startDate, endDate } = req.body;
-
+    const { id } = req.query;
+    const updateData = JSON.parse(req.body);
     const updatedMedication = await prisma.medications.update({
-      where: {
-        Id: id as string,
-      },
-      data: {
-        medicationName,
-        status,
-        dosage,
-        frequency,
-        prescribingPhysician,
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
-      },
+      where: { Id: id as string },
+      data: updateData
     });
-
-    return NextResponse.json(updatedMedication);
+    res.json(updatedMedication);
   } catch (error) {
     console.error('Error updating medication:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 
-export async function DELETE(req: NextApiRequest) {
-  const { id } = req.query;
+async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
   try {
-    await prisma.medications.delete({
-      where: {
-        Id: id as string,
-      },
-    });
-
-    return NextResponse.json({ message: 'Medication deleted' });
+    const { id } = req.query;
+    await prisma.medications.delete({ where: { Id: id as string } });
+    res.json({ message: 'Medication deleted' });
   } catch (error) {
     console.error('Error deleting medication:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
