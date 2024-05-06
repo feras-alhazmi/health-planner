@@ -3,23 +3,26 @@ import { medicalHistorySchema } from '@/lib/joi/schema/schema';
 import PrismaServices from "../Prisma-Services";
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
+import { NextResponse ,NextRequest} from 'next/server';
 
 // Initialize Prisma service instance
 let prisma = PrismaServices.instance;
 
-// Unified API handler function
-export  async function POST(req: NextApiRequest, res: NextApiResponse) {
-    switch (req.method) {
-        case 'GET':
-            return handleGet(req, res);
-        case 'POST':
-            return handlePost(req, res);
-        default:
-            res.setHeader('Allow', ['GET', 'POST']);
-            res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
-}
 
+
+export async function POST(request: NextRequest) {
+
+
+  const body = await request.json();
+  const validation =   medicalHistorySchema.safeParse(body);
+
+  if (!validation.success)
+    return NextResponse.json(validation.error.format(), { status: 400 });
+
+    const newMedicalHistory = await prisma.medicalHistory.create({ data: body });
+
+  return NextResponse.json(newMedicalHistory, { status: 201 });
+}
 // Route handler for fetching all medical histories
 async function handleGet(req: NextApiRequest, res: NextApiResponse) {
     try {
