@@ -7,19 +7,16 @@ import { medicationSchema } from "@/lib/joi/schema/schema";
 const prisma = PrismaServices.instance;
 
 // Unified handler for all medication-related requests
-export  async function GetAndPost(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'GET':
-      return handleGet(req, res);
-    case 'POST':
-      return handlePost(req, res);
-    case 'PUT':
-      return handlePut(req, res);
-    case 'DELETE':
-      return handleDelete(req, res);
-    default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+
+export  async function POST(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const body = JSON.parse(req.body); // Make sure to parse the JSON body
+    medicationSchema.parse(body);
+    const newMedication = await prisma.medications.create({ data: body });
+    res.status(201).json(newMedication);
+  } catch (error) {
+    console.error('Error creating medication:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -33,17 +30,7 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function handlePost(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const body = JSON.parse(req.body); // Make sure to parse the JSON body
-    medicationSchema.parse(body);
-    const newMedication = await prisma.medications.create({ data: body });
-    res.status(201).json(newMedication);
-  } catch (error) {
-    console.error('Error creating medication:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-}
+
 
 async function handlePut(req: NextApiRequest, res: NextApiResponse) {
   try {

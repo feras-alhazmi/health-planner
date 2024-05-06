@@ -8,7 +8,7 @@ import { z } from 'zod';
 let prisma = PrismaServices.instance;
 
 // Unified API handler function
-export  async function GetAndPost(req: NextApiRequest, res: NextApiResponse) {
+export  async function POST(req: NextApiRequest, res: NextApiResponse) {
     switch (req.method) {
         case 'GET':
             return handleGet(req, res);
