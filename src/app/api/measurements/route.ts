@@ -6,11 +6,13 @@ import { z } from 'zod';
 
 const prisma = PrismaServices.instance;
 
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-}
+export default {
+    config: {
+        api: {
+            bodyParser: true,
+        },
+    },
+};
 
 export async function GET(req: NextApiRequest) {
   try {
