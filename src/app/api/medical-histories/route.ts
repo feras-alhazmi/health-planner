@@ -6,11 +6,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 let prisma = PrismaServices.instance;
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-}
+export default {
+    config: {
+        api: {
+            bodyParser: true,
+        },
+    },
+};
 
 // Route handler for fetching all medical histories
 export async function GET(req: NextApiRequest) {
