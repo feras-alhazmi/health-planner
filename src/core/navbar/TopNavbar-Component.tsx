@@ -76,7 +76,6 @@ export default function TopMenu() {
               <Button
                 onClick={() => {
                   authStore.logout();
-
                   router.push("/");
                 }}
                 className="text-red-500"
