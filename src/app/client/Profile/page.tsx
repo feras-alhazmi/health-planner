@@ -53,7 +53,7 @@ const ProfilePage: React.FC = () => {
     const fetchData = async () => {
       const user = await getUser("111"); // Use the actual user ID needed
       //const userMedication = await getUserMedication("111");
-      let id = user?.Id ?? "";
+      let id = user?.userId ?? "";
       const userMedication = await getMedications(id);
       const userMedicalHistory = await getdisease(id);
       const now = new Date();
