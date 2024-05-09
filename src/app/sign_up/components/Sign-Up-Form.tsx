@@ -43,13 +43,12 @@ export default function SignUpForm() {
       <h1 className="text-lg font-bold">Create Account</h1>
       <Form
         onSubmit={async () => {
-          const authuser = await AuthenticationServices.register({
+          const authUser = await authStore.registerAuthUser({
             email: formData.getValues("email"),
             password: formData.getValues("password"),
             fullName: formData.getValues("fullName"),
           });
-          if (authuser) {
-            authStore.setAuthUser(authuser);
+          if (authUser) {
             router.push("/sign_in");
           }
         }}

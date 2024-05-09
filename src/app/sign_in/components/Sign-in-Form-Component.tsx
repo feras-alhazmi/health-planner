@@ -25,12 +25,11 @@ export default function SignInForm() {
       <h1 className=" text-lg font-bold">Login</h1>
       <Form
         onSubmit={async (submit) => {
-          const authuser = await AuthenticationServices.login({
+          const authUser = await authStore.login({
             email: formData.getValues("email"),
             password: formData.getValues("password"),
           });
-          if (authuser) {
-            authStore.setAuthUser(authuser);
+          if (authUser) {
             router.push("/participants");
           }
         }}
