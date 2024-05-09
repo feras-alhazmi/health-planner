@@ -13,16 +13,16 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useAuthStore } from "../auth/store/Auth-Store";
+import { useRouter } from "next/navigation";
 
 export default function TopMenu() {
   // const useLoadStore = useLoadingStore((state) => state);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   const authStore = useAuthStore((state) => state);
-  const createProductModal = useDisclosure();
-  const createCategoryModal = useDisclosure();
   const menuItems = ["Home", "Products", "Orders", "Log Out"];
-  console.log(authStore.authUser);
+  console.log(authStore?.authUser);
   return (
     <Navbar
       className="text-white bg-blue border-divider"
@@ -73,7 +73,15 @@ export default function TopMenu() {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button className="text-red-500" variant="faded">
+              <Button
+                onClick={() => {
+                  authStore.logout();
+
+                  router.push("/");
+                }}
+                className="text-red-500"
+                variant="faded"
+              >
                 Logout
               </Button>
             </NavbarItem>

@@ -5,6 +5,7 @@ import AuthenticationServices, {
   LoginInterface,
 } from "../services/Auth-Services";
 import { produce } from "immer";
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 const initialState = {
   authUser: undefined,
@@ -29,34 +30,40 @@ type Action = {
   logout: () => void;
 };
 
-export const useAuthStore = create<State & Action>((set, get) => ({
-  ...initialState,
+export const useAuthStore = create(
+  persist<State & Action>(
+    (set, get) => ({
+        ...initialState,
+      
+        registerAuthUser: async (user) => {
+          const data = await AuthenticationServices.register(user);
+          if (data) {
+            set({ ...get(), authUser: data });
+          }
+          return data;
+        },
+        login: async (user) => {
+          const data = await AuthenticationServices.login(user);
+          if (data) {
+            set({ ...get(), authUser: data });
+          }
+          return data;
+        },
+      
+        logout: () => set(initialState),
+        setAuthUser: (authUser) => {
+          set(
+            produce((state) => {
+              state.authUser = authUser;
+              return state;
+            })
+          );
+        },
+      }),
+    {
+      name: "auth-storage",
+      getStorage: () => localStorage 
+    }
+  )
+);
 
-  registerAuthUser: async (user) => {
-    const data = await AuthenticationServices.register(user);
-    if (data) {
-      set({ ...get(), authUser: data });
-    }
-    return data;
-  },
-  login: async (user) => {
-    const data = await AuthenticationServices.login(user);
-    if (data) {
-      set({ ...get(), authUser: data });
-    }
-    return data;
-  },
-  // registerUserData: (user) => {
-  //   set({ ...get(), userData: user });
-  //   return user;
-  // },
-  logout: () => set(initialState),
-  setAuthUser: (authUser) => {
-    set(
-      produce((state) => {
-        state.authUser = authUser;
-        return state;
-      })
-    );
-  },
-}));

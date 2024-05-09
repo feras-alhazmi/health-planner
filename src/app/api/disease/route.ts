@@ -17,10 +17,10 @@ export async function POST(request: NextRequest) {
     if (!validation.success)
       return NextResponse.json(validation.error.format(), { status: 400 });
   
-      const { name, medicalHistoryId } = body;
+      const { diseaseName, medicalHistoryId } = body;
       const newDisease = await prisma.disease.create({
           data: {
-              diseaseName: name,
+              diseaseName: diseaseName,
           },
       });
 
@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
               },
           });
   
-    return NextResponse.json(newDisease, { status: 201 });
+ 
   }
+  return NextResponse.json(newDisease, { status: 201 });
 
 }

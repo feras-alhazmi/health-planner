@@ -3,30 +3,15 @@ import React from 'react';
 import { FaPhone, FaEnvelope, FaUserMd } from 'react-icons/fa';
 import { BiChat } from 'react-icons/bi';
 import Image from 'next/image'
+import { ContactInfoData } from '../tempUser';
 
 
 type ContactInformationProps = {
-  name: string;
-  age: number;
-  gender: string;
-  address: string;
-  job: string;
-  phone: string;
-  email: string;
-  diagnosis: string;
-  healthBarriers: string[];
+  contactInfoData: ContactInfoData;
 };
 
 const ContactInformation: React.FC<ContactInformationProps> = ({
-  name,
-  age,
-  gender,
-  address,
-  job,
-  phone,
-  email,
-  diagnosis,
-  healthBarriers,
+  contactInfoData
 }) => {
   return (
     <div className="contactInfoContainer bg-white p-4 rounded-lg shadow space-y-4">
@@ -37,7 +22,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
           alt={`${name}'s profile`}
         />
         <div>
-          <h3 className="text-lg font-semibold">{name}</h3>
+          <h3 className="text-lg font-semibold">{contactInfoData.firstname + " " + contactInfoData.lastname}</h3>
           <p className="text-sm text-gray-500">Chat with the patient</p>
         </div>
         <BiChat className="h-6 w-6 text-blue-500" />
@@ -45,28 +30,28 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
       <div className="space-y-1">
         <div className="flex items-center">
           <FaUserMd className="text-gray-400" />
-          <p className="ml-2 text-sm">{`${gender}, ${age} (${new Date().getFullYear() - age})`}</p>
+          <p className="ml-2 text-sm">{`${contactInfoData.gender}, ${contactInfoData.dateOfBirth} `}</p>
         </div>
-        <p className="text-sm">{address}</p>
-        <p className="text-sm">{job}</p>
+        <p className="text-sm">{contactInfoData.address}</p>
+        <p className="text-sm">{contactInfoData.role}</p>
       </div>
       <div className="space-y-1">
         <div className="flex items-center">
           <FaPhone className="text-gray-400" />
-          <p className="ml-2 text-sm">{phone}</p>
+          <p className="ml-2 text-sm">{contactInfoData.phone}</p>
         </div>
         <div className="flex items-center">
           <FaEnvelope className="text-gray-400" />
-          <p className="ml-2 text-sm">{email}</p>
+          <p className="ml-2 text-sm">{contactInfoData.email}</p>
         </div>
       </div>
       <div className="space-y-1">
         <h4 className="font-semibold">Own Diagnosis</h4>
-        <p className="text-sm">{diagnosis}</p>
+        <p className="text-sm">{contactInfoData.diagnosis}</p>
       </div>
       <div className="space-y-1">
         <h4 className="font-semibold">Health Barriers</h4>
-        {healthBarriers.map((barrier, index) => (
+        {contactInfoData.healthBarriers.map((barrier, index) => (
           <p key={index} className="text-sm">{barrier}</p>
         ))}
       </div>

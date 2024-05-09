@@ -1,4 +1,4 @@
-// pages/profile.tsx
+"use client";
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Layout from "../Profile/componentsProfile/layout";
@@ -7,8 +7,8 @@ import Timeline from "../Profile/componentsProfile/Timeline";
 import MedicalHistory from "../Profile/componentsProfile/MedicalHistory";
 import ContactInfo from "../Profile/componentsProfile/ContactInfo";
 import CalendarComponent from "./componentsProfile/CalendarComponent";
-import styles from './Profile.module.css'; // Assume this is where you keep your CSS
-import { TempUser } from './tempUser'; // adjust the import path as needed
+import styles from "./Profile.module.css"; // Assume this is where you keep your CSS
+import { TempUser } from "./tempUser"; // adjust the import path as needed
 import prisma from "@/app/prismaGenerate";
 
 import MedicationTable, {
@@ -30,32 +30,42 @@ async function createUserWithDetails() {
       diagnosis: "Type 2 Diabetes",
       address: "1234 Example St, Example City",
       healthBarriers: ["Insulin resistance", "Fear of needles"],
-      email: "john.doe@example.com",
+      email: "john.doe23@example.com",
       role: Role.PATIENT
     },
-    statCardsData: [{ title: "Patients", value: "92", icon: "👥" },],
+    statCardsData: [
+      { title: "Patients", value: "92", icon: "👥" },
+      { title: "Weight", value: "80 kg", icon: "⚖️" },
+      { title: "Height", value: "180 cm", icon: "📏" },
+      { title: "Blood Type", value: "O+", icon: "💉" }
+    ],
     UserMedications: {
       medications: [
         {
-          medicationName: "Aspirin",
+          medicationName: "Metformin",
           status: Status.Active,
-          dosage: "100mg",
-          frequency: "Once daily",
+          dosage: "500 mg",
+          frequency: "Twice a day",
           prescribingPhysician: "Dr. Smith",
-          startDate: new Date(),
-          endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-        },
+          startDate: new Date("2023-01-01"),
+          endDate: new Date("2023-12-31")
+        }
       ]
     },
-
     medicalHistory: {
-      historyName: "test",
+      historyName: "General Checkup",
       diseases: [
-        { diseaseName: "string", description: "string", },
+        {
+          diseaseName: "Hypertension",
+          description: "High blood pressure, controlled through medication."
+        }
       ]
     },
-    events: { date: "string", name: "string" }
-  }
+    events: {
+      date: "2023-05-01",
+      name: "Annual Physical Exam"
+    }
+  };
   ProfileHandler.postUser(tempUser);
   return tempUser;
 }
@@ -154,31 +164,30 @@ async function getUser(_id: string) {
 }
 async function getUserMedication(_id: string) {
   return await prisma.userMedications.findUnique({
-    where: { userId: _id }
+    where: { userId: _id },
   });
 }
 async function getMedicalHistory(_id: string) {
   return await prisma.medicalHistory.findUnique({
-    where: { userId: _id }
+    where: { userId: _id },
   });
 }
 async function getMedications(_id: string) {
   return await prisma.medications.findMany({
-    where: { userMedications: { some: { userId: _id } } }
+    where: { userMedications: { some: { userId: _id } } },
   });
 }
 async function getdisease(_id: string) {
   return await prisma.disease.findMany({
-    where: { histories: { some: { userId: _id } } }
+    where: { histories: { some: { userId: _id } } },
   });
 }
 function AgeCalc(dateOfBirth: Date) {
   return 10;
 }
 
-
 const ProfilePage: React.FC = () => {
-  const [userData, setUserData] = useState<TempUser | null>(null);
+  //const [userData, setUserData] = useState<TempUser | null>(null);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -247,7 +256,33 @@ const ProfilePage: React.FC = () => {
   // if (!userData) {
   //   return <div>Loading...</div>;
   // }
-  const tempuser = createUserWithDetails();
+  createUserWithDetails();
+  const [user, setUser] = useState<TempUser | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user1 = await ProfileHandler.getUserByEmail("john.doe23@example.com");
+        console.log("User data:", user1);
+        setUser(user1);
+      } catch (error) {
+        console.error("Failed to fetch user:");
+        //setError(error);
+      }
+    }
+
+    fetchUser();
+  }, []); // Empty dependency array means this effect will only run once after the component mounts.
+
+  //  if (error) return <div>Error: {error}</div>;
+  if (!user) return <div>Loading...</div>;
+  const statCards = [
+    { title: "Patients", value: "92", icon: "👥" },
+    { title: "Weight", value: "92 kg", icon: "⚖️" },
+    { title: "Height", value: "182 cm", icon: "📏" },
+    { title: "Blood Type", value: "O+", icon: "💉" },
+  ];
   return (
     <>
       <Head>
@@ -256,7 +291,7 @@ const ProfilePage: React.FC = () => {
       <div className={styles.gridContainer}>
         {/* Stat Cards */}
         <div className={styles.statCardsContainer}>
-          {userData.statCardsData.map((card, index) => (
+          {statCards.map((card, index) => (
             <div key={index} className={styles.statCard}>
               <StatCard {...card} />
             </div>
@@ -265,7 +300,7 @@ const ProfilePage: React.FC = () => {
 
         {/* Timeline */}
         <div className={styles.timelineContainer}>
-          <Timeline entries={userData.timelineData} />
+          <Timeline events={[user.events]} />
         </div>
 
         {/* Calendar */}
@@ -273,20 +308,19 @@ const ProfilePage: React.FC = () => {
           <CalendarComponent />
         </div>
 
-
         {/* Medical History */}
         <div className={styles.medicalHistoryContainer}>
-          <MedicalHistory entries={userData.medicalHistoryEntries} />
+          <MedicalHistory history={user.medicalHistory} />
         </div>
 
         {/* Contact Info */}
         <div className={styles.contactInfoContainer}>
-          <ContactInfo {...userData.contactInfoData} />
+          <ContactInfo contactInfoData={user.contactInfoData} />
         </div>
 
         {/* Medication Table */}
         <div className={styles.medicationTableContainer}>
-          <MedicationTable medications={userData.medicationsData} />
+          <MedicationTable userMedications={user.UserMedications} />
         </div>
       </div>
     </>
@@ -294,5 +328,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-
-

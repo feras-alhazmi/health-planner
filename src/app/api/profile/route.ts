@@ -5,6 +5,7 @@ import { z } from "zod";
 import { medicationSchema } from "@/lib/joi/schema/schema";
 import { TempUser } from "@/app/client/Profile/tempUser";
 import { Language, Status } from "@prisma/client";
+import { use } from "react";
 
 const prisma = PrismaServices.instance;
 
@@ -98,4 +99,83 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(user, { status: 201 });
+}
+export async function GET(request: NextRequest) {
+    // Extract the medical history ID from the URL
+    const email: string = await request.json();
+
+    try {
+        // Fetch the medical history with the specified ID from the database
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email
+            },
+            include: {
+                medicalHistory: true,  // Assuming the relation is directly under User
+                userMedications: {
+                    include: {
+                        medications: true  // This nested include is assuming you want to get the details of the medications under userMedications
+                    }
+                },
+                Event: true  // Assuming the relation is directly under User
+            }
+        });
+
+
+        // Send success response with the fetched medical history
+        if (user && user.userMedications && user.medicalHistory && user.Event) {
+            const tempUser: TempUser = {
+                contactInfoData: {
+                    firstname: user.firstname,
+                    lastname: user.lastname ?? "lastname",
+                    phone: user.phone,
+                    dateOfBirth: user.dateOfBirth,
+                    bio: user.bio ?? "bio",
+                    gender: user.gender,
+                    diagnosis: user.diagnosis ?? "diagnosis",
+                    address: user.address,
+                    healthBarriers: user.healthBarriers,
+                    email: user.email,
+                    role: user.roles
+                },
+                statCardsData: [
+                    { title: "Patients", value: "92", icon: "👥" },
+                    { title: "Weight", value: "80 kg", icon: "⚖️" },
+                    { title: "Height", value: "180 cm", icon: "📏" },
+                    { title: "Blood Type", value: "O+", icon: "💉" }
+                ],
+                UserMedications: {
+                    medications: user.userMedications.medications.map(m => ({
+                        medicationName: m.medicationName,
+                        status: m.status,
+                        dosage: m.dosage,
+                        frequency: m.frequency,
+                        prescribingPhysician: m.prescribingPhysician,
+                        startDate: m.startDate,
+                        endDate: new Date() //m.endDate ?? null
+                    }))
+                },
+                medicalHistory: {
+                    historyName: user.medicalHistory.historyName,
+                    diseases: //user.medicalHistory.Id.map(m => ({
+                        [{
+                            diseaseName: "Hypertension",
+                            description: "High blood pressure, controlled through medication."
+                        }]
+                    // }))
+
+
+                },
+                events: {
+                    date: user.Event.date.toISOString(),
+                    name: user.Event.name
+                }
+            };
+        }
+        return NextResponse.json(user);
+    } catch (error) {
+        // Handle database errors
+        console.error('Error fetching user:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    }
 }

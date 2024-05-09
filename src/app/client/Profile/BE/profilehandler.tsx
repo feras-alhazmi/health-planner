@@ -21,4 +21,22 @@ export default class ProfileHandler {
                 return undefined;
             });
     }
+
+    static async getUserByEmail(email: string) {
+        return await fetch("/api/profile", {
+            method: "GET",
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return await res.json();
+                } else {
+                    const errorData = await res.json();
+                    throw new Error(errorData.error || 'Failed to fetch user');
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                throw error;
+            });
+    }
 }

@@ -3,28 +3,22 @@ import { Avatar, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
 import React from 'react';
+import { Medications, UserMedications } from '../tempUser';
+import { Status } from '@prisma/client';
 
 // Define the status types to ensure correct indexing
 export type StatusKey = 'Active' | 'Discontinued' | 'On Hold';
 
 // Define the shape of medication data
-type Medication = {
-  name: string;
-  status: string;
-  dosage: string;
-  frequency: string;
-  prescribingPhysician: string;
-  startDate: Date;
-  endDate: Date;
-};
+
 let statusColor: StatusKey;
 
 // Define the shape of the component's props
 type MedicationTableProps = {
-  medications: Medication[];
+  userMedications: UserMedications;
 };
 
-const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
+const MedicationTable: React.FC<MedicationTableProps> = ({ userMedications }) => {
   // Map status keys to corresponding style classes
   const statusStyles: Record<StatusKey, string> = {
     'Active': 'bg-green-100 text-green-800',
@@ -71,17 +65,17 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {medications.map((medication, index) => (
+          {userMedications.medications.map((medication, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.name}
+                {medication.medicationName}
               </td>
               {(() => {
-                if (medication.status === 'Active') {
+                if (medication.status === Status.Active) {
                   statusColor = "Active";
-                } else if (medication.status === 'Discontinued') {
+                } else if (medication.status === Status.Discontuned) {
                   statusColor = "Discontinued";;
-                } else if (medication.status === 'On Hold') {
+                } else if (medication.status === Status.On_Hold) {
                   statusColor = "On Hold";;
                 } else {
                   return <span ></span>;

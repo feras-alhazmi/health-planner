@@ -11,7 +11,7 @@ export interface TempUser {
 
 }
 
-interface ContactInfoData {
+export interface ContactInfoData {
     firstname: string;
     lastname: string;
     phone: string;
@@ -25,17 +25,17 @@ interface ContactInfoData {
     role: Role;
 }
 
-interface MedicalHistory {
+export interface MedicalHistory {
     historyName: string;
     diseases: Disease[];
 }
 
-interface Disease {
+export interface Disease {
     diseaseName: string;
     description: string;
 }
 
-interface Medications {
+export interface Medications {
     medicationName: string;
     status: Status;
     dosage: string;
@@ -45,28 +45,15 @@ interface Medications {
     endDate: Date;
 }
 
-interface UserMedications {
+export interface UserMedications {
     medications: Medications[];
 }
-interface StatCardsData {
+export interface StatCardsData {
     title: string;
     value: string;
     icon: string;
 }
-interface Event {
+export interface Event {
     date: string;
     name: string;
-}
-interface MedicationsData {
-    name: string;
-    status: string;
-    dosage: string;
-    frequency: string;
-    prescribingPhysician: string;
-    startDate: Date;
-    endDate: Date;
-}
-interface MedicalHistoryEntries {
-    condition: string;
-    details: string;
 }
