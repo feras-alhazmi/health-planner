@@ -30,16 +30,18 @@ export async function POST(req: NextRequest) {
         salt: salt,
       },
     });
-    const userresult = await prisma.user.create({
-
+    const userResult = await prisma.user.create({
       data: {
+      userId:result.Id,
       email:email,
       fullName:fullName,
       address:"",
-    authUserId:result.Id
       },
+      
     })
-    return new NextResponse(JSON.stringify({ message: {result,userresult} }), {
+
+    
+    return new NextResponse(JSON.stringify({ message: {result,userResult} }), {
       status: 200,
       headers: { "content-type": "application/json" },
     });

@@ -18,15 +18,13 @@ type State = {
 };
 
 type Action = {
-  setAuthUser: (authUser: AuthUser) => void;
 
   registerAuthUser: ({
     email,
-
     password,
+    fullName
   }: RegisterInterface) => Promise<AuthUser | undefined>;
   login: ({ email, password }: LoginInterface) => Promise<AuthUser | undefined>;
-  // registerUserData: (user: User) => Promise<User | undefined>;
   logout: () => void;
 };
 
@@ -37,28 +35,24 @@ export const useAuthStore = create(
       
         registerAuthUser: async (user) => {
           const data = await AuthenticationServices.register(user);
-          if (data) {
-            set({ ...get(), authUser: data });
-          }
           return data;
         },
         login: async (user) => {
           const data = await AuthenticationServices.login(user);
           if (data) {
-            set({ ...get(), authUser: data });
+            const userData = await AuthenticationServices.getUser(data.Id);
+            console.log(userData?.fullName+"this is working and assigned to user data")
+
+            if (userData) {
+              set({ ...get(), authUser: data,userData: userData});
+            }
+            set({ ...get(), authUser: data, });
           }
           return data;
         },
       
         logout: () => set(initialState),
-        setAuthUser: (authUser) => {
-          set(
-            produce((state) => {
-              state.authUser = authUser;
-              return state;
-            })
-          );
-        },
+     
       }),
     {
       name: "auth-storage",

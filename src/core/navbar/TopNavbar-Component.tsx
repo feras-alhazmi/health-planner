@@ -22,7 +22,7 @@ export default function TopMenu() {
 
   const authStore = useAuthStore((state) => state);
   const menuItems = ["Home", "Products", "Orders", "Log Out"];
-  console.log(authStore?.authUser);
+  console.log(authStore?.userData);
   return (
     <Navbar
       className="text-white bg-blue border-divider"
@@ -76,7 +76,6 @@ export default function TopMenu() {
               <Button
                 onClick={() => {
                   authStore.logout();
-
                   router.push("/");
                 }}
                 className="text-red-500"

@@ -25,7 +25,7 @@ model AuthUser {
 }
 
 model User {
-  Id             String    @id @default(uuid())
+  userId         String    @unique
   fullName       String?
   lastname       String?
   phone          String?
@@ -43,8 +43,7 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   lastActiveAt   DateTime?
-  authUser       AuthUser? @relation(fields: [authUserId], references: [Id])
-  authUserId     String?   @unique
+  user           AuthUser  @relation(fields: [userId], references: [Id])
 
   email            String            @unique
   medicalHistory   MedicalHistory?
@@ -79,7 +78,7 @@ model MedicalHistory {
   historyName            String
   diseases               Disease[]               @relation("MedicalHistoryDisease")
   medicalHistoryDiseases MedicalHistoryDisease[]
-  user                   User                    @relation(fields: [userId], references: [Id])
+  user                   User                    @relation(fields: [userId], references: [userId])
   userId                 String                  @unique
 }
 
@@ -105,7 +104,7 @@ model Medications {
 
 model UserMedications {
   Id          String        @id @default(uuid())
-  user        User          @relation(fields: [userId], references: [Id])
+  user        User          @relation(fields: [userId], references: [userId])
   userId      String        @unique
   medications Medications[]
 }
@@ -125,14 +124,14 @@ model Measurements {
 
 model UserMeasurements {
   Id           String         @id @default(uuid())
-  user         User           @relation(fields: [userId], references: [Id])
+  user         User           @relation(fields: [userId], references: [userId])
   userId       String         @unique
   measurements Measurements[]
 }
 
 model Event {
   Id          String   @id @default(uuid())
-  user        User     @relation(fields: [userId], references: [Id])
+  user        User     @relation(fields: [userId], references: [userId])
   userId      String   @unique
   date        DateTime
   name        String
@@ -171,7 +170,7 @@ model Plan {
   sort     Json // Storing JSON data type for sorting details
 
   // Define the relationship to the User model
-  owner User @relation(fields: [owner_id], references: [Id])
+  owner User @relation(fields: [owner_id], references: [userId])
 
   // Assuming we might have related tasks or events
   tasks  Task[]
@@ -205,7 +204,7 @@ model Task {
   category_id String?
   plan_id     String?
 
-  owner      User         @relation(fields: [owner_id], references: [Id])
+  owner      User         @relation(fields: [owner_id], references: [userId])
   category   Category?    @relation(fields: [category_id], references: [Id])
   plan       Plan?        @relation(fields: [plan_id], references: [plan_id])
   TaskEditor TaskEditor[]
@@ -224,7 +223,7 @@ model TaskEditor {
   user_id String
 
   task Task @relation(fields: [task_id], references: [task_id])
-  user User @relation(fields: [user_id], references: [Id])
+  user User @relation(fields: [user_id], references: [userId])
 
   @@id([task_id, user_id])
 }
@@ -234,7 +233,7 @@ model PlanEditor {
   user_id String
 
   plan Plan @relation(fields: [plan_id], references: [plan_id])
-  user User @relation(fields: [user_id], references: [Id])
+  user User @relation(fields: [user_id], references: [userId])
 
   @@id([plan_id, user_id])
 }
