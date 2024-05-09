@@ -5,10 +5,12 @@ import { useModalStore } from "@/core/modal/store/Modal-Store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Divider, Input } from "@nextui-org/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Form, useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function SignInForm() {
+  const router = useRouter();
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8).max(100),
@@ -29,6 +31,7 @@ export default function SignInForm() {
           });
           if (authuser) {
             authStore.setAuthUser(authuser);
+            router.push("/participants");
           }
         }}
         className="flex flex-col gap-3"

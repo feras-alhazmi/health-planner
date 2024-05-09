@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
               },
           });
   
-    return NextResponse.json(newDisease, { status: 201 });
+ 
   }
+  return NextResponse.json(newDisease, { status: 201 });
 
 }

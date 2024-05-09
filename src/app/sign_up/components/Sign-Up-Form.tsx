@@ -6,12 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Divider, Input } from "@nextui-org/react";
 import { AuthUser } from "@prisma/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Form, useForm } from "react-hook-form";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { z } from "zod";
 
 export default function SignUpForm() {
+  const router = useRouter();
   const authStore = useAuthStore((state) => state);
 
   const passwordSchema = z.string().min(8).max(100);
@@ -44,9 +46,11 @@ export default function SignUpForm() {
           const authuser = await AuthenticationServices.register({
             email: formData.getValues("email"),
             password: formData.getValues("password"),
+            fullName: formData.getValues("fullName"),
           });
           if (authuser) {
             authStore.setAuthUser(authuser);
+            router.push("/sign_in");
           }
         }}
         className="gap-3 flex flex-col"

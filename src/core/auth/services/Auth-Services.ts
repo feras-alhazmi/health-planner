@@ -3,18 +3,20 @@ import { AuthUser } from "@prisma/client";
 export interface RegisterInterface {
   email: string;
   password: string;
+  fullName?:string
 }
 export interface LoginInterface {
   email: string;
   password: string;
+  
 }
 
 export default class AuthenticationServices {
   private constructor() {}
-  static async register({ email, password }: RegisterInterface) {
+  static async register({ email, password,fullName }: RegisterInterface) {
     return await fetch("/api/register", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password,fullName}),
     })
       .then(async (res) => {
         if (res.status == 200) {
