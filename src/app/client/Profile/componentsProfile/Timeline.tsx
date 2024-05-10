@@ -57,7 +57,7 @@ const TimelineCard: React.FC<Entry & { index: number }> = ({ event, index }) => 
           }}
           color="text.secondary"
         >
-          <Typography variant="body2">{event.date.toISOString()}</Typography>
+          <Typography variant="body2">{new Date(event.date).toISOString()}</Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineDot sx={{ boxShadow: 'none' }} />

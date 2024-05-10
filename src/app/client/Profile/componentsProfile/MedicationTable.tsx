@@ -113,10 +113,10 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
                 {medication.prescribingPhysician}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.startDate.toISOString()}
+                {new Date(medication.startDate).toISOString()}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.endDate?.toISOString() || '-'}
+                {medication.endDate ? new Date(medication.endDate).toISOString() : '-'}
               </td>
             </tr>
           ))}

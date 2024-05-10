@@ -100,7 +100,7 @@ const ProfilePage: React.FC = () => {
 
         {/* Timeline */}
         <div className={styles.timelineContainer}>
-          {/* <Timeline entries={events} /> */}
+          <Timeline entries={events} />
         </div>
 
         {/* Calendar */}
@@ -110,17 +110,17 @@ const ProfilePage: React.FC = () => {
 
         {/* Medical History */}
         <div className={styles.medicalHistoryContainer}>
-          {/* <_MedicalHistory entries={deseases} /> */}
+          <_MedicalHistory entries={deseases} />
         </div>
 
         {/* Contact Info */}
         <div className={styles.contactInfoContainer}>
-          {/* <ContactInfo contactinfo={contactInfo} /> */}
+          <ContactInfo contactinfo={contactInfo} />
         </div>
 
         {/* Medication Table */}
         <div className={styles.medicationTableContainer}>
-          {/* <MedicationTable medications={medications} /> */}
+          <MedicationTable medications={medications} />
         </div>
       </div>
     </>

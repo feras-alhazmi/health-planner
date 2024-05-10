@@ -15,60 +15,60 @@ export async function POST(request: NextRequest) {
     const { Id }: GetUserP = await request.json();
     try {
         //remove code
-        await prisma.medicalHistory.create({
-            data: {
-                historyName: 'Routine Checkup',
-                userId: Id,
-                diseases: {
-                    create: [{
-                        diseaseName: 'Hypertension',
-                        description: 'Manage blood pressure levels',
-                    }]
-                }
-            }
-        });
+        // await prisma.medicalHistory.create({
+        //     data: {
+        //         historyName: 'Routine Checkup',
+        //         userId: Id,
+        //         diseases: {
+        //             create: [{
+        //                 diseaseName: 'Hypertension',
+        //                 description: 'Manage blood pressure levels',
+        //             }]
+        //         }
+        //     }
+        // });
 
-        await prisma.userMedications.create({
-            data: {
-                userId: Id,
-                medications: {
-                    create: [{
-                        medicationName: 'Aspirin',
-                        status: 'Active',
-                        dosage: '100mg',
-                        frequency: 'Daily',
-                        prescribingPhysician: 'Dr. Jane Smith',
-                        startDate: new Date(),
-                        endDate: new Date()
-                    }]
-                }
-            }
-        });
+        // await prisma.userMedications.create({
+        //     data: {
+        //         userId: Id,
+        //         medications: {
+        //             create: [{
+        //                 medicationName: 'Aspirin',
+        //                 status: 'Active',
+        //                 dosage: '100mg',
+        //                 frequency: 'Daily',
+        //                 prescribingPhysician: 'Dr. Jane Smith',
+        //                 startDate: new Date(),
+        //                 endDate: new Date()
+        //             }]
+        //         }
+        //     }
+        // });
 
-        await prisma.event.create({
-            data: {
-                name: 'Follow-up Appointment',
-                date: new Date(),
-                userId: Id
-            }
-        });
+        // await prisma.event.create({
+        //     data: {
+        //         name: 'Follow-up Appointment',
+        //         date: new Date(),
+        //         userId: Id
+        //     }
+        // });
 
-        const userMeasurement = await prisma.userMeasurements.create({
-            data: {
-                userId: Id,
+        // const userMeasurement = await prisma.userMeasurements.create({
+        //     data: {
+        //         userId: Id,
 
-                measurements: {
-                    create: {
-                        name: "BMI",
-                        icon: "🩸",
-                        measurementType: MeasurementType.BMI,
-                        measurementValue: 100,
-                        measurementUnit: "%",
-                        measuredOn: new Date(),
-                    }
-                }
-            }
-        });
+        //         measurements: {
+        //             create: {
+        //                 name: "BMI",
+        //                 icon: "🩸",
+        //                 measurementType: MeasurementType.BMI,
+        //                 measurementValue: 100,
+        //                 measurementUnit: "%",
+        //                 measuredOn: new Date(),
+        //             }
+        //         }
+        //     }
+        // });
         //remove code
 
 
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
             where: {
                 histories: {
                     some: {
-                        userId: Id // Replace 'specificUserId' with the actual user ID you're looking for
+                        userId: "21d1ca17-572d-425e-9751-c29057933992"//Id // Replace 'specificUserId' with the actual user ID you're looking for
                     }
                 }
             }

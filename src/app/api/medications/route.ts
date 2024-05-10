@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       where: {
         userMedications: {
           some: {
-            userId: Id // Replace 'specificUserId' with the actual user ID you're looking for
+            userId: "21d1ca17-572d-425e-9751-c29057933992"//Id // Replace 'specificUserId' with the actual user ID you're looking for
           }
         }
       }
