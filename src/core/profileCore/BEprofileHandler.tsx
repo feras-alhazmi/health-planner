@@ -11,7 +11,7 @@ export default class ProfileHandler {
     static async getDiseases(Id: GetUserP): Promise<Disease[]> {
         return await fetch("/api/disease", {
             method: "POST",
-            body: JSON.stringify({ Id }),
+            body: JSON.stringify(Id),
         })
             .then(async (res) => {
                 if (res.status == 200) {
@@ -29,7 +29,7 @@ export default class ProfileHandler {
     static async getMedications(Id: GetUserP): Promise<Medications[]> {
         return await fetch("/api/medications", {
             method: "POST",
-            body: JSON.stringify({ Id }),
+            body: JSON.stringify(Id),
         })
             .then(async (res) => {
                 if (res.status == 200) {
@@ -47,7 +47,7 @@ export default class ProfileHandler {
     static async getEvents(Id: GetUserP): Promise<Event[]> {
         return await fetch("/api/events", {
             method: "POST",
-            body: JSON.stringify({ Id }),
+            body: JSON.stringify(Id),
 
         })
             .then(async (res) => {

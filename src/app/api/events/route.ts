@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     try {
         const events = await prisma.event.findMany({
             where: {
-                userId: "21d1ca17-572d-425e-9751-c29057933992"//Id
+                userId: Id
             }
 
         })
