@@ -3,17 +3,18 @@ import PrismaServices from "../Prisma-Services";
 import { z } from 'zod';
 import { diseaseSchema } from '@/lib/joi/schema/schema'; // Assuming Joi is used correctly
 import { NextRequest, NextResponse } from 'next/server';
+import { GetUserP } from '@/core/profileCore/BEprofileHandler';
 
 // Initialize Prisma service instance
 const prisma = PrismaServices.instance;
 
 export async function POST(request: NextRequest) {
 
-    const userId = await request.json();
+    const { Id }: GetUserP = await request.json();
     try {
         const events = await prisma.event.findMany({
             where: {
-                userId: userId
+                userId: Id
             }
 
         })

@@ -1,11 +1,17 @@
 import { Disease, Event, MedicalHistory, Medications, UserMedications } from "@prisma/client";
 
+
+export interface GetUserP {
+    Id: string
+}
 export default class ProfileHandler {
     private constructor() { }
 
-    static async getDiseases(userId: string): Promise<Disease[]> {
+
+    static async getDiseases(Id: GetUserP): Promise<Disease[]> {
         return await fetch("/api/disease", {
             method: "POST",
+            body: JSON.stringify({ Id }),
         })
             .then(async (res) => {
                 if (res.status == 200) {
@@ -20,9 +26,10 @@ export default class ProfileHandler {
             });
     }
 
-    static async getMedications(userId: string): Promise<Medications[]> {
+    static async getMedications(Id: GetUserP): Promise<Medications[]> {
         return await fetch("/api/medications", {
             method: "POST",
+            body: JSON.stringify({ Id }),
         })
             .then(async (res) => {
                 if (res.status == 200) {
@@ -37,9 +44,11 @@ export default class ProfileHandler {
             });
     }
 
-    static async getEvents(userId: string): Promise<Event[]> {
+    static async getEvents(Id: GetUserP): Promise<Event[]> {
         return await fetch("/api/events", {
             method: "POST",
+            body: JSON.stringify({ Id }),
+
         })
             .then(async (res) => {
                 if (res.status == 200) {

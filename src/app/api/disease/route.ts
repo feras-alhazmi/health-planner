@@ -5,19 +5,20 @@ import { z } from 'zod';
 import { diseaseSchema } from '@/lib/joi/schema/schema'; // Assuming Joi is used correctly
 import { NextRequest, NextResponse } from 'next/server';
 import { MeasurementType } from '@prisma/client';
+import { GetUserP } from '@/core/profileCore/BEprofileHandler';
 
 // Initialize Prisma service instance
 const prisma = PrismaServices.instance;
 
 export async function POST(request: NextRequest) {
 
-    const userId = await request.json();
+    const { Id }: GetUserP = await request.json();
     try {
         //remove code
         await prisma.medicalHistory.create({
             data: {
                 historyName: 'Routine Checkup',
-                userId: userId,
+                userId: Id,
                 diseases: {
                     create: [{
                         diseaseName: 'Hypertension',
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
 
         await prisma.userMedications.create({
             data: {
-                userId: userId,
+                userId: Id,
                 medications: {
                     create: [{
                         medicationName: 'Aspirin',
@@ -48,13 +49,13 @@ export async function POST(request: NextRequest) {
             data: {
                 name: 'Follow-up Appointment',
                 date: new Date(),
-                userId: userId
+                userId: Id
             }
         });
 
         const userMeasurement = await prisma.userMeasurements.create({
             data: {
-                userId: userId,
+                userId: Id,
 
                 measurements: {
                     create: {
@@ -75,7 +76,7 @@ export async function POST(request: NextRequest) {
             where: {
                 histories: {
                     some: {
-                        userId: userId // Replace 'specificUserId' with the actual user ID you're looking for
+                        userId: Id // Replace 'specificUserId' with the actual user ID you're looking for
                     }
                 }
             }

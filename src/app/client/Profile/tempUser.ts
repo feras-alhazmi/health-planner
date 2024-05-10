@@ -21,12 +21,9 @@ export interface ContactInfoData {
     address: string;
     job: Role;
     phone: string;
-    dateOfBirth: Date
-    bio: string;
     diagnosis: string;
     healthBarriers: string[];
     email: string;
-    role: Role;
 }
 
 export interface MedicalHistory {

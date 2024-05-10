@@ -3,19 +3,20 @@ import { NextRequest, NextResponse } from "next/server";
 import PrismaServices from "../Prisma-Services";
 import { z } from "zod";
 import { medicationSchema } from "@/lib/joi/schema/schema";
+import { GetUserP } from "@/core/profileCore/BEprofileHandler";
 
 const prisma = PrismaServices.instance;
 
 // Unified handler for all medication-related requests
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const userId = await req.json();
+    const { Id }: GetUserP = await request.json();
     const medications = await prisma.medications.findMany({
       where: {
         userMedications: {
           some: {
-            userId: userId // Replace 'specificUserId' with the actual user ID you're looking for
+            userId: Id // Replace 'specificUserId' with the actual user ID you're looking for
           }
         }
       }

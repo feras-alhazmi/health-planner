@@ -17,7 +17,7 @@ import MedicationTable, {
 import { promise } from "zod";
 import { useAuthStore } from "@/core/auth/store/Auth-Store";
 import { Disease, Event, Gender, MedicalHistory, Medications, Role, UserMedications } from "@prisma/client";
-import ProfileHandler from "@/core/profileCore/BEprofileHandler";
+import ProfileHandler, { GetUserP } from "@/core/profileCore/BEprofileHandler";
 
 // yousuf@test.com 
 // yousuf123
@@ -45,15 +45,15 @@ import ProfileHandler from "@/core/profileCore/BEprofileHandler";
 //     return null;
 //   }
 // }
-async function getMedications(id: string) {
+async function getMedications(id: GetUserP) {
   const medications: Medications[] = await ProfileHandler.getMedications(id);
   return medications;
 }
-async function getdiseases(id: string) {
+async function getdiseases(id: GetUserP) {
   const diseases: Disease[] = await ProfileHandler.getDiseases(id);
   return diseases;
 }
-async function getEvents(id: string) {
+async function getEvents(id: GetUserP) {
   const events: Event[] = await ProfileHandler.getEvents(id);
   return events;
 }
@@ -64,9 +64,12 @@ function AgeCalc(dateOfBirth: Date) {
 const ProfilePage: React.FC = () => {
   //const [userData, setUserData] = useState<TempUser | null>(null);
   const userData = useAuthStore(state => state.userData);
-  const deseases = getdiseases(userData?.userId || "");
-  const medications = getMedications(userData?.userId || "");
-  const events = getEvents(userData?.userId || "");
+  const userID: GetUserP = {
+    Id: userData?.userId || ""
+  }
+  const deseases = getdiseases(userID);
+  const medications = getMedications(userID);
+  const events = getEvents(userID);
 
   const contactInfo: ContactInfoData = {
     name: userData?.fullName || "",
