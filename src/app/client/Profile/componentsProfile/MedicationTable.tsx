@@ -87,6 +87,7 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
                 {medication.medicationName}
+                {medication.medicationName}
               </td>
               {(() => {
                 if (medication.status === Status.Active) {

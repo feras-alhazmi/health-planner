@@ -17,7 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Event } from "@prisma/client";
 
 
-// Assuming entries is an array of objects with 'date' and 'event' properties
+//Assuming entries is an array of objects with 'date' and 'event' properties
 type Entry = {
   event: Event;
 };
@@ -64,6 +64,7 @@ const TimelineCard: React.FC<Entry & { index: number }> = ({ event, index }) => 
           <TimelineConnector sx={{ my: 1 }} /> {/* Adjust the spacing */}
         </TimelineSeparator>
         <TimelineContent sx={contentStyle}>
+          <Typography component="span">{event.name}</Typography>
           <Typography component="span">{event.name}</Typography>
         </TimelineContent>
       </TimelineItem>
