@@ -48,7 +48,9 @@ CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "lastActiveAt" TIMESTAMP(3),
-    "email" TEXT NOT NULL
+    "email" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
 );
 
 -- CreateTable
@@ -138,9 +140,9 @@ CREATE TABLE "Plan" (
     "plan_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "owner_id" TEXT NOT NULL,
-    "filter" JSONB NOT NULL,
-    "group_by" "GroupBy" NOT NULL,
-    "sort" JSONB NOT NULL,
+    "filter" JSONB,
+    "group_by" "GroupBy",
+    "sort" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -152,10 +154,10 @@ CREATE TABLE "Task" (
     "task_id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT,
-    "is_done" BOOLEAN NOT NULL,
-    "priority" INTEGER NOT NULL,
-    "reminders" INTEGER NOT NULL,
-    "ignore_time" BOOLEAN NOT NULL,
+    "is_done" BOOLEAN NOT NULL DEFAULT false,
+    "priority" INTEGER NOT NULL DEFAULT 0,
+    "reminders" INTEGER NOT NULL DEFAULT 0,
+    "ignore_time" BOOLEAN NOT NULL DEFAULT true,
     "start_date" TIMESTAMP(3),
     "end_date" TIMESTAMP(3),
     "owner_id" TEXT NOT NULL,

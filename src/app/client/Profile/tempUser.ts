@@ -2,6 +2,8 @@
 //     StatusKey,
 // } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
 
+import { Gender, Role } from "@prisma/client";
+
 
 export interface TempUser {
     contactInfoData: ContactInfoData;
@@ -11,12 +13,12 @@ export interface TempUser {
     medicalHistoryEntries: MedicalHistoryEntries[]
 }
 
-interface ContactInfoData {
+export interface ContactInfoData {
     name: string;
-    age: number;
-    gender: string;
+    dob: Date;
+    gender: Gender;
     address: string;
-    job: string;
+    job: Role;
     phone: string;
     email: string;
     diagnosis: string;
