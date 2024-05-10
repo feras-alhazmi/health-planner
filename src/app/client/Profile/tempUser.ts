@@ -54,6 +54,6 @@ export interface StatCardsData {
     icon: string;
 }
 export interface Event {
-    date: string;
+    date: Date;
     name: string;
 }

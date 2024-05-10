@@ -167,7 +167,7 @@ export async function GET(request: NextRequest) {
 
                 },
                 events: {
-                    date: user.Event.date.toISOString(),
+                    date: user.Event.date,
                     name: user.Event.name
                 }
             };

@@ -10,7 +10,7 @@ export default function Page() {
   authUser ? router.push("/participants") : null;
   return (
     <div className="bg-background">
-      <LandingPage />
+      <ParticipantsPage />
     </div>
   );
 }

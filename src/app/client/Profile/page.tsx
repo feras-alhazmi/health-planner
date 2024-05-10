@@ -62,7 +62,7 @@ async function createUserWithDetails() {
       ]
     },
     events: {
-      date: "2023-05-01",
+      date: new Date("2023-01-01"),
       name: "Annual Physical Exam"
     }
   };
