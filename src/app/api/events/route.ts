@@ -12,6 +12,15 @@ export async function POST(request: NextRequest) {
 
     const { Id }: GetUserP = await request.json();
     try {
+
+        // await prisma.event.create({
+        //     data: {
+        //         name: 'Follow-up Appointment',
+        //         date: new Date(),
+        //         userId: Id
+        //     }
+        // });
+
         const events = await prisma.event.findMany({
             where: {
                 userId: Id

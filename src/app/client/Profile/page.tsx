@@ -16,7 +16,7 @@ import MedicationTable, {
 } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
 import { promise } from "zod";
 import { useAuthStore } from "@/core/auth/store/Auth-Store";
-import { Disease, Event, Gender, MedicalHistory, Medications, Role, UserMedications } from "@prisma/client";
+import { Disease, Event, Gender, Measurements, MedicalHistory, Medications, Role, UserMedications } from "@prisma/client";
 import ProfileHandler, { GetUserP } from "@/core/profileCore/BEprofileHandler";
 
 // yousuf@test.com 
@@ -57,6 +57,10 @@ async function getEvents(id: GetUserP) {
   const events: Event[] = await ProfileHandler.getEvents(id);
   return events;
 }
+async function getMeasurements(id: GetUserP) {
+  const measurements: Measurements[] = await ProfileHandler.getMeasurements(id);
+  return measurements;
+}
 function AgeCalc(dateOfBirth: Date) {
   return 10;
 }
@@ -70,6 +74,7 @@ const ProfilePage: React.FC = () => {
   const deseases = getdiseases(userID);
   const medications = getMedications(userID);
   const events = getEvents(userID);
+  const measurements = getMeasurements(userID);
 
   const contactInfo: ContactInfoData = {
     name: userData?.fullName || "",
@@ -82,7 +87,16 @@ const ProfilePage: React.FC = () => {
     diagnosis: userData?.diagnosis || "",
     healthBarriers: userData?.healthBarriers || [""]
   }
+  const [measurements2, setDiseases] = useState<Measurements[]>([]);
 
+  useEffect(() => {
+    measurements.then(data => {
+      setDiseases(data);
+    })
+      .catch(error => {
+        console.error("Failed to load diseases:", error);
+      });
+  }, [measurements]);
   return (
     <>
       <Head>
@@ -91,11 +105,11 @@ const ProfilePage: React.FC = () => {
       <div className={styles.gridContainer}>
         Stat Cards
         <div className={styles.statCardsContainer}>
-          {/* {userData.statCardsData.map((card, index) => (
+          {measurements2.map((card, index) => (
             <div key={index} className={styles.statCard}>
-              <StatCard {...card} />
+              <StatCard measurment={card} />
             </div>
-          ))} */}
+          ))}
         </div>
 
         {/* Timeline */}

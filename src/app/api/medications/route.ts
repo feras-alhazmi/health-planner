@@ -12,6 +12,24 @@ const prisma = PrismaServices.instance;
 export async function POST(request: NextRequest) {
   try {
     const { Id }: GetUserP = await request.json();
+
+    // await prisma.userMedications.create({
+    //   data: {
+    //     userId: Id,
+    //     medications: {
+    //       create: [{
+    //         medicationName: 'Aspirin',
+    //         status: 'Active',
+    //         dosage: '100mg',
+    //         frequency: 'Daily',
+    //         prescribingPhysician: 'Dr. Jane Smith',
+    //         startDate: new Date(),
+    //         endDate: new Date()
+    //       }]
+    //     }
+    //   }
+    // });
+
     const medications = await prisma.medications.findMany({
       where: {
         userMedications: {
