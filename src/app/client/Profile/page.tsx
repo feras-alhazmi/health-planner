@@ -16,12 +16,20 @@ import MedicationTable, {
 } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
 import { promise } from "zod";
 import { useAuthStore } from "@/core/auth/store/Auth-Store";
-import { Disease, Event, Gender, Measurements, MedicalHistory, Medications, Role, UserMedications } from "@prisma/client";
+import {
+  Disease,
+  Event,
+  Gender,
+  Measurements,
+  MedicalHistory,
+  Medications,
+  Role,
+  UserMedications,
+} from "@prisma/client";
 import ProfileHandler, { GetUserP } from "@/core/profileCore/BEprofileHandler";
 
-// yousuf@test.com 
+// yousuf@test.com
 // yousuf123
-
 
 // async function getUser(_id: string) {
 //   // return await prisma.user.findUnique({
@@ -67,10 +75,10 @@ function AgeCalc(dateOfBirth: Date) {
 
 const ProfilePage: React.FC = () => {
   //const [userData, setUserData] = useState<TempUser | null>(null);
-  const userData = useAuthStore(state => state.userData);
+  const userData = useAuthStore((state) => state.userData);
   const userID: GetUserP = {
-    Id: userData?.userId || ""
-  }
+    Id: userData?.userId || "",
+  };
   const deseases = getdiseases(userID);
   const medications = getMedications(userID);
   const events = getEvents(userID);
@@ -85,15 +93,16 @@ const ProfilePage: React.FC = () => {
     phone: userData?.phone || "",
     email: userData?.email || "",
     diagnosis: userData?.diagnosis || "",
-    healthBarriers: userData?.healthBarriers || [""]
-  }
+    healthBarriers: userData?.healthBarriers || [""],
+  };
   const [measurements2, setDiseases] = useState<Measurements[]>([]);
 
   useEffect(() => {
-    measurements.then(data => {
-      setDiseases(data);
-    })
-      .catch(error => {
+    measurements
+      .then((data) => {
+        setDiseases(data);
+      })
+      .catch((error) => {
         console.error("Failed to load diseases:", error);
       });
   }, [measurements]);
@@ -111,27 +120,22 @@ const ProfilePage: React.FC = () => {
             </div>
           ))}
         </div>
-
         {/* Timeline */}
         <div className={styles.timelineContainer}>
           <Timeline entries={events} />
         </div>
-
         {/* Calendar */}
         <div className={styles.calendarContainer}>
           <CalendarComponent />
         </div>
-
         {/* Medical History */}
         <div className={styles.medicalHistoryContainer}>
           <_MedicalHistory entries={deseases} />
         </div>
-
         {/* Contact Info */}
         <div className={styles.contactInfoContainer}>
           <ContactInfo contactinfo={contactInfo} />
         </div>
-
         {/* Medication Table */}
         <div className={styles.medicationTableContainer}>
           <MedicationTable medications={medications} />

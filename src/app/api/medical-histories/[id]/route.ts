@@ -17,18 +17,18 @@ export async function GET(req: NextRequest) {
       where: {
         userId: userData?.userId
       },
-      include: {
-        medicalHistoryDiseases: {
-          select: {
-            disease: {
-              select: {
-                diseaseName: true
-              }
-            }
-          }
-        }
+      // include: {
+      //   medicalHistoryDiseases: {
+      //     select: {
+      //       disease: {
+      //         select: {
+      //           diseaseName: true
+      //         }
+      //       }
+      //     }
+      //   }
 
-      },
+      // },
     });
 
     // Send success response with the fetched medical history

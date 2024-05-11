@@ -6,16 +6,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema } from "@/app/validationSchema";
 import ErrorMassage from "./ErrorMassage";
-import { Task } from "../task";
+import { Task } from "@prisma/client";
 
 interface TaskForm {
   title: string;
-  description: string;
+  description: string | null;
+  // priority: number;
+  // reminders: number;
 }
 interface Props {
-  onSubmit: (data: Task) => void;
+  onSubmit: (data: TaskForm) => void;
+  initialData?: Task;
 }
-export default function AddTaskForm({ onSubmit }: Props) {
+export default function AddTaskForm({ onSubmit, initialData }: Props) {
   const {
     register,
     control,
@@ -23,6 +26,9 @@ export default function AddTaskForm({ onSubmit }: Props) {
     formState: { errors },
   } = useForm<TaskForm>({
     resolver: zodResolver(taskSchema),
+    defaultValues: initialData
+      ? { title: initialData.title, description: initialData.description }
+      : {},
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const selectLabels = [
@@ -37,10 +43,7 @@ export default function AddTaskForm({ onSubmit }: Props) {
       onSubmit={handleSubmit(async (data) => {
         try {
           setIsSubmitting(true);
-          onSubmit({
-            ...data,
-            id: 3,
-          });
+          onSubmit(data);
           setIsSubmitting(false);
           // router.push("/issues");
         } catch (error) {
@@ -80,8 +83,8 @@ export default function AddTaskForm({ onSubmit }: Props) {
           ))}
         </div>
         <div className="flex justify-end ">
-          <button className="bg-blue text-white font-bold w-48  py-2 px-6 rounded-full">
-            + Add task
+          <button className="bg-blue text-white font-bold w-fit  py-2 px-6 rounded-full">
+            {initialData ? "Save" : " + Add task"}
           </button>
         </div>
       </div>

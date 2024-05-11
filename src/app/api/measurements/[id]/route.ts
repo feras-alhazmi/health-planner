@@ -15,9 +15,9 @@ export async function GET(req: NextRequest) {
       where: {
         Id: id as string,
       },
-      include: {
-        measurements: {}
-      }
+      // include: {
+      //   measurements: {}
+      // }
     });
 
     if (!measurement) {
