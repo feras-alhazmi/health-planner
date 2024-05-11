@@ -51,7 +51,7 @@ model Measurements {
   measurementUnit    String
   measuredOn         DateTime
   createdAt          DateTime         @default(now())
-  userMeasurementsID String           @unique
+  userMeasurementsID String
   UserMeasurements   UserMeasurements @relation(fields: [userMeasurementsID], references: [Id])
 }
 
@@ -170,10 +170,10 @@ model User {
 }
 
 model UserMeasurements {
-  Id           String        @id @default(uuid())
-  userId       String        @unique
-  Measurements Measurements?
-  User         User          @relation(fields: [userId], references: [userId])
+  Id           String         @id @default(uuid())
+  userId       String         @unique
+  Measurements Measurements[]
+  User         User           @relation(fields: [userId], references: [userId])
 }
 
 model UserMedications {

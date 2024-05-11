@@ -19,6 +19,7 @@ export default function Plans() {
 
   useEffect(() => {
     // Asynchronous function to fetch tasks
+    const controller = new AbortController();
     const fetchTasks = async () => {
       if (userId) {
         try {
@@ -34,12 +35,8 @@ export default function Plans() {
     };
 
     fetchTasks();
-  }, [showForm, userId, update]);
-
-  const handleAddTask = (newTask: Task) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-    setShowForm(false);
-  };
+    return () => controller.abort();
+  }, [update, userId]);
 
   return (
     <div>
@@ -58,6 +55,7 @@ export default function Plans() {
                   const newTask = { ...data, owner_id: userId };
                   await axios.post("/api/task", newTask);
                   setShowForm(!showForm);
+                  setUpdate(!update);
                 }
                 // setTasks([...tasks, data]);
               }}

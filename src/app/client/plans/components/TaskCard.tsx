@@ -39,15 +39,14 @@ export default function TaskCard({ ShowForm, tasks, Update }: Props) {
                     onChange={async (event) => {
                       updateTaskStatus(task.task_id, event.target.checked);
                     }}
-                  >
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold">{task.title}</h3>
-                      <p className="text-gray-600">{task.description}</p>
-                      <p className="text-gray-600">
-                        {task.priority} | {task.priority}
-                      </p>
-                    </div>
-                  </Checkbox>
+                  />
+                  <div className="ml-4">
+                    <h3 className="text-lg font-semibold">{task.title}</h3>
+                    <p className="text-gray-600">{task.description}</p>
+                    <p className="text-gray-600">
+                      {task.priority} | {task.priority}
+                    </p>
+                  </div>
                 </div>
                 <button
                   className=" opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300 ease-in-out"
