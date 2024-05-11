@@ -18,8 +18,6 @@ export default function Plans() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
-    // Asynchronous function to fetch tasks
-    const controller = new AbortController();
     const fetchTasks = async () => {
       if (userId) {
         try {
@@ -35,7 +33,6 @@ export default function Plans() {
     };
 
     fetchTasks();
-    return () => controller.abort();
   }, [update, userId]);
 
   return (
