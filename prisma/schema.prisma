@@ -25,21 +25,39 @@ model Category {
 }
 
 model Disease {
-  Id                    String                  @id @default(uuid())
-  diseaseName           String
-  description           String?
-  MedicalHistoryDisease MedicalHistoryDisease[]
-  MedicalHistory        MedicalHistory[]        @relation("MedicalHistoryDisease")
+  Id                     String                  @id @default(uuid())
+  diseaseName            String
+  description            String?
+  medicalHistoryDiseases MedicalHistoryDisease[]
+  histories              MedicalHistory[]        @relation("MedicalHistoryDisease")
 }
 
-model Event {
-  Id          String   @id
-  userId      String
-  date        DateTime
-  name        String
-  planPlan_id String?
-  Plan        Plan?    @relation(fields: [planPlan_id], references: [plan_id])
-  User        User     @relation(fields: [userId], references: [userId])
+model MedicalHistory {
+  Id                     String                  @id @default(uuid())
+  historyName            String
+  userId                 String                  @unique
+  user                   User                    @relation(fields: [userId], references: [userId])
+  medicalHistoryDiseases MedicalHistoryDisease[]
+  diseases               Disease[]               @relation("MedicalHistoryDisease")
+}
+
+model Medications {
+  Id                   String            @id @default(uuid())
+  medicationName       String
+  status               Status
+  dosage               String
+  frequency            String
+  prescribingPhysician String
+  startDate            DateTime
+  endDate              DateTime?
+  userMedications      UserMedications[] @relation("MedicationsToUserMedications")
+}
+
+model UserMedications {
+  Id          String        @id @default(uuid())
+  userId      String        @unique
+  user        User          @relation(fields: [userId], references: [userId])
+  medications Medications[] @relation("MedicationsToUserMedications")
 }
 
 model Measurements {
@@ -55,34 +73,43 @@ model Measurements {
   UserMeasurements   UserMeasurements @relation(fields: [userMeasurementsID], references: [Id])
 }
 
-model MedicalHistory {
-  Id                    String                  @id @default(uuid())
-  historyName           String
-  userId                String                  @unique
-  User                  User                    @relation(fields: [userId], references: [userId])
-  MedicalHistoryDisease MedicalHistoryDisease[]
-  Disease               Disease[]               @relation("MedicalHistoryDisease")
+model UserMeasurements {
+  Id           String         @id @default(uuid())
+  user         User           @relation(fields: [userId], references: [userId])
+  userId       String         @unique
+  measurements Measurements[]
+}
+
+model Event {
+  Id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [userId])
+  userId      String   @unique
+  date        DateTime
+  name        String
+  Plan        Plan?    @relation(fields: [planPlan_id], references: [plan_id])
+  planPlan_id String?
+}
+
+enum MeasurementType {
+  weight
+  blood_pressure_systolic
+  blood_pressure_diastolic
+  BMI
+}
+
+enum Status {
+  Active
+  Discontuned
+  On_Hold
 }
 
 model MedicalHistoryDisease {
   medicalHistoryId String
   diseaseId        String
-  Disease          Disease        @relation(fields: [diseaseId], references: [Id])
-  MedicalHistory   MedicalHistory @relation(fields: [medicalHistoryId], references: [Id])
+  disease          Disease        @relation(fields: [diseaseId], references: [Id])
+  medicalHistory   MedicalHistory @relation(fields: [medicalHistoryId], references: [Id])
 
   @@id([medicalHistoryId, diseaseId])
-}
-
-model Medications {
-  Id                   String            @id @default(uuid())
-  medicationName       String
-  status               Status
-  dosage               String
-  frequency            String
-  prescribingPhysician String
-  startDate            DateTime
-  endDate              DateTime?
-  UserMedications      UserMedications[]
 }
 
 model Plan {
@@ -169,20 +196,6 @@ model User {
   UserMedications  UserMedications?
 }
 
-model UserMeasurements {
-  Id           String         @id @default(uuid())
-  userId       String         @unique
-  Measurements Measurements[]
-  User         User           @relation(fields: [userId], references: [userId])
-}
-
-model UserMedications {
-  Id          String        @id
-  userId      String        @unique
-  User        User          @relation(fields: [userId], references: [userId])
-  Medications Medications[]
-}
-
 enum Gender {
   MALE
   FEMALE
@@ -199,20 +212,7 @@ enum Language {
   Arabic
 }
 
-enum MeasurementType {
-  weight
-  blood_pressure_systolic
-  blood_pressure_diastolic
-  BMI
-}
-
 enum Role {
   PATIENT
   DOCTOR
-}
-
-enum Status {
-  Active
-  Discontuned
-  On_Hold
 }

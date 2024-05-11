@@ -13,9 +13,6 @@ CREATE TYPE "MeasurementType" AS ENUM ('weight', 'blood_pressure_systolic', 'blo
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('Active', 'Discontuned', 'On_Hold');
 
--- CreateEnum
-CREATE TYPE "GroupBy" AS ENUM ('Type', 'Date', 'Priority');
-
 -- CreateTable
 CREATE TABLE "AuthUser" (
     "Id" TEXT NOT NULL,
@@ -30,15 +27,15 @@ CREATE TABLE "AuthUser" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "userId" TEXT NOT NULL,
-    "fullName" TEXT,
+    "Id" TEXT NOT NULL,
+    "firstname" TEXT NOT NULL,
     "lastname" TEXT,
-    "phone" TEXT,
-    "dateOfBirth" TIMESTAMP(3),
+    "phone" TEXT NOT NULL,
+    "dateOfBirth" TIMESTAMP(3) NOT NULL,
     "bio" TEXT,
-    "gender" "Gender",
+    "gender" "Gender" NOT NULL,
     "diagnosis" TEXT,
-    "address" TEXT,
+    "address" TEXT NOT NULL,
     "healthBarriers" TEXT[] DEFAULT ARRAY['']::TEXT[],
     "avatarUrl" TEXT,
     "timezone" TEXT,
@@ -48,7 +45,10 @@ CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "lastActiveAt" TIMESTAMP(3),
-    "email" TEXT NOT NULL
+    "authUserId" TEXT,
+    "email" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("Id")
 );
 
 -- CreateTable
@@ -120,7 +120,6 @@ CREATE TABLE "Event" (
     "userId" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
-    "planPlan_id" TEXT,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("Id")
 );
@@ -131,62 +130,6 @@ CREATE TABLE "MedicalHistoryDisease" (
     "diseaseId" TEXT NOT NULL,
 
     CONSTRAINT "MedicalHistoryDisease_pkey" PRIMARY KEY ("medicalHistoryId","diseaseId")
-);
-
--- CreateTable
-CREATE TABLE "Plan" (
-    "plan_id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "owner_id" TEXT NOT NULL,
-    "filter" JSONB NOT NULL,
-    "group_by" "GroupBy" NOT NULL,
-    "sort" JSONB NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Plan_pkey" PRIMARY KEY ("plan_id")
-);
-
--- CreateTable
-CREATE TABLE "Task" (
-    "task_id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "description" TEXT,
-    "is_done" BOOLEAN NOT NULL,
-    "priority" INTEGER NOT NULL,
-    "reminders" INTEGER NOT NULL,
-    "ignore_time" BOOLEAN NOT NULL,
-    "start_date" TIMESTAMP(3),
-    "end_date" TIMESTAMP(3),
-    "owner_id" TEXT NOT NULL,
-    "category_id" TEXT,
-    "plan_id" TEXT,
-
-    CONSTRAINT "Task_pkey" PRIMARY KEY ("task_id")
-);
-
--- CreateTable
-CREATE TABLE "Category" (
-    "Id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "Category_pkey" PRIMARY KEY ("Id")
-);
-
--- CreateTable
-CREATE TABLE "TaskEditor" (
-    "task_id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-
-    CONSTRAINT "TaskEditor_pkey" PRIMARY KEY ("task_id","user_id")
-);
-
--- CreateTable
-CREATE TABLE "PlanEditor" (
-    "plan_id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-
-    CONSTRAINT "PlanEditor_pkey" PRIMARY KEY ("plan_id","user_id")
 );
 
 -- CreateTable
@@ -208,7 +151,7 @@ CREATE UNIQUE INDEX "AuthUser_email_key" ON "AuthUser"("email");
 CREATE UNIQUE INDEX "AuthUser_password_key" ON "AuthUser"("password");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_userId_key" ON "User"("userId");
+CREATE UNIQUE INDEX "User_authUserId_key" ON "User"("authUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
@@ -241,55 +184,28 @@ CREATE UNIQUE INDEX "_MedicationsToUserMedications_AB_unique" ON "_MedicationsTo
 CREATE INDEX "_MedicationsToUserMedications_B_index" ON "_MedicationsToUserMedications"("B");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_userId_fkey" FOREIGN KEY ("userId") REFERENCES "AuthUser"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_authUserId_fkey" FOREIGN KEY ("authUserId") REFERENCES "AuthUser"("Id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MedicalHistory" ADD CONSTRAINT "MedicalHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MedicalHistory" ADD CONSTRAINT "MedicalHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserMedications" ADD CONSTRAINT "UserMedications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserMedications" ADD CONSTRAINT "UserMedications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Measurements" ADD CONSTRAINT "Measurements_userMeasurementsID_fkey" FOREIGN KEY ("userMeasurementsID") REFERENCES "UserMeasurements"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserMeasurements" ADD CONSTRAINT "UserMeasurements_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserMeasurements" ADD CONSTRAINT "UserMeasurements_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Event" ADD CONSTRAINT "Event_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Event" ADD CONSTRAINT "Event_planPlan_id_fkey" FOREIGN KEY ("planPlan_id") REFERENCES "Plan"("plan_id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Event" ADD CONSTRAINT "Event_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MedicalHistoryDisease" ADD CONSTRAINT "MedicalHistoryDisease_medicalHistoryId_fkey" FOREIGN KEY ("medicalHistoryId") REFERENCES "MedicalHistory"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MedicalHistoryDisease" ADD CONSTRAINT "MedicalHistoryDisease_diseaseId_fkey" FOREIGN KEY ("diseaseId") REFERENCES "Disease"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Plan" ADD CONSTRAINT "Plan_owner_id_fkey" FOREIGN KEY ("owner_id") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_owner_id_fkey" FOREIGN KEY ("owner_id") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("Id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "Plan"("plan_id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskEditor" ADD CONSTRAINT "TaskEditor_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "Task"("task_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskEditor" ADD CONSTRAINT "TaskEditor_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PlanEditor" ADD CONSTRAINT "PlanEditor_plan_id_fkey" FOREIGN KEY ("plan_id") REFERENCES "Plan"("plan_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PlanEditor" ADD CONSTRAINT "PlanEditor_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_MedicalHistoryDisease" ADD CONSTRAINT "_MedicalHistoryDisease_A_fkey" FOREIGN KEY ("A") REFERENCES "Disease"("Id") ON DELETE CASCADE ON UPDATE CASCADE;

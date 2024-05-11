@@ -10,24 +10,24 @@ import {
 import { Timeline } from "@mui/lab";
 import { IconButton, Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import Avatar from '@mui/material/Avatar';
 import EditIcon from '@mui/icons-material/Edit';
+import { Event } from "@prisma/client";
 
 
-// Assuming entries is an array of objects with 'date' and 'event' properties
+//Assuming entries is an array of objects with 'date' and 'event' properties
 type Entry = {
-  date: string;
-  event: string;
+  event: Event;
 };
 
 type TimelineProps = {
-  entries: Entry[];
+  entries: Promise<Event[]>;
 };
 
 
-const TimelineCard: React.FC<Entry & { index: number }> = ({ date, event, index }) => {
+const TimelineCard: React.FC<Entry & { index: number }> = ({ event, index }) => {
   const backgroundColor = index % 2 === 0 ? '#ffffff' : '#f4f9fd'; // alternating colors
 
   // Adjust the styles below as needed
@@ -57,14 +57,15 @@ const TimelineCard: React.FC<Entry & { index: number }> = ({ date, event, index 
           }}
           color="text.secondary"
         >
-          <Typography variant="body2">{date}</Typography>
+          <Typography variant="body2">{new Date(event.date).toISOString()}</Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineDot sx={{ boxShadow: 'none' }} />
           <TimelineConnector sx={{ my: 1 }} /> {/* Adjust the spacing */}
         </TimelineSeparator>
         <TimelineContent sx={contentStyle}>
-          <Typography component="span">{event}</Typography>
+          <Typography component="span">{event.name}</Typography>
+          <Typography component="span">{event.name}</Typography>
         </TimelineContent>
       </TimelineItem>
     </div>
@@ -73,6 +74,16 @@ const TimelineCard: React.FC<Entry & { index: number }> = ({ date, event, index 
 
 
 const CustomTimeline: React.FC<TimelineProps> = ({ entries }) => {
+  const [events, setDiseases] = useState<Event[]>([]);
+
+  useEffect(() => {
+    entries.then(data => {
+      setDiseases(data);
+    })
+      .catch(error => {
+        console.error("Failed to load diseases:", error);
+      });
+  }, [entries]);
   return (
     <div style={{ padding: '20px' }}> {/* Add padding to move away from the sidebar */}
       {/* Add a header with the title, avatar and edit icon */}
@@ -87,8 +98,8 @@ const CustomTimeline: React.FC<TimelineProps> = ({ entries }) => {
       </div>
 
       <Timeline className="relative border-l-2 border-gray-200">
-        {entries.map((entry, index) => (
-          <TimelineCard key={index} index={index} {...entry} />
+        {events.map((entry, index) => (
+          <TimelineCard key={index} index={index} event={entry} />
         ))}
       </Timeline>
     </div>

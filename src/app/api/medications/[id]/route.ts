@@ -1,28 +1,27 @@
 // Import necessary modules
-import {  medicationSchema } from '@/lib/joi/schema/schema';
+import { medicationSchema } from '@/lib/joi/schema/schema';
 import PrismaServices from "../../Prisma-Services";
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { useAuthStore } from '@/core/auth/store/Auth-Store';
 
 let prisma = PrismaServices.instance;
 // Import necessary modules
 export async function GET(req: NextRequest) {
-  // Extract the medication ID from the URL
-  const id = req.url?.split('/').slice(-1).pop();
-
+  const userData = useAuthStore(state => state.userData);
   try {
-    // Fetch the medication with the specified ID from the database
-    const medication = await prisma.medications.findUnique({
+    const medications = await prisma.medications.findMany({
       where: {
-        Id: id
+        userMedications: {
+          some: {
+            userId: userData?.userId // Replace 'specificUserId' with the actual user ID you're looking for
+          }
+        }
       }
-    });
-
-    // Send success response with the fetched medication
-    return NextResponse.json(medication);
+    })
+    return NextResponse.json(medications);
   } catch (error) {
-    // Handle database errors
-    console.error('Error fetching medication:', error);
+    console.error('Error fetching diseases:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

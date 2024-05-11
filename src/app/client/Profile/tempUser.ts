@@ -2,46 +2,59 @@
 //     StatusKey,
 // } from "../Profile/componentsProfile/MedicationTable"; // Adjust the import path as needed
 
+import { Gender, Role, Status } from "@prisma/client";
+
 
 export interface TempUser {
     contactInfoData: ContactInfoData;
     statCardsData: StatCardsData[];
-    timelineData: TimelineData[];
-    medicationsData: MedicationsData[];
-    medicalHistoryEntries: MedicalHistoryEntries[]
+    UserMedications: UserMedications;
+    medicalHistory: MedicalHistory;
+    events: Event;
+
 }
 
-interface ContactInfoData {
+export interface ContactInfoData {
     name: string;
-    age: number;
-    gender: string;
+    dob: Date;
+    gender: Gender;
     address: string;
-    job: string;
+    job: Role;
     phone: string;
-    email: string;
     diagnosis: string;
     healthBarriers: string[];
+    email: string;
 }
 
-interface StatCardsData {
+export interface MedicalHistory {
+    historyName: string;
+    diseases: Disease[];
+}
+
+export interface Disease {
+    diseaseName: string;
+    description: string;
+}
+
+export interface Medications {
+    medicationName: string;
+    status: Status;
+    dosage: string;
+    frequency: string;
+    prescribingPhysician: string; // Foreign key for user; need to define a user model
+    startDate: Date;
+    endDate: Date;
+}
+
+export interface UserMedications {
+    medications: Medications[];
+}
+export interface StatCardsData {
     title: string;
     value: string;
     icon: string;
 }
-interface TimelineData {
-    date: string;
-    event: string;
-}
-interface MedicationsData {
+export interface Event {
+    date: Date;
     name: string;
-    status: string;
-    dosage: string;
-    frequency: string;
-    prescribingPhysician: string;
-    startDate: Date;
-    endDate: Date;
-}
-interface MedicalHistoryEntries {
-    condition: string;
-    details: string;
 }

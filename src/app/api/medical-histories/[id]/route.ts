@@ -3,18 +3,19 @@ import { diseaseSchema, medicalHistorySchema } from '@/lib/joi/schema/schema';
 import PrismaServices from "../../Prisma-Services";
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { useAuthStore } from '@/core/auth/store/Auth-Store';
 
 let prisma = PrismaServices.instance;
 // Import necessary modules
 export async function GET(req: NextRequest) {
   // Extract the medical history ID from the URL
   const id = req.url?.split('/').slice(-1).pop();
-
+  const userData = useAuthStore(state => state.userData);
   try {
     // Fetch the medical history with the specified ID from the database
     const medicalHistory = await prisma.medicalHistory.findUnique({
       where: {
-        Id: id
+        userId: userData?.userId
       },
       // include: {
       //   medicalHistoryDiseases: {

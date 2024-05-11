@@ -2,26 +2,27 @@
 import { Avatar, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Medications, Status } from '@prisma/client';
 
 // Define the status types to ensure correct indexing
 export type StatusKey = 'Active' | 'Discontinued' | 'On Hold';
 
 // Define the shape of medication data
-type Medication = {
-  name: string;
-  status: string;
-  dosage: string;
-  frequency: string;
-  prescribingPhysician: string;
-  startDate: Date;
-  endDate: Date;
-};
+// type Medication = {
+//   name: string;
+//   status: string;
+//   dosage: string;
+//   frequency: string;
+//   prescribingPhysician: string;
+//   startDate: Date;
+//   endDate: Date;
+// };
 let statusColor: StatusKey;
 
 // Define the shape of the component's props
 type MedicationTableProps = {
-  medications: Medication[];
+  medications: Promise<Medications[]>;
 };
 
 const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
@@ -31,6 +32,17 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
     'Discontinued': 'bg-red-100 text-red-800',
     'On Hold': 'bg-yellow-100 text-yellow-800',
   };
+
+  const [medicationsTemp, setDiseases] = useState<Medications[]>([]);
+
+  useEffect(() => {
+    medications.then(data => {
+      setDiseases(data);
+    })
+      .catch(error => {
+        console.error("Failed to load diseases:", error);
+      });
+  }, [medications]);
 
   return (
     <div style={{ padding: '20px' }}> {/* Add padding to move away from the sidebar */}
@@ -71,17 +83,18 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {medications.map((medication, index) => (
+          {medicationsTemp.map((medication, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.name}
+                {medication.medicationName}
+                {medication.medicationName}
               </td>
               {(() => {
-                if (medication.status === 'Active') {
+                if (medication.status === Status.Active) {
                   statusColor = "Active";
-                } else if (medication.status === 'Discontinued') {
+                } else if (medication.status === Status.Discontuned) {
                   statusColor = "Discontinued";;
-                } else if (medication.status === 'On Hold') {
+                } else if (medication.status === Status.On_Hold) {
                   statusColor = "On Hold";;
                 } else {
                   return <span ></span>;
@@ -100,10 +113,10 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
                 {medication.prescribingPhysician}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.startDate.toISOString()}
+                {new Date(medication.startDate).toISOString()}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.endDate.toISOString() || '-'}
+                {medication.endDate ? new Date(medication.endDate).toISOString() : '-'}
               </td>
             </tr>
           ))}
