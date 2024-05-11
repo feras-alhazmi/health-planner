@@ -22,7 +22,7 @@ export default function TopMenu() {
 
   const authStore = useAuthStore((state) => state);
   const menuItems = ["Home", "Products", "Orders", "Log Out"];
-  console.log(authStore?.userData);
+
   return (
     <Navbar
       className="text-white bg-blue border-divider"
@@ -96,8 +96,8 @@ export default function TopMenu() {
                 index === 2
                   ? "primary"
                   : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
+                    ? "danger"
+                    : "foreground"
               }
               className="w-full"
               href="#"

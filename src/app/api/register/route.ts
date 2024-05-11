@@ -3,7 +3,7 @@ import { genSaltSync, hashSync } from "bcrypt-ts";
 import PrismaServices from "../Prisma-Services";
 const prisma = PrismaServices.instance;
 export async function POST(req: NextRequest) {
-  const { email, password,fullName } = await req.json();
+  const { email, password, fullName } = await req.json();
   try {
     const isRegistered = await prisma.authUser.findUnique({
       where: {
@@ -34,16 +34,14 @@ export async function POST(req: NextRequest) {
     const userResult = await prisma.user.create({
       data: {
   
-      userId:result.Id,
-      email:email,
-      fullName:fullName,
-      address:"",
+        userId: result.Id,
+        email: email,
+        fullName: fullName,
+        address: "",
       },
-      
-    })
+    });
 
-    
-    return new NextResponse(JSON.stringify({ message: {result,userResult} }), {
+    return new NextResponse(JSON.stringify({ result, userResult }), {
       status: 200,
       headers: { "content-type": "application/json" },
     });
