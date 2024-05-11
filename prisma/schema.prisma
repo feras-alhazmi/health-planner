@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider   = "prisma-client-js"
   engineType = "binary"
@@ -21,92 +15,31 @@ model AuthUser {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   salt      String
-  user      User?
+  User      User?
 }
 
-model User {
-  userId         String    @unique
-  fullName       String?
-  lastname       String?
-  phone          String?
-  dateOfBirth    DateTime?
-  bio            String?
-  gender         Gender?
-  diagnosis      String?
-  address        String?
-  healthBarriers String[]  @default([""]) //leave epmty for doctor. used for patients only
-  avatarUrl      String?
-  timezone       String?
-  language       Language  @default(EN)
-  year           Int?
-  roles          Role      @default(PATIENT)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  lastActiveAt   DateTime?
-  user           AuthUser  @relation(fields: [userId], references: [Id])
-
-  email            String            @unique
-  medicalHistory   MedicalHistory?
-  userMedications  UserMedications?
-  userMeasurements UserMeasurements?
-
-  Event      Event?
-  Plan       Plan[]
-  Task       Task[]
-  TaskEditor TaskEditor[]
-  PlanEditor PlanEditor[]
-}
-
-enum Gender {
-  MALE
-  FEMALE
-}
-
-enum Language {
-  EN
-  Arabic
-  // Add other languages as needed
-}
-
-enum Role {
-  PATIENT
-  DOCTOR
-}
-
-model MedicalHistory {
-  Id                     String                  @id @default(uuid())
-  historyName            String
-  diseases               Disease[]               @relation("MedicalHistoryDisease")
-  medicalHistoryDiseases MedicalHistoryDisease[]
-  user                   User                    @relation(fields: [userId], references: [userId])
-  userId                 String                  @unique
+model Category {
+  Id   String @id @default(uuid())
+  name String
+  Task Task[]
 }
 
 model Disease {
-  Id                     String                  @id @default(uuid())
-  diseaseName            String
-  medicalHistoryDiseases MedicalHistoryDisease[]
-  histories              MedicalHistory[]        @relation("MedicalHistoryDisease")
-  description            String?
+  Id                    String                  @id @default(uuid())
+  diseaseName           String
+  description           String?
+  MedicalHistoryDisease MedicalHistoryDisease[]
+  MedicalHistory        MedicalHistory[]        @relation("MedicalHistoryDisease")
 }
 
-model Medications {
-  Id                   String            @id @default(uuid())
-  medicationName       String
-  status               Status
-  dosage               String
-  frequency            String
-  prescribingPhysician String // Foreign key for user; need to define a user model
-  startDate            DateTime
-  endDate              DateTime?
-  userMedications      UserMedications[]
-}
-
-model UserMedications {
-  Id          String        @id @default(uuid())
-  user        User          @relation(fields: [userId], references: [userId])
-  userId      String        @unique
-  medications Medications[]
+model Event {
+  Id          String   @id
+  userId      String
+  date        DateTime
+  name        String
+  planPlan_id String?
+  Plan        Plan?    @relation(fields: [planPlan_id], references: [plan_id])
+  User        User     @relation(fields: [userId], references: [userId])
 }
 
 model Measurements {
@@ -118,25 +51,152 @@ model Measurements {
   measurementUnit    String
   measuredOn         DateTime
   createdAt          DateTime         @default(now())
-  UserMeasurements   UserMeasurements @relation(fields: [userMeasurementsID], references: [Id])
   userMeasurementsID String           @unique
+  UserMeasurements   UserMeasurements @relation(fields: [userMeasurementsID], references: [Id])
+}
+
+model MedicalHistory {
+  Id                    String                  @id @default(uuid())
+  historyName           String
+  userId                String                  @unique
+  User                  User                    @relation(fields: [userId], references: [userId])
+  MedicalHistoryDisease MedicalHistoryDisease[]
+  Disease               Disease[]               @relation("MedicalHistoryDisease")
+}
+
+model MedicalHistoryDisease {
+  medicalHistoryId String
+  diseaseId        String
+  Disease          Disease        @relation(fields: [diseaseId], references: [Id])
+  MedicalHistory   MedicalHistory @relation(fields: [medicalHistoryId], references: [Id])
+
+  @@id([medicalHistoryId, diseaseId])
+}
+
+model Medications {
+  Id                   String            @id @default(uuid())
+  medicationName       String
+  status               Status
+  dosage               String
+  frequency            String
+  prescribingPhysician String
+  startDate            DateTime
+  endDate              DateTime?
+  UserMedications      UserMedications[]
+}
+
+model Plan {
+  plan_id    String       @id @default(uuid())
+  name       String
+  owner_id   String
+  filter     Json?
+  group_by   GroupBy?
+  sort       Json?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime
+  Event      Event[]
+  User       User         @relation(fields: [owner_id], references: [userId])
+  PlanEditor PlanEditor[]
+  Task       Task[]
+}
+
+model PlanEditor {
+  plan_id String
+  user_id String
+  Plan    Plan   @relation(fields: [plan_id], references: [plan_id])
+  User    User   @relation(fields: [user_id], references: [userId])
+
+  @@id([plan_id, user_id])
+}
+
+model Task {
+  task_id     String       @id @default(uuid())
+  title       String
+  description String?
+  is_done     Boolean      @default(false)
+  priority    Int          @default(0)
+  reminders   Int          @default(0)
+  ignore_time Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  start_date  DateTime?
+  end_date    DateTime?
+  owner_id    String
+  category_id String?
+  plan_id     String?
+  Category    Category?    @relation(fields: [category_id], references: [Id])
+  User        User         @relation(fields: [owner_id], references: [userId])
+  Plan        Plan?        @relation(fields: [plan_id], references: [plan_id])
+  TaskEditor  TaskEditor[]
+}
+
+model TaskEditor {
+  task_id String
+  user_id String
+  Task    Task   @relation(fields: [task_id], references: [task_id])
+  User    User   @relation(fields: [user_id], references: [userId])
+
+  @@id([task_id, user_id])
+}
+
+model User {
+  userId           String            @id @unique
+  fullName         String?
+  lastname         String?
+  phone            String?
+  dateOfBirth      DateTime?
+  bio              String?
+  gender           Gender?
+  diagnosis        String?
+  address          String?
+  healthBarriers   String[]          @default([""])
+  avatarUrl        String?
+  timezone         String?
+  language         Language          @default(EN)
+  year             Int?
+  roles            Role              @default(PATIENT)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  lastActiveAt     DateTime?
+  email            String            @unique
+  Event            Event[]
+  MedicalHistory   MedicalHistory?
+  Plan             Plan[]
+  PlanEditor       PlanEditor[]
+  Task             Task[]
+  TaskEditor       TaskEditor[]
+  AuthUser         AuthUser          @relation(fields: [userId], references: [Id])
+  UserMeasurements UserMeasurements?
+  UserMedications  UserMedications?
 }
 
 model UserMeasurements {
-  Id           String         @id @default(uuid())
-  user         User           @relation(fields: [userId], references: [userId])
-  userId       String         @unique
-  measurements Measurements[]
+  Id           String        @id @default(uuid())
+  userId       String        @unique
+  Measurements Measurements?
+  User         User          @relation(fields: [userId], references: [userId])
 }
 
-model Event {
-  Id          String   @id @default(uuid())
-  user        User     @relation(fields: [userId], references: [userId])
-  userId      String   @unique
-  date        DateTime
-  name        String
-  Plan        Plan?    @relation(fields: [planPlan_id], references: [plan_id])
-  planPlan_id String?
+model UserMedications {
+  Id          String        @id
+  userId      String        @unique
+  User        User          @relation(fields: [userId], references: [userId])
+  Medications Medications[]
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum GroupBy {
+  Type
+  Date
+  Priority
+}
+
+enum Language {
+  EN
+  Arabic
 }
 
 enum MeasurementType {
@@ -146,94 +206,13 @@ enum MeasurementType {
   BMI
 }
 
+enum Role {
+  PATIENT
+  DOCTOR
+}
+
 enum Status {
   Active
   Discontuned
   On_Hold
-}
-
-model MedicalHistoryDisease {
-  medicalHistoryId String
-  diseaseId        String
-  medicalHistory   MedicalHistory @relation(fields: [medicalHistoryId], references: [Id])
-  disease          Disease        @relation(fields: [diseaseId], references: [Id])
-
-  @@id([medicalHistoryId, diseaseId])
-}
-
-model Plan {
-  plan_id  String  @id @default(uuid())
-  name     String
-  owner_id String // Linking to the User model
-  filter   Json // Storing JSON data type for complex filtering details
-  group_by GroupBy // Enum type, define this based on the possible values
-  sort     Json // Storing JSON data type for sorting details
-
-  // Define the relationship to the User model
-  owner User @relation(fields: [owner_id], references: [userId])
-
-  // Assuming we might have related tasks or events
-  tasks  Task[]
-  events Event[]
-
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  PlanEditor PlanEditor[]
-}
-
-// Enum for group_by field, adjust the values according to your specific needs
-enum GroupBy {
-  Type
-  Date
-  Priority
-  // Add other grouping options as per your requirements
-}
-
-// Assuming Task and Event models exist and are related to Plan
-model Task {
-  task_id     String    @id @default(uuid())
-  title       String
-  description String?
-  is_done     Boolean
-  priority    Int
-  reminders   Int
-  ignore_time Boolean
-  start_date  DateTime?
-  end_date    DateTime?
-  owner_id    String
-  category_id String?
-  plan_id     String?
-
-  owner      User         @relation(fields: [owner_id], references: [userId])
-  category   Category?    @relation(fields: [category_id], references: [Id])
-  plan       Plan?        @relation(fields: [plan_id], references: [plan_id])
-  TaskEditor TaskEditor[]
-}
-
-model Category {
-  Id   String @id @default(uuid())
-  name String
-
-  // Assuming TaskCategory has a relation to Task where multiple tasks can belong to a single category
-  tasks Task[] // This relation needs to be defined in the Task model as well
-}
-
-model TaskEditor {
-  task_id String
-  user_id String
-
-  task Task @relation(fields: [task_id], references: [task_id])
-  user User @relation(fields: [user_id], references: [userId])
-
-  @@id([task_id, user_id])
-}
-
-model PlanEditor {
-  plan_id String
-  user_id String
-
-  plan Plan @relation(fields: [plan_id], references: [plan_id])
-  user User @relation(fields: [user_id], references: [userId])
-
-  @@id([plan_id, user_id])
 }

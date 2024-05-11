@@ -4,33 +4,62 @@ import { Card } from "@nextui-org/react";
 import AddTaskForm from "./components/AddTask";
 import PlansSidebar from "./components/PlanSidebar";
 import TaskCard from "./components/TaskCard";
-import { useState } from "react";
-import { Task } from "./task";
-
+import { useEffect, useState } from "react";
+import { Task } from "@prisma/client";
+import { useAuthStore } from "@/core/auth/store/Auth-Store";
+import PrismaServices from "@/app/api/Prisma-Services";
+import axios from "axios";
+const prisma = PrismaServices.instance;
 
 export default function Plans() {
   const [showForm, setShowForm] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: 1,
-      title: "Take Medication",
-      description: "Take prescribed medication [Medication Name] at [Time]",
-      frequency: "everyday",
-      priority: "1 priority",
-    },
-    // ... other tasks
-  ]);
+  const [update, setUpdate] = useState(false);
+  const userId = useAuthStore((state) => state.userData?.userId);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    // Asynchronous function to fetch tasks
+    const fetchTasks = async () => {
+      if (userId) {
+        try {
+          const tasksFromDb = await axios.get(
+            `/api/tasks?userId=${encodeURIComponent(userId)}`
+          );
+          console.log(tasksFromDb);
+          setTasks(tasksFromDb.data);
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      }
+    };
+
+    fetchTasks();
+  }, [showForm, userId, update]);
+
+  const handleAddTask = (newTask: Task) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setShowForm(false);
+  };
+
   return (
     <div>
       <Card className="flex-row m-10 ">
         <PlansSidebar />
         <div className="">
-          <TaskCard tasks={tasks} ShowForm={() => setShowForm(!showForm)} />
+          <TaskCard
+            tasks={tasks}
+            ShowForm={() => setShowForm(!showForm)}
+            Update={() => setUpdate(!update)}
+          />
           {showForm && (
             <AddTaskForm
-              onSubmit={(data) => {
-                setTasks([...tasks, data]);
-                setShowForm(!showForm);
+              onSubmit={async (data) => {
+                if (userId) {
+                  const newTask = { ...data, owner_id: userId };
+                  await axios.post("/api/task", newTask);
+                  setShowForm(!showForm);
+                }
+                // setTasks([...tasks, data]);
               }}
             />
           )}

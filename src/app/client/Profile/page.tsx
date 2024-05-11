@@ -34,12 +34,12 @@ async function getMedicalHistory(_id: string) {
 }
 async function getMedications(_id: string) {
   return await prisma.medications.findMany({
-    where: { userMedications: { some: { userId: _id } } },
+    where: { Id: _id },
   });
 }
 async function getdisease(_id: string) {
   return await prisma.disease.findMany({
-    where: { histories: { some: { userId: _id } } },
+    where: { Id: _id },
   });
 }
 function AgeCalc(dateOfBirth: Date) {
