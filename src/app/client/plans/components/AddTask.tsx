@@ -83,8 +83,8 @@ export default function AddTaskForm({ onSubmit, initialData }: Props) {
           ))}
         </div>
         <div className="flex justify-end ">
-          <button className="bg-blue text-white font-bold w-48  py-2 px-6 rounded-full">
-            + Add task
+          <button className="bg-blue text-white font-bold w-fit  py-2 px-6 rounded-full">
+            {initialData ? "Save" : " + Add task"}
           </button>
         </div>
       </div>

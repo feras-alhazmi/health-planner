@@ -4,7 +4,7 @@ import { ProfileInterface, RegisterInterface } from "../services/Auth-Services";
 import AuthenticationServices, {
   LoginInterface,
 } from "../services/Auth-Services";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { ApiResponse } from "@/core/api_utils/Api-Route.utils";
 
 const initialState = {

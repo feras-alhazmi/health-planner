@@ -23,9 +23,9 @@ const prisma = PrismaServices.instance;
         const tasksFromDb = await prisma.task.findMany({
             where: { owner_id: userId },
             orderBy: {
-                
-                owner_id: 'asc' // or 'desc'
+                createdAt: "asc" // or 'desc'
               }
+         
 
         });
 
