@@ -1,12 +1,12 @@
 // MedicationTable.tsx
-import { Avatar, IconButton, Typography } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { Avatar, IconButton, Typography } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
-import React, { useEffect, useState } from 'react';
-import { Medications, Status } from '@prisma/client';
+import React, { useEffect, useState } from "react";
+import { Medications, Status } from "@prisma/client";
 
 // Define the status types to ensure correct indexing
-export type StatusKey = 'Active' | 'Discontinued' | 'On Hold';
+export type StatusKey = "Active" | "Discontinued" | "On Hold";
 
 // Define the shape of medication data
 // type Medication = {
@@ -28,29 +28,41 @@ type MedicationTableProps = {
 const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
   // Map status keys to corresponding style classes
   const statusStyles: Record<StatusKey, string> = {
-    'Active': 'bg-green-100 text-green-800',
-    'Discontinued': 'bg-red-100 text-red-800',
-    'On Hold': 'bg-yellow-100 text-yellow-800',
+    Active: "bg-green-100 text-green-800",
+    Discontinued: "bg-red-100 text-red-800",
+    "On Hold": "bg-yellow-100 text-yellow-800",
   };
 
   const [medicationsTemp, setDiseases] = useState<Medications[]>([]);
 
   useEffect(() => {
-    medications.then(data => {
-      setDiseases(data);
-    })
-      .catch(error => {
+    medications
+      .then((data) => {
+        setDiseases(data);
+      })
+      .catch((error) => {
         console.error("Failed to load diseases:", error);
       });
   }, [medications]);
 
   return (
-    <div style={{ padding: '20px' }}> {/* Add padding to move away from the sidebar */}
+    <div style={{ padding: "20px" }}>
+      {" "}
+      {/* Add padding to move away from the sidebar */}
       {/* Add a header with the title, avatar and edit icon */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt="Profile Picture" src="/path-to-your-image.jpg" sx={{ width: 56, height: 56, marginRight: '10px' }} />
-          <Typography variant="h5" component="h1">Medication Table</Typography>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "20px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {/* <Avatar alt="Profile Picture" src="/path-to-your-image.jpg" sx={{ width: 56, height: 56, marginRight: '10px' }} /> */}
+          <Typography variant="h5" component="h1">
+            Medication Table
+          </Typography>
         </div>
         <IconButton aria-label="edit">
           <EditIcon />
@@ -93,14 +105,16 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
                 if (medication.status === Status.Active) {
                   statusColor = "Active";
                 } else if (medication.status === Status.Discontuned) {
-                  statusColor = "Discontinued";;
+                  statusColor = "Discontinued";
                 } else if (medication.status === Status.On_Hold) {
-                  statusColor = "On Hold";;
+                  statusColor = "On Hold";
                 } else {
-                  return <span ></span>;
+                  return <span></span>;
                 }
               })()}
-              <td className={`px-6 py-4 whitespace-nowrap ${statusStyles[statusColor]}`}>
+              <td
+                className={`px-6 py-4 whitespace-nowrap ${statusStyles[statusColor]}`}
+              >
                 {medication.status}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -116,7 +130,9 @@ const MedicationTable: React.FC<MedicationTableProps> = ({ medications }) => {
                 {new Date(medication.startDate).toISOString()}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {medication.endDate ? new Date(medication.endDate).toISOString() : '-'}
+                {medication.endDate
+                  ? new Date(medication.endDate).toISOString()
+                  : "-"}
               </td>
             </tr>
           ))}

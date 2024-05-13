@@ -36,7 +36,7 @@ export const useAuthStore = create(
     (set, get) => ({
       ...initialState,
 
-      registerAuthUser: async (user) => {
+      registerAuthUser: async (user) => { 
         const data = await AuthenticationServices.register(user);
         return data;
       },

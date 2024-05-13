@@ -18,7 +18,7 @@ const PlanCard = ({ label, count, isSelected = false, onClick }: Props) => {
     >
       <span className="text-gray-700">{label}</span>
       <span className="text-gray-500 py-1 px-3 rounded-full text-sm">
-        {count.toString()}
+        {/* {count.toString()} */}
       </span>
     </Button>
   );

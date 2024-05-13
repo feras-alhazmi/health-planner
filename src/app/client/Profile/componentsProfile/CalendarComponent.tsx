@@ -22,7 +22,7 @@ const CalendarComponent: React.FC = () => {
       {/* Add a header with the title, avatar and edit icon */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt="Profile Picture" src="/path-to-your-image.jpg" />
+          {/* <Avatar alt="Profile Picture" src="/path-to-your-image.jpg" /> */}
           <Typography variant="h5" component="h1">Caleneder</Typography>
         </div>
         <IconButton aria-label="edit">

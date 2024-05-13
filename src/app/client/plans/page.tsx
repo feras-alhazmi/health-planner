@@ -4,27 +4,31 @@ import { Card } from "@nextui-org/react";
 import AddTaskForm from "./components/AddTask";
 import PlansSidebar from "./components/PlanSidebar";
 import TaskCard from "./components/TaskCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Task } from "@prisma/client";
 import { useAuthStore } from "@/core/auth/store/Auth-Store";
 import PrismaServices from "@/app/api/Prisma-Services";
+import { useSegement } from "@/core/auth/store/SegmentStore";
 import axios from "axios";
 const prisma = PrismaServices.instance;
 
 export default function Plans() {
   const [showForm, setShowForm] = useState(false);
-  const [update, setUpdate] = useState(false);
+  const [updateCount, setUpdateCount] = useState(0);
   const userId = useAuthStore((state) => state.userData?.userId);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const segment = useSegement((state) => state.currentSegment);
+  const incrementUpdateCount = () => setUpdateCount((count) => count + 1);
+  const plansSegment = ["Inbox", "Today", "Upcoming"];
 
   useEffect(() => {
     const fetchTasks = async () => {
+      console.log("tasks has been fetched");
       if (userId) {
         try {
           const tasksFromDb = await axios.get(
             `/api/tasks?userId=${encodeURIComponent(userId)}`
           );
-          console.log(tasksFromDb);
           setTasks(tasksFromDb.data);
         } catch (error) {
           console.error("Error fetching tasks:", error);
@@ -33,7 +37,15 @@ export default function Plans() {
     };
 
     fetchTasks();
-  }, [update, userId]);
+  }, [updateCount, userId]);
+
+  const filteredTasks = useMemo(() => {
+    console.log("tasks filtered");
+    return tasks.filter((task) => {
+      if (plansSegment.includes(segment.Id.toString())) return true;
+      return task.plan_id === segment.Id;
+    });
+  }, [segment, tasks]);
 
   return (
     <div>
@@ -41,18 +53,27 @@ export default function Plans() {
         <PlansSidebar />
         <div className="">
           <TaskCard
-            tasks={tasks}
+            tasks={filteredTasks}
             ShowForm={() => setShowForm(!showForm)}
-            Update={() => setUpdate(!update)}
+            Update={() => incrementUpdateCount()}
           />
           {showForm && (
             <AddTaskForm
               onSubmit={async (data) => {
                 if (userId) {
-                  const newTask = { ...data, owner_id: userId };
+                  var newTask = {};
+                  if (plansSegment.includes(segment.Id.toString())) {
+                    newTask = { ...data, owner_id: userId };
+                  } else {
+                    newTask = {
+                      ...data,
+                      owner_id: userId,
+                      plan_id: segment.Id,
+                    };
+                  }
                   await axios.post("/api/task", newTask);
+                  incrementUpdateCount();
                   setShowForm(!showForm);
-                  setUpdate(!update);
                 }
                 // setTasks([...tasks, data]);
               }}

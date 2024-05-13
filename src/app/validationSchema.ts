@@ -6,5 +6,5 @@ export const taskSchema = z.object({
 });
 
 export const planSchema = z.object({
-    name: z.string().min(1,"Inter the title").max(255),
+    name: z.string().min(1,"Inter the plan name").max(255),
 });

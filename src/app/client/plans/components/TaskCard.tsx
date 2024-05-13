@@ -22,12 +22,17 @@ export default function TaskCard({ ShowForm, tasks, Update }: Props) {
           <div key={task.task_id}>
             {editingTaskId === task.task_id ? (
               <AddTaskForm
-                onSubmit={(data) => {
-                  onTaskUpdate(task.task_id, data);
-                  setEditingTaskId("");
+                onSubmit={async (data) => {
+                  await onTaskUpdate(task.task_id, data);
                   Update();
+                  setEditingTaskId("");
                 }}
                 initialData={task}
+                onDelete={async (taskId) => {
+                  await deleteTask(taskId.toString());
+                  Update();
+                  setEditingTaskId("");
+                }}
               />
             ) : (
               <div className="flex items-center justify-between mr-36 group w-full ">
@@ -76,6 +81,15 @@ async function updateTaskStatus(taskId: string, isChecked: boolean) {
       {
         is_done: isChecked,
       }
+    );
+  } catch (error) {
+    console.error("Failed to update task:", error);
+  }
+}
+async function deleteTask(taskId: string) {
+  try {
+    const response = await axios.delete(
+      `/api/task/${encodeURIComponent(taskId)}`
     );
   } catch (error) {
     console.error("Failed to update task:", error);

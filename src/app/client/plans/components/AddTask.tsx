@@ -1,24 +1,28 @@
 "use client";
 
-import { Card, Select, SelectItem } from "@nextui-org/react";
+import { Button, Card, Select, SelectItem } from "@nextui-org/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema } from "@/app/validationSchema";
 import ErrorMassage from "./ErrorMassage";
 import { Task } from "@prisma/client";
+import DueDateButton from "./DueDateButton";
 
 interface TaskForm {
   title: string;
   description: string | null;
-  // priority: number;
-  // reminders: number;
 }
 interface Props {
   onSubmit: (data: TaskForm) => void;
+  onDelete?: (taskID: String) => void;
   initialData?: Task;
 }
-export default function AddTaskForm({ onSubmit, initialData }: Props) {
+export default function AddTaskForm({
+  onSubmit,
+  onDelete,
+  initialData,
+}: Props) {
   const {
     register,
     control,
@@ -31,13 +35,7 @@ export default function AddTaskForm({ onSubmit, initialData }: Props) {
       : {},
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const selectLabels = [
-    "Category",
-    "Due time",
-    "Priority",
-    "Reminder",
-    "Frequency",
-  ];
+  const selectLabels = ["Category", , "Priority", "Reminder", "Frequency"];
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
@@ -69,6 +67,7 @@ export default function AddTaskForm({ onSubmit, initialData }: Props) {
           <ErrorMassage>{errors.description?.message}</ErrorMassage>
         </div>
         <div className="flex flex-wrap -mx-2 mb-4  space-x-2">
+          <DueDateButton />
           {selectLabels.map((label) => (
             <div key={label} className=" w-28">
               <Select
@@ -83,7 +82,16 @@ export default function AddTaskForm({ onSubmit, initialData }: Props) {
           ))}
         </div>
         <div className="flex justify-end ">
-          <button className="bg-blue text-white font-bold w-fit  py-2 px-6 rounded-full">
+          {initialData && (
+            <button
+              type="button"
+              className="bg-red-500 text-white font-bold w-fit  py-2 px-6 rounded-full"
+              onClick={() => onDelete?.(initialData.task_id)}
+            >
+              Delete
+            </button>
+          )}
+          <button className="bg-blue text-white mx-2 font-bold w-fit  py-2 px-6 rounded-full">
             {initialData ? "Save" : " + Add task"}
           </button>
         </div>
