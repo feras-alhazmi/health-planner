@@ -27,7 +27,9 @@ export default function RootLayout({
         <header>
           <TopNavbar></TopNavbar>
           <div className="flex flex-row">
-            {!route.includes("sign") && route !== "/" ? (
+            {!route.includes("landing") &&
+            !route.includes("sign") &&
+            route !== "/" ? (
               <SideMenu></SideMenu>
             ) : // <div className="h-screen ">
             //   <Sidebar />
