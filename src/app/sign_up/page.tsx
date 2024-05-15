@@ -10,7 +10,7 @@ export default function SignIn() {
           <SignUpForm></SignUpForm>
         </div>
       </div>
-      <div className="flex flex-row gap-12 align-middle justify-center self-center  w-1/2 m-auto ">
+      <div className="flex flex-row max-md:hidden gap-12 align-middle justify-center self-center  w-1/2 m-auto ">
         <div className="max-w-sm self-center ">
           <Image src="assets/images/Sign_in_illi.png" alt="Illistrators" />
         </div>

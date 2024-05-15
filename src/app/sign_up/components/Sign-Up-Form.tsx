@@ -87,7 +87,7 @@ export default function SignUpForm() {
           type={isVisible ? "text" : "password"}
         />
         <div className="text-red-500">{errors.root?.message}</div>
-        <Button type="submit" color="primary">
+        <Button isLoading={isSubmitting} type="submit" color="primary">
           Sign Up
         </Button>
       </form>
@@ -100,7 +100,7 @@ export default function SignUpForm() {
         }
       ></DividerText>
       <Link className="min-w-full" href={"sign_in"}>
-        <Button isLoading={isSubmitting} className="w-full" color="primary" variant="bordered">
+        <Button  className="w-full" color="primary" variant="bordered">
           Login In
         </Button>
       </Link>
