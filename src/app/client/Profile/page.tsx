@@ -85,7 +85,8 @@ const ProfilePage: React.FC = () => {
   const measurements = getMeasurements(userID);
 
   const contactInfo: ContactInfoData = {
-    name: userData?.fullName || "",
+    name: "Feras Alhazmi",
+    // userData?.fullName || "",
     dob: userData?.dateOfBirth || new Date(),
     gender: userData?.gender || Gender.MALE,
     address: userData?.address || "",

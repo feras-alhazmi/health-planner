@@ -16,6 +16,7 @@ import { LuHeartHandshake } from "react-icons/lu";
 
 import ProviderCard from "../providers/ProviderCard";
 import ProviderType from "./components/ProviderType";
+import Footer from "./components/Footer";
 
 export default function LandingPage() {
   return (
@@ -63,24 +64,22 @@ export default function LandingPage() {
           <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl self-center">
             <LandingCard
               title="Find a Provider"
-              description="Never miss a task with our Task Management. Set reminders, refill alerts, and keep a detailed record of your prescriptions"
+              description=" Explore Our Trusted Network to easily find a certified health professionals, ensuring expert care tailored just for you"
               icon={<MdOutlineManageSearch color="#0056B3" size={70} />}
             />
             <LandingCard
               title="Connect & Meet"
-              description="Safely store and access medical records, test results, and important documents for quick reference during appointments or emergencies"
+              description="Effortlessly links you with health professionals for real-time consultations, enabling personalized care and immediate support when you need it most"
               icon={<MdComputer color="#0056B3" size={70} />}
             />
             <LandingCard
               title="Get a Plan"
-              description="  Keep track of your symptoms and health conditions with our
-                Symptoms Tracker. Monitor your health progress and share your
-                symptoms with your healthcare provider."
+              description="Tailor your health journey with customized care plans designed by experts to meet your unique wellness goals."
               icon={<FaTasks color="#0056B3" size={70} />}
             />
             <LandingCard
               title="Pay with insurance"
-              description="Tailor the planner to your specific needs with customizable templates for different health concerns or conditions"
+              description="Simplify your healthcare payments and reduce costs with direct insurance billing through our platform"
               icon={<LuHeartHandshake color="#0056B3" size={70} />}
             />
           </div>
@@ -139,6 +138,8 @@ export default function LandingPage() {
           </div>
         </section>
       </div>
+
+      <Footer />
     </>
   );
 }

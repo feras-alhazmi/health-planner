@@ -40,9 +40,7 @@ const UserHeader = ({ activePage, onNavigate }: Props) => {
 
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex flex-col">
-          <span className="font-bold text-xl text-black">
-            Hello, Dr. Waleed Alhazmi!
-          </span>
+          <span className="font-bold text-xl text-black">Hello, Yousuf!</span>
           <span className="text-black">Have a good working day</span>
           <div className="flex mt-4">
             <Button

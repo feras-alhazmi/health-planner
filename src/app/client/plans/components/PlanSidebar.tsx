@@ -42,7 +42,7 @@ export default function PlansSidebar() {
     fetchPlans();
   }, [updateCount, userId]);
   return (
-    <Card radius="none" className="w-64 bg-white shadow-none ">
+    <Card radius="none" className=" sm:w-44 md:w-64 bg-white shadow-none ">
       <CardHeader className="justify-between">
         <h2 className="text-xl font-bold">Plans</h2>
       </CardHeader>

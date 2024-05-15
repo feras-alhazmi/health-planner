@@ -19,25 +19,26 @@ export default function RootLayout({
 }>) {
   const route = usePathname();
   const modalStore = useModalStore();
+  const showSideMenu =
+    !route.includes("landing") && !route.includes("sign") && route !== "/";
+
+  const margin = showSideMenu ? "sm:ml-64" : "";
 
   return (
     <html lang="en">
-      <body className="w-svw flex flex-col bg-background">
+      <body>
         {...modalStore.getAllModals().map((modal) => modal())}
-        <header>
-          <TopNavbar></TopNavbar>
+
+        <TopNavbar></TopNavbar>
+
+        <main>
+          {" "}
           <div className="flex flex-row">
-            {!route.includes("landing") &&
-            !route.includes("sign") &&
-            route !== "/" ? (
-              <SideMenu></SideMenu>
-            ) : // <div className="h-screen ">
-            //   <Sidebar />
-            // </div>
-            null}
-            <main className=" w-full">{children}</main>
+            {showSideMenu ? <SideMenu></SideMenu> : null}
+
+            <div className={`${margin} overflow-x-hidden`}>{children}</div>
           </div>
-        </header>
+        </main>
       </body>
     </html>
   );

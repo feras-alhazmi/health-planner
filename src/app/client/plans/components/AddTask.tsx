@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Card, Select, SelectItem } from "@nextui-org/react";
-import { useState } from "react";
+import { Select, SelectItem } from "@nextui-org/react";
+import { PropsWithChildren, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema } from "@/app/validationSchema";
@@ -35,7 +35,7 @@ export default function AddTaskForm({
       : {},
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const selectLabels = ["Category", , "Priority", "Reminder", "Frequency"];
+  const selectLabels = ["Category", "Priority", "Reminder", "Frequency"];
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
@@ -66,18 +66,11 @@ export default function AddTaskForm({
           />
           <ErrorMassage>{errors.description?.message}</ErrorMassage>
         </div>
-        <div className="flex flex-wrap -mx-2 mb-4  space-x-2">
+        <div className="sm:flex sm:flex-col space-y-2 lg:flex-row lg:flex-wrap -mx-2 mb-4 space-x-2">
           <DueDateButton />
           {selectLabels.map((label) => (
-            <div key={label} className=" w-28">
-              <Select
-                label={label}
-                color="primary"
-                size="sm"
-                className="max-w-xs "
-              >
-                <SelectItem key="">No Idea</SelectItem>
-              </Select>
+            <div key={label} className=" col w-28">
+              <ActivityDetails key={label} activity={label} />
             </div>
           ))}
         </div>
@@ -99,3 +92,98 @@ export default function AddTaskForm({
     </form>
   );
 }
+interface PropsA {
+  activity: String;
+}
+
+const ActivityDetails: React.FC<PropsA> = ({ activity }) => {
+  function renderActivityInfo() {
+    switch (activity) {
+      case "Category":
+        return (
+          <>
+            <Select
+              label="Category"
+              color="primary"
+              size="sm"
+              className="max-w-xl "
+              selectionMode="multiple"
+            >
+              <SelectItem key="cardio">Cardio</SelectItem>
+              <SelectItem key="weight_lifting">Weight Lifting</SelectItem>
+              <SelectItem key="bodybuilding">Bodybuilding</SelectItem>
+              <SelectItem key="yoga">Yoga</SelectItem>
+              <SelectItem key="pilates">Pilates</SelectItem>
+              <SelectItem key="aerobics">Aerobics</SelectItem>
+              <SelectItem key="cycling">Cycling</SelectItem>
+            </Select>
+          </>
+        );
+      case "Priority":
+        return (
+          <Select
+            label="Priority"
+            color="primary"
+            size="sm"
+            className="max-w-xs "
+            disabledKeys={["none"]}
+          >
+            <SelectItem key="none">Priority</SelectItem>
+            <SelectItem key="low">Low </SelectItem>
+            <SelectItem key="medium">Medium </SelectItem>
+            <SelectItem key="high">High </SelectItem>
+            <SelectItem key="urgent">Urgent</SelectItem>
+          </Select>
+        );
+      case "Reminder":
+        return (
+          <Select
+            label="Reminder"
+            color="primary"
+            size="sm"
+            className="max-w-xs "
+            selectionMode="multiple"
+            disabledKeys={["none"]}
+          >
+            <SelectItem key="none">Before</SelectItem>
+            <SelectItem key="5_min">5 min</SelectItem>
+            <SelectItem key="15_min">15 min</SelectItem>
+            <SelectItem key="1_hr">1 hr</SelectItem>
+            <SelectItem key="1_day">1 day</SelectItem>
+          </Select>
+        );
+      case "Frequency":
+        return (
+          <Select
+            label="Frequency"
+            color="primary"
+            size="sm"
+            className="max-w-xs "
+            selectionMode="multiple"
+            disabledKeys={["none"]}
+          >
+            <SelectItem key="none">Every</SelectItem>
+            <SelectItem key="daily">Daily</SelectItem>
+            <SelectItem key="weekly">Weekly</SelectItem>
+            <SelectItem key="every_sunday"> Sun</SelectItem>
+            <SelectItem key="every_monday"> Mon</SelectItem>
+            <SelectItem key="every_tuesday"> Tue</SelectItem>
+            <SelectItem key="every_wednesday"> Wed</SelectItem>
+            <SelectItem key="every_thursday"> Thu</SelectItem>
+            <SelectItem key="every_friday"> Fri</SelectItem>
+            <SelectItem key="every_saturday"> Sat</SelectItem>
+            <SelectItem key="monthly">Monthly</SelectItem>
+          </Select>
+        );
+      default:
+        return (
+          <div>
+            <h1>Activity</h1>
+            <p>Details about the activity.</p>
+          </div>
+        );
+    }
+  }
+
+  return <div>{renderActivityInfo()}</div>;
+};

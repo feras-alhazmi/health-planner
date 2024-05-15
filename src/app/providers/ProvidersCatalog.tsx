@@ -9,78 +9,52 @@ import { User } from "@prisma/client";
 import ProviderCard from "./ProviderCard";
 
 const ProvidersCatalog = () => {
-  const usersData: User[] = [];
+  const providers = [
+    {
+      name: "Nawaf Alharby",
+      specialty: "personal trainer",
+      hospital: "fitness Time",
+      image: "/assets/images/participant.png",
+      rating: 4.6,
+      reviewsCount: 128,
+      consultationTime: "10PM",
+    },
+    {
+      name: "Mohsen anahash",
+      specialty: "personal trainer",
+      hospital: "GoTrain",
+      image: "/assets/images/participant.png",
+      rating: 4.3,
+      reviewsCount: 45,
+      consultationTime: "2PM",
+    },
+    {
+      name: "Mohammed owaji",
+      specialty: "Dietitian",
+      hospital: "Yarmook",
+      image: "/assets/images/participant.png",
+      rating: 4.7,
+      reviewsCount: 12,
+      consultationTime: "7PM",
+    },
+  ];
   const { searchQuery, filteration } = useParticipantsStore((state) => state);
-  // const filteredUsers = usersData.filter((user) => {
-  //   let isValid = false;
-  //   isValid =
-  //     user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     user.lastname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     user.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     user.bio?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     user.phone.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredUsers = providers.filter((user) => {
+    let isValid = false;
+    isValid =
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.hospital?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.rating.toString().toLowerCase().includes(searchQuery.toLowerCase());
 
-  //   filteration.forEach((filter) => {
-  //     if (
-  //       filter.attribute === "gender" &&
-  //       filter.value !== "select" &&
-  //       filter.value !== ""
-  //     ) {
-  //       isValid =
-  //         isValid &&
-  //         user.gender.toLocaleLowerCase() === filter.value?.toLocaleLowerCase();
-  //     }
-  //   });
-  //   return isValid;
-  // });
+    return isValid;
+  });
 
   return (
     <UsersCatalog>
-      {/* {filteredUsers
-        ?.sort((a, b) => {
-          if (filteration.length === 0) return 0;
-          let result = 0;
-          filteration.forEach((filter) => {
-            if (filter.attribute === "age") {
-              if (filter.value === "asc") {
-                result = a.dateOfBirth.getTime() - b.dateOfBirth.getTime();
-              } else if (filter.value === "des") {
-                result = b.dateOfBirth.getTime() - a.dateOfBirth.getTime();
-              }
-            }
-          });
-          return result;
-        })
-        .map((user, index) => (
-          <Link key={index} href={"/client"}>
-            <ProviderCard
-              provider={{
-                name: "Feras Alhazmi",
-                specialty: "personal trainer",
-                hospital: "fitness Time",
-                image: "/assets/images/participant.png",
-                rating: 4.8,
-                reviewsCount: 128,
-                consultationTime: "10PM",
-              }}
-            />
-          </Link>
-        ))} */}
-
-      {Array.from({ length: 10 }, (_, index) => (
-        <Link key={index} href={"/providers/ProviderProfile"}>
-          <ProviderCard
-            provider={{
-              name: "Feras Alhazmi",
-              specialty: "personal trainer",
-              hospital: "fitness Time",
-              image: "/assets/images/participant.png",
-              rating: 4.8,
-              reviewsCount: 128,
-              consultationTime: "10PM",
-            }}
-          />
+      {filteredUsers.map((provider) => (
+        <Link key={provider.name} href={"/providers/ProviderProfile"}>
+          <ProviderCard provider={provider} />
         </Link>
       ))}
     </UsersCatalog>

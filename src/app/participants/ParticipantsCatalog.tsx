@@ -10,18 +10,18 @@ const ParticipantsCatalog = () => {
   const usersData: User[] = [
     {
       name: "Ahmad Ali Hussain",
-      age: 28,
+      age: 22,
       email: "michelle.rivera@example.com",
       image: "/assets/images/participant.png",
       phone: "(239) 555-0108",
       gender: "Male",
     },
     {
-      name: "John Doe",
-      age: 35,
-      email: "john.doe@example.com",
+      name: "Feras Alhazmi",
+      age: 22,
+      email: "feras.alhazmy@gmail.com",
       image: "/assets/images/participant.png",
-      phone: "(123) 456-7890",
+      phone: "+966595662260",
       gender: "Male",
     },
     {

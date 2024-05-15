@@ -3,7 +3,7 @@ import SignInForm from "./components/Sign-in-Form-Component";
 
 export default function SignIn() {
   return (
-    <main className="flex flex-row justify-center align-middle w-full min-h-lvh">
+    <main className="flex flex-col lg:flex-row justify-between  w-screen min-h-lvh">
       <div className="w-1/2 flex flex-col self-center justify-center min-h-lvh bg-white">
         <div className="w-96 self-center">
           <SignInForm></SignInForm>

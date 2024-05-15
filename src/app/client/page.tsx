@@ -13,7 +13,7 @@ export default function ClientPage() {
   };
 
   return (
-    <div className="bg-background">
+    <div className="bg-background mx-5">
       <UserHeader activePage={currentPage} onNavigate={handleNavigate} />
       {currentPage === "profile" ? <ProfilePage /> : <Plans />}
     </div>

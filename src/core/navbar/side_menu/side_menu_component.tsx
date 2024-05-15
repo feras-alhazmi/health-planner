@@ -16,11 +16,13 @@ export default function SideMenu() {
   const router = useRouter();
   const authStore = useAuthStore((state) => state);
   return (
-    <nav className="h-svh  max-sm:hidden bg-blue  border-r-1 border-divider flex-col flex text-center text-base text-pretty p-2 transition-all">
+    <nav className="h-screen fixed max-sm:hidden bg-blue  border-r-1 border-divider flex-col flex text-center text-base text-pretty p-2 transition-all">
       <div className="mt-16  flex justify-center items-center px-4">
-        <Avatar path="/assets/images/user.png" onClick={() =>
-          router.push("/profile")
-        } size={50} />
+        <Avatar
+          path="/assets/images/user.png"
+          onClick={() => router.push("/profile")}
+          size={50}
+        />
         <p className="text-lg font-semibold text-white hidden xl:block xl:ml-5 ">
           {authStore.userData?.fullName ?? "Guest"}
         </p>
@@ -30,7 +32,7 @@ export default function SideMenu() {
           icon={
             <RxAvatar
               className="inline-block mr-5 font-extrabold max-sm:size-4 size-7"
-            // size={30}
+              // size={30}
             />
           }
           text="Profile"
@@ -40,7 +42,7 @@ export default function SideMenu() {
           icon={
             <HiUserGroup
               className="inline-block mr-5 font-extrabold max-sm:size-4 size-7"
-            // size={30}
+              // size={30}
             />
           }
           text="Participants"

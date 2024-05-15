@@ -15,9 +15,9 @@ const ProviderProfile = () => {
           className="rounded-full"
         />
         <div>
-          <h1 className="text-xl font-bold">Rachel Davis, RD</h1>
+          <h1 className="text-xl font-bold">Nawaf Alharby</h1>
           <div className="flex items-center text-sm space-x-2">
-            <Button> Book Now</Button>
+            <Button className="bg-blue text-white "> Book Now</Button>
 
             <span>💬 Get your price</span>
           </div>

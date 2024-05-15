@@ -49,9 +49,9 @@ export default function Plans() {
 
   return (
     <div>
-      <Card className="flex-row m-10 ">
+      <Card className="flex-row mx-8 w-screen ">
         <PlansSidebar />
-        <div className="">
+        <div>
           <TaskCard
             tasks={filteredTasks}
             ShowForm={() => setShowForm(!showForm)}
