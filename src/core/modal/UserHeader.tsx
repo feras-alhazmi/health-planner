@@ -4,6 +4,7 @@ import { HiArrowSmallLeft } from "react-icons/hi2";
 import Link from "next/link";
 import NotificationBadge from "@/app/components/usersSearch/NotificationBadge";
 import Avatar from "@/app/features/participants/components/features/Avatar";
+import { useAuthStore } from "../auth/store/Auth-Store";
 
 interface Props {
   activePage: String;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const UserHeader = ({ activePage, onNavigate }: Props) => {
+  const user = useAuthStore((state) => state.userData);
   // Function to determine button class
   const buttonClass = (page: string) =>
     `w-32 font-bold py-2 px-4 rounded-lg ${
@@ -20,9 +22,11 @@ const UserHeader = ({ activePage, onNavigate }: Props) => {
   return (
     <header className="text-white p-4 mt-4">
       <div className="flex justify-between">
-        <Link key="" href={"/participants"}>
-          <HiArrowSmallLeft color="black" size={30} />
-        </Link>
+        {user?.roles === "DOCTOR" && (
+          <Link key="" href={"/participants"}>
+            <HiArrowSmallLeft color="black" size={30} />
+          </Link>
+        )}
 
         <div className=" flex space-x-4 ">
           <button className="btn btn-primary">
