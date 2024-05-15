@@ -11,9 +11,11 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
   useDisclosure,
+  Divider,
 } from "@nextui-org/react";
 import { useAuthStore } from "../auth/store/Auth-Store";
 import { useRouter } from "next/navigation";
+import { on } from "events";
 
 export default function TopMenu() {
   // const useLoadStore = useLoadingStore((state) => state);
@@ -21,7 +23,21 @@ export default function TopMenu() {
   const router = useRouter();
 
   const authStore = useAuthStore((state) => state);
-  const menuItems = ["Home", "Products", "Orders", "Log Out"];
+
+  const menuItems = [
+    { label: "Home", href: "/" },
+    { label: "Landing", href: "/landing" },
+  ];
+
+  const loggedOutMenuItems = [
+    { label: "Login", href: "/sign_in" },
+    { label: "Sign Up", href: "/sign_up" },
+  ];
+  const loggedInMenuItems = [
+    { label: "Participant", href: "/participants" },
+    { label: "Profile", href: "/profile" },
+    { label: "Health Provider", href: "/providers" },
+  ];
 
   return (
     <Navbar
@@ -51,7 +67,7 @@ export default function TopMenu() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      <NavbarContent className="max-sm:hidden" justify="end">
         {!authStore.authUser ? (
           <>
             <NavbarItem className="hidden lg:flex">
@@ -91,22 +107,58 @@ export default function TopMenu() {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              className="w-full"
-              href="#"
-              size="lg"
-            >
-              {item}
+            <Link className="w-full" href={item.href} size="lg">
+              {item.label}
             </Link>
           </NavbarMenuItem>
         ))}
+        <Divider></Divider>
+        {authStore.authUser ? (
+          <>
+            {loggedInMenuItems.map((item, index) => (
+              <NavbarMenuItem key={`${item}-${index}`}>
+                <Link
+                  color="success"
+                  className="w-full"
+                  href={item.href}
+                  size="lg"
+                >
+                  {item.label}
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </>
+        ) : (
+          <>
+            {loggedOutMenuItems.map((item, index) => (
+              <NavbarMenuItem key={`${item}-${index}`}>
+                <Link
+                  color="success"
+                  className="w-full"
+                  href={item.href}
+                  size="lg"
+                >
+                  {item.label}
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </>
+        )}
+        {authStore.authUser ? (
+          <NavbarMenuItem>
+            <Link
+              onClick={() => {
+                authStore.logout();
+                router.push("/");
+              }}
+              color="danger"
+              className="w-full"
+              size="lg"
+            >
+              Sign Out
+            </Link>
+          </NavbarMenuItem>
+        ) : null}
       </NavbarMenu>
     </Navbar>
   );
