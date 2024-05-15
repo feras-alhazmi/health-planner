@@ -29,7 +29,23 @@ const ProviderProfile = () => {
       >
         <div className="mt-4 ">
           <h2 className="font-semibold">Background</h2>
-          <p>Information about Rachel Davis...</p>
+          <p>
+            dedicated personal trainer based at Fitness Time, a leading fitness
+            center known for its comprehensive facilities and commitment to
+            client health and wellness. With a passion for fitness that started
+            in his teenage years, Nawaf has pursued a career that aligns with
+            his love for helping others achieve their health and fitness goals.
+          </p>
+        </div>
+        <div className="mt-4 ">
+          <h2 className="font-semibold">Education and Certification</h2>
+          <p>
+            a degree in Sports Science from a reputable university, supplemented
+            by certifications in personal training and nutrition. He continually
+            seeks to further his knowledge and expertise through additional
+            certifications, workshops, and seminars in areas such as strength
+            training, cardio fitness, and rehabilitation.
+          </p>
         </div>
 
         <div className="mt-4">
@@ -46,6 +62,9 @@ const ProviderProfile = () => {
           <ul>
             <li>Weight Loss Medication</li>
             <li>Cognitive Behavioral Therapy (CBT)</li>
+            <li>Strength and Conditioning</li>
+            <li>Nutritional Counseling</li>
+            <li>Functional Training</li>
             {/* Add other modalities */}
           </ul>
         </div>
@@ -57,10 +76,7 @@ const ProviderProfile = () => {
 
         <div className="mt-4">
           <h2 className="font-semibold">Seeing clients in</h2>
-          <p>
-            AK, AZ, CA, CO, CT, HI, ID, IL, IN, KS, MA, MI, NH, NY, OK, OR, PA,
-            TX, UT, VT, VA, WA, WV, WI, WY
-          </p>
+          <p>Jeddah</p>
         </div>
       </div>
     </div>
