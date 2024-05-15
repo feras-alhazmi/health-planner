@@ -36,18 +36,23 @@ export default function SideMenu() {
             />
           }
           text="Profile"
-          linkPath="/profile"
-        ></SideMenuButton>
-        <SideMenuButton
-          icon={
-            <HiUserGroup
-              className="inline-block mr-5 font-extrabold max-sm:size-4 size-7"
-              // size={30}
-            />
+          linkPath={
+            authStore.userData?.roles === "DOCTOR" ? "/profile" : "/client"
           }
-          text="Participants"
-          linkPath="/participants"
         ></SideMenuButton>
+
+        {authStore.userData?.roles === "DOCTOR" && (
+          <SideMenuButton
+            icon={
+              <HiUserGroup
+                className="inline-block mr-5 font-extrabold max-sm:size-4 size-7"
+                // size={30}
+              />
+            }
+            text="Participants"
+            linkPath="/participants"
+          ></SideMenuButton>
+        )}
         <SideMenuButton
           icon={
             <HiUserGroup
