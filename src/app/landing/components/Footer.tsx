@@ -4,13 +4,13 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <footer className="bg-blue text-white p-4 w-screen">
-      <div className=" px-10 max-sm:space-y-4 pt-8 md:flex md:items-center md:justify-between">
+      <div className=" px-10 max-sm:space-y-4 pt-8 md:flex items-center md:justify-between">
         <div className="text-center text-sm mt-4">
-          © {new Date().getFullYear()} BrightCare . All rights reserved.
+          © {new Date().getFullYear()} BrightKare . All rights reserved.
         </div>
-        <div className="space-y-2">
-          <h2 className="font-bold">Contact Us</h2>
-          <p>
+        <div className="space-y-2 max-sm:text-center">
+          <h2 style={{ fontFamily: "Helvetica" }}>Contact Us</h2>
+          <p style={{ fontFamily: "Helvetica" }}>
             Email:{" "}
             <a
               href="mailto:info@brightkare.com"
@@ -21,7 +21,7 @@ const Footer = () => {
           </p>
         </div>
 
-        <div className="flex space-x-6">
+        <div className="flex space-x-6 max-sm:justify-center">
           <a
             href="https://twitter.com/ycombinator"
             target="_blank"
@@ -122,7 +122,7 @@ const Footer = () => {
           </a>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center max-sm:justify-center">
           <Link href="/">
             <Image
               src="/assets/whiteBrightCareLogo.svg"
@@ -137,7 +137,7 @@ const Footer = () => {
             className="font-bold ml-2  text-white text-center"
             style={{ fontFamily: "Helvetica" }}
           >
-            BrightCare
+            BrightKare
           </p>
         </div>
       </div>

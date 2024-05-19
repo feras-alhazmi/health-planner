@@ -65,7 +65,7 @@ export default function TopMenu() {
             className="font-bold ml-2 hidden md:block text-blue"
             style={{ fontFamily: "Helvetica" }}
           >
-            BrightCare
+            BrightKare
           </p>
         </NavbarBrand>
         <NavbarMenuToggle

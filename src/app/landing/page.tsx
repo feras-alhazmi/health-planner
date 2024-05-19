@@ -15,7 +15,6 @@ import { CiCircleQuestion } from "react-icons/ci";
 import { FaBrain, FaFlag, FaHandHoldingHeart, FaTasks } from "react-icons/fa";
 import { LuHeartHandshake } from "react-icons/lu";
 
-import ProviderCard from "../providers/ProviderCard";
 import ProviderType from "./components/ProviderType";
 import Footer from "./components/Footer";
 import ValueCard from "./components/ValueCard";
@@ -90,22 +89,22 @@ export default function LandingPage() {
           id="about-us"
           className="max-w-2xl w-full gap-7 flex flex-col self-center"
         >
-          <h2 className="text-5xl">About Us</h2>
+          <h2 className="text-5xl text-cyan-950">About Us</h2>
           <h3>
-            At BrightCare, we are transforming preventive healthcare by
+            At BrightKare, we are transforming preventive healthcare by
             connecting individuals with top-tier health professionals, including
             personal trainers, nutritionists, and physical therapists. Our
             platform leverages advanced AI-driven tools to provide personalized
             health plans, promoting proactive health management tailored to each
             client{"'"}s unique needs. Our commitment to prevention helps
             clients avoid serious health issues and enhance their quality of
-            life. At BrightCare, preventive healthcare is not just a service—it
+            life. At BrightKare, preventive healthcare is not just a service—it
             is a partnership for a healthier future.
           </h3>
-          <h2 className="text-5xl ">Our Vision</h2>
+          <h2 className="text-5xl text-cyan-950">Our Vision</h2>
 
           <h3>
-            At BrightCare, our vision is to revolutionize preventive healthcare
+            At BrightKare, our vision is to revolutionize preventive healthcare
             by connecting individuals with top health professionals and
             equipping them with customized, easy-to-use monitoring tools. We aim
             to make preventive care personal, proactive, and powerful, ensuring
@@ -113,7 +112,7 @@ export default function LandingPage() {
             life.
           </h3>
 
-          <h2 className="text-5xl ">Core Values</h2>
+          <h2 className="text-5xl text-cyan-950 ">Core Values</h2>
 
           <div className="px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
