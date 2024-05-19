@@ -11,6 +11,7 @@ import Avatar from "./Avatar";
 import { useAuthStore } from "@/core/auth/store/Auth-Store";
 import { AiFillProfile } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
+import { Button } from "@nextui-org/react";
 
 export default function SideMenu() {
   const router = useRouter();
@@ -74,6 +75,17 @@ export default function SideMenu() {
           linkPath="/chat"
         ></SideMenuButton>
       </div>
+
+      <Button
+        variant="bordered"
+        onClick={() => {
+          authStore.logout();
+          router.push("/");
+        }}
+        className="text-white"
+      >
+        Logout
+      </Button>
 
       {/* <SideMenuButton
         icon={<CiBoxes />}

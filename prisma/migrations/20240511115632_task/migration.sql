@@ -1,5 +1,4 @@
--- DropIndex
-DROP INDEX "Event_userId_key";
+
 
 -- AlterTable
 ALTER TABLE "Plan" ALTER COLUMN "filter" DROP NOT NULL,

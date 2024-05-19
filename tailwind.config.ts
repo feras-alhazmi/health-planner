@@ -19,7 +19,7 @@ const config: Config = {
         blue: "#0155A5",
       },
       backgroundColor: {
-        "landing-page": "#EAF0FF",
+        "landing-page": "#FFFFFF",
         background: "#FFFFFF",
         blue: "#0155A5",
         graybg:"#F3F4F6",

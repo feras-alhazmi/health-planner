@@ -1,9 +1,9 @@
 "use client";
 
 import { Image } from "@nextui-org/react";
-import SymptomsIcon from "../../../public/assets/svg/Symptions-Icon";
+
 import LandingCard from "./components/Landing-Card-Component";
-import CustomizableTemplateIcon from "../../../public/assets/svg/Customizable-Template-Icon";
+
 import {
   MdAccountBox,
   MdComputer,
@@ -11,12 +11,14 @@ import {
   MdGroup,
   MdPrivacyTip,
 } from "react-icons/md";
-import { FaTasks } from "react-icons/fa";
+import { CiCircleQuestion } from "react-icons/ci";
+import { FaBrain, FaFlag, FaHandHoldingHeart, FaTasks } from "react-icons/fa";
 import { LuHeartHandshake } from "react-icons/lu";
 
 import ProviderCard from "../providers/ProviderCard";
 import ProviderType from "./components/ProviderType";
 import Footer from "./components/Footer";
+import ValueCard from "./components/ValueCard";
 
 export default function LandingPage() {
   return (
@@ -88,19 +90,19 @@ export default function LandingPage() {
           id="about-us"
           className="max-w-2xl w-full gap-7 flex flex-col self-center"
         >
-          <h2 className="text-5xl text-center font-bold">About Us</h2>
+          <h2 className="text-5xl">About Us</h2>
           <h3>
             At BrightCare, we are transforming preventive healthcare by
             connecting individuals with top-tier health professionals, including
             personal trainers, nutritionists, and physical therapists. Our
-            platform leverages advanced, user-friendly tools to provide
-            personalized health plans, promoting proactive health management
-            tailored to each client{"'"}s unique needs. Our commitment to
-            prevention helps clients avoid serious health issues and enhance
-            their quality of life. At BrightCare, preventive healthcare is not
-            just a service—it is a partnership for a healthier future.
+            platform leverages advanced AI-driven tools to provide personalized
+            health plans, promoting proactive health management tailored to each
+            client{"'"}s unique needs. Our commitment to prevention helps
+            clients avoid serious health issues and enhance their quality of
+            life. At BrightCare, preventive healthcare is not just a service—it
+            is a partnership for a healthier future.
           </h3>
-          <h2 className="text-5xl text-center font-bold">Our Vision</h2>
+          <h2 className="text-5xl ">Our Vision</h2>
 
           <h3>
             At BrightCare, our vision is to revolutionize preventive healthcare
@@ -110,7 +112,37 @@ export default function LandingPage() {
             that every client can avoid serious diseases and lead a healthier
             life.
           </h3>
-          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl self-center">
+
+          <h2 className="text-5xl ">Core Values</h2>
+
+          <div className="px-4 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <ValueCard
+                icon={<FaFlag className="text-2xl text-blue " />}
+                title="Efficiency"
+                description="We excel by effectively prioritizing and focusing on what is necessary to accomplish any task or project."
+              />
+              <ValueCard
+                icon={<FaBrain className="text-2xl text-blue" />}
+                title="Forward-thinking"
+                description="We see beyond the present, and imagine a changed world – not as it is, but as it could be."
+              />
+              <ValueCard
+                icon={<FaHandHoldingHeart className="text-2xl text-blue" />}
+                title="Empathy"
+                description="We care about our users, and strive to understand their problems at the deepest level."
+              />
+              <ValueCard
+                icon={
+                  <CiCircleQuestion size={36} className="text-2xl text-blue" />
+                }
+                title="Curiosity"
+                description="We want to dig deep into problems, and really understand everything from first principles."
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl ">
             <LandingCard
               backgroundColor="bg-slate-200"
               title="Data Privacy and Security"

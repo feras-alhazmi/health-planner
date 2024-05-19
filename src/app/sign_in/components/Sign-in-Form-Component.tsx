@@ -19,7 +19,8 @@ export default function SignInForm() {
   type FormFields = z.infer<typeof formSchema>;
   const {
     register,
-    control, setError,
+    control,
+    setError,
     formState: { errors, isSubmitting },
     getValues,
   } = useForm<FormFields>({ resolver: zodResolver(formSchema) });
@@ -36,12 +37,11 @@ export default function SignInForm() {
             password: getValues("password"),
           });
           if (loginData.succeeded) {
-            router.push("/participants");
-          }
-          else {
+            router.push("/");
+          } else {
             setError("root", {
               message: loginData.message!,
-            })
+            });
           }
         }}
         className="flex flex-col gap-3"

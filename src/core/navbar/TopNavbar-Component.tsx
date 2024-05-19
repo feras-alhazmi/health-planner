@@ -16,6 +16,7 @@ import {
 import { useAuthStore } from "../auth/store/Auth-Store";
 import { useRouter } from "next/navigation";
 import { on } from "events";
+import Image from "next/image";
 
 export default function TopMenu() {
   // const useLoadStore = useLoadingStore((state) => state);
@@ -38,30 +39,48 @@ export default function TopMenu() {
     { label: "Profile", href: "/profile" },
     { label: "Health Provider", href: "/providers" },
   ];
+  var navbarState = authStore.userData
+    ? "hidden"
+    : "text-blue bg-white border-divider";
 
   return (
-    <Navbar
-      className="text-white bg-blue border-divider"
-      onMenuOpenChange={setIsMenuOpen}
-    >
-      <NavbarContent>
+    <Navbar className={navbarState} onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent className="justify-between">
+        <NavbarBrand>
+          <Link
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            <Image
+              src="/assets/BrightcareLogo.svg"
+              alt="logo"
+              width={60}
+              height={60}
+              className="m-0 p-0 "
+            />
+          </Link>
+
+          <p
+            className="font-bold ml-2 hidden md:block text-blue"
+            style={{ fontFamily: "Helvetica" }}
+          >
+            BrightCare
+          </p>
+        </NavbarBrand>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <NavbarBrand>
-          <div className="w-10 h-10">{/* <Logo /> */}</div>
-          <p className="font-bold text-inherit">Health Planner</p>
-        </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="center" className="hidden lg:flex">
         <NavbarItem>
-          <Link href="/" className="text-white">
+          <Link href="/" className="text-blue">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/landing" className="text-white">
+          <Link href="/landing" className="text-blue">
             Landing
           </Link>
         </NavbarItem>
@@ -71,17 +90,12 @@ export default function TopMenu() {
         {!authStore.authUser ? (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Link href="/sign_in" className="text-white">
+              <Link href="/sign_in" className="text-blue">
                 Login
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Button
-                as={Link}
-                className="text-blue"
-                href="/sign_up"
-                variant="faded"
-              >
+              <Button as={Link} className="text-white bg-blue" href="/sign_up">
                 Sign Up
               </Button>
             </NavbarItem>
@@ -118,7 +132,7 @@ export default function TopMenu() {
             {loggedInMenuItems.map((item, index) => (
               <NavbarMenuItem key={`${item}-${index}`}>
                 <Link
-                  color="success"
+                  color="primary"
                   className="w-full"
                   href={item.href}
                   size="lg"
@@ -133,7 +147,7 @@ export default function TopMenu() {
             {loggedOutMenuItems.map((item, index) => (
               <NavbarMenuItem key={`${item}-${index}`}>
                 <Link
-                  color="success"
+                  color="primary"
                   className="w-full"
                   href={item.href}
                   size="lg"
